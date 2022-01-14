@@ -274,18 +274,21 @@ class SimplePuzzleBoard extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Stack(
-          children: tiles.keys
-              .map(
-                (e) => Positioned(
-                  left: calculateX(constraints, e),
-                  top: calculateY(constraints, e),
-                  child: SizedBox(
-                    width: calculateBlockWidth(constraints),
-                    child: tiles[e],
+          children: [
+            Container(color: Colors.blue),
+            ...tiles.keys
+                .map(
+                  (e) => Positioned(
+                    left: calculateX(constraints, e),
+                    top: calculateY(constraints, e),
+                    child: SizedBox(
+                      width: calculateBlockWidth(constraints),
+                      child: tiles[e],
+                    ),
                   ),
-                ),
-              )
-              .toList(),
+                )
+                .toList(),
+          ],
         );
       },
     );
@@ -297,15 +300,15 @@ class SimplePuzzleBoard extends StatelessWidget {
 
   double calculateX(BoxConstraints constraints, Position position) {
     final blockWidth = calculateBlockWidth(constraints);
-    return (constraints.maxWidth / 2  - blockWidth)  +
+    return (constraints.maxWidth / 2 - blockWidth* (1/2)) +
         (position.x - 1).toDouble() * blockWidth / 2 -
-        (position.y - 1) * blockWidth * (1/3);
+        (position.y - 1) * blockWidth * (1 / 2);
   }
 
   double calculateY(BoxConstraints constraints, Position position) {
     final blockWidth = calculateBlockWidth(constraints);
-    return (position.y - 1).toDouble() * (blockWidth / 2)
-        + (position.x - 1) * (blockWidth  * (1/3));
+    return (position.y - 1).toDouble() * (blockWidth * (1/3)) +
+        (position.x - 1) * (blockWidth * (1 / 3));
   }
 }
 
@@ -353,7 +356,13 @@ class SimplePuzzleTile extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: Padding(
               padding: const EdgeInsets.all(8),
-              child: Text('${tile.value}'),
+              child: Text(
+                '${tile.value}',
+                style: TextStyle(
+                    color: tile.currentPosition == tile.correctPosition
+                        ? Colors.greenAccent
+                        : Colors.red),
+              ),
             ),
           )
         ],
