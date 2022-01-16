@@ -89,7 +89,7 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
   }
 
   @override
-  Widget boardBuilder(int size, Map<Position, Widget> tiles) {
+  Widget boardBuilder(int size, Map<Tile, Widget> tiles) {
     return Column(
       children: [
         const ResponsiveGap(
@@ -264,7 +264,7 @@ class SimplePuzzleBoard extends StatelessWidget {
   final int size;
 
   /// The tiles to be displayed on the board.
-  final Map<Position, Widget> tiles;
+  final Map<Tile, Widget> tiles;
 
   /// The spacing between each tile from [tiles].
   final double spacing;
@@ -278,11 +278,13 @@ class SimplePuzzleBoard extends StatelessWidget {
             Container(color: Colors.blue),
             ...tiles.keys
                 .map(
-                  (e) => Positioned(
-                    left: calculateX(constraints, e),
-                    top: calculateY(constraints, e),
+                  (e) => AnimatedPositioned(
+                    key: ValueKey(e.value),
+                    left: _calculateLeft(constraints, e.currentPosition),
+                    top: _calculateTop(constraints, e.currentPosition),
+                    duration: const Duration(milliseconds: 400),
                     child: SizedBox(
-                      width: calculateBlockWidth(constraints),
+                      width: _calculateBlockWidth(constraints),
                       child: tiles[e],
                     ),
                   ),
@@ -294,20 +296,20 @@ class SimplePuzzleBoard extends StatelessWidget {
     );
   }
 
-  double calculateBlockWidth(BoxConstraints constraints) {
+  double _calculateBlockWidth(BoxConstraints constraints) {
     return constraints.maxWidth / 4;
   }
 
-  double calculateX(BoxConstraints constraints, Position position) {
-    final blockWidth = calculateBlockWidth(constraints);
-    return (constraints.maxWidth / 2 - blockWidth* (1/2)) +
+  double _calculateLeft(BoxConstraints constraints, Position position) {
+    final blockWidth = _calculateBlockWidth(constraints);
+    return (constraints.maxWidth / 2 - blockWidth * (1 / 2)) +
         (position.x - 1).toDouble() * blockWidth / 2 -
         (position.y - 1) * blockWidth * (1 / 2);
   }
 
-  double calculateY(BoxConstraints constraints, Position position) {
-    final blockWidth = calculateBlockWidth(constraints);
-    return (position.y - 1).toDouble() * (blockWidth * (1/3)) +
+  double _calculateTop(BoxConstraints constraints, Position position) {
+    final blockWidth = _calculateBlockWidth(constraints);
+    return (position.y - 1).toDouble() * (blockWidth * (1 / 3)) +
         (position.x - 1) * (blockWidth * (1 / 3));
   }
 }
@@ -323,7 +325,7 @@ abstract class _TileFontSize {
 /// the font size of [tileFontSize] based on the puzzle [state].
 /// {@endtemplate}
 @visibleForTesting
-class SimplePuzzleTile extends StatelessWidget {
+class SimplePuzzleTile extends StatefulWidget {
   /// {@macro simple_puzzle_tile}
   const SimplePuzzleTile({
     Key? key,
@@ -342,63 +344,90 @@ class SimplePuzzleTile extends StatelessWidget {
   final PuzzleState state;
 
   @override
+  State<SimplePuzzleTile> createState() => _SimplePuzzleTileState();
+}
+
+class _SimplePuzzleTileState extends State<SimplePuzzleTile> {
+  var _isTapped = false;
+
+  @override
   Widget build(BuildContext context) {
-    final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
-
-    return GestureDetector(
-      onTap: state.puzzleStatus == PuzzleStatus.incomplete
-          ? () => context.read<PuzzleBloc>().add(TileTapped(tile))
-          : null,
-      child: Stack(
-        children: [
-          Image.asset('assets/images/block.png'),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Text(
-                '${tile.value}',
-                style: TextStyle(
-                    color: tile.currentPosition == tile.correctPosition
-                        ? Colors.greenAccent
-                        : Colors.red),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return GestureDetector(
+          onTapDown: (_) => setState(() => _isTapped = true),
+          onTapUp: (_) => setState(() => _isTapped = false),
+          onTapCancel: () => setState(() => _isTapped = false),
+          onTap: widget.state.puzzleStatus == PuzzleStatus.incomplete
+              ? () => context.read<PuzzleBloc>().add(TileTapped(widget.tile))
+              : null,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              AnimatedPositioned(
+                top: _isTapped ? constraints.maxWidth * 0.1 : 0,
+                left: 0,
+                right: 0,
+                curve: _isTapped? Curves.linear : Curves.elasticOut,
+                duration: Duration(milliseconds: _isTapped ? 50 : 500),
+                child: Image.asset('assets/images/block.png'),
               ),
-            ),
-          )
-        ],
-      ),
-    );
-
-    return TextButton(
-      style: TextButton.styleFrom(
-        primary: PuzzleColors.white,
-        textStyle: PuzzleTextStyle.headline2.copyWith(
-          fontSize: tileFontSize,
-        ),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(12),
+              Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    '${widget.tile.value}',
+                    style: TextStyle(
+                        color: widget.tile.currentPosition ==
+                                widget.tile.correctPosition
+                            ? Colors.greenAccent
+                            : Colors.red),
+                  ),
+                ),
+              ),
+              CustomPaint(
+                  size: Size(constraints.maxWidth, constraints.maxWidth*1.1),
+                  painter: DrawWaterShape(),
+              ),
+            ],
           ),
-        ),
-      ).copyWith(
-        foregroundColor: MaterialStateProperty.all(PuzzleColors.white),
-        backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-          (states) {
-            if (tile.value == state.lastTappedTile?.value) {
-              return theme.pressedColor;
-            } else if (states.contains(MaterialState.hovered)) {
-              return theme.hoverColor;
-            } else {
-              return theme.defaultColor;
-            }
-          },
-        ),
-      ),
-      onPressed: state.puzzleStatus == PuzzleStatus.incomplete
-          ? () => context.read<PuzzleBloc>().add(TileTapped(tile))
-          : null,
-      child: Text(tile.value.toString()),
+        );
+      }
     );
+  }
+}
+
+/// Draws semi transparant water on top of islands
+class DrawWaterShape extends CustomPainter {
+
+  Paint painter = Paint();
+
+  /// Constructor to be used with CustomPaint
+  DrawWaterShape() {
+    painter
+      ..color = Colors.blue.withOpacity(0.5)
+      ..style = PaintingStyle.fill;
+
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+
+    var path = Path()
+      ..moveTo(0, size.height/2)
+      ..lineTo(0, size.height)
+      ..lineTo(size.width, size.height)
+      ..lineTo(size.width, size.height/2)
+      ..lineTo(size.width/2, size.height*(3/4))
+      ..close();
+
+    canvas.drawPath(path, painter);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
   }
 }
 

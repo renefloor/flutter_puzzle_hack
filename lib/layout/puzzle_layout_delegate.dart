@@ -41,7 +41,7 @@ abstract class PuzzleLayoutDelegate extends Equatable {
   ///
   /// The board should display the list of [tiles],
   /// each built with [tileBuilder].
-  Widget boardBuilder(int size, Map<Position, Widget> tiles);
+  Widget boardBuilder(int size, Map<Tile, Widget> tiles);
 
   /// A widget builder for the puzzle tile associated
   /// with [tile] and based on the puzzle [state].

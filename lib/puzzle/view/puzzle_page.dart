@@ -223,9 +223,9 @@ class PuzzleBoard extends StatelessWidget {
     final size = puzzle.getDimension();
     if (size == 0) return const CircularProgressIndicator();
 
-    final tilesMap = <Position, Widget>{};
+    final tilesMap = <Tile, Widget>{};
     for (final tile in puzzle.tiles) {
-      tilesMap[tile.currentPosition] = _PuzzleTile(
+      tilesMap[tile] = _PuzzleTile(
         key: Key('puzzle_tile_${tile.value.toString()}'),
         tile: tile,
       );
