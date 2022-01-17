@@ -312,8 +312,8 @@ class SimplePuzzleBoard extends StatelessWidget {
 
   double _calculateTop(BoxConstraints constraints, Position position) {
     final blockWidth = _calculateBlockWidth(constraints);
-    return (position.y - 1).toDouble() * (blockWidth * (3/10)) +
-        (position.x - 1) * (blockWidth * (3/10));
+    return (position.y - 1).toDouble() * (blockWidth * (3 / 10)) +
+        (position.x - 1) * (blockWidth * (3 / 10));
   }
 }
 
@@ -353,52 +353,111 @@ class SimplePuzzleTile extends StatefulWidget {
 class _SimplePuzzleTileState extends State<SimplePuzzleTile> {
   var _isTapped = false;
 
+  bool get _isShuffling => widget.state.puzzleStatus == PuzzleStatus.shuffling;
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      return GestureDetector(
-        onTapDown: (_) => setState(() => _isTapped = true),
-        onTapUp: (_) => setState(() => _isTapped = false),
-        onTapCancel: () => setState(() => _isTapped = false),
-        onTap: widget.state.puzzleStatus == PuzzleStatus.incomplete
-            ? () => context.read<PuzzleBloc>().add(TileTapped(widget.tile))
-            : null,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            AnimatedPositioned(
-              top: _isTapped ? constraints.maxWidth * 0.1 : 0,
-              left: 0,
-              right: 0,
-              curve: _isTapped ? Curves.linear : Curves.elasticOut,
-              duration: Duration(milliseconds: _isTapped ? 50 : 500),
-              child: Image.asset('assets/images/block.png'),
+      var position = 0.0;
+      if (_isTapped) position += constraints.maxWidth * 0.1;
+      if (_isShuffling) position += constraints.maxWidth * 1.2;
+
+      return Stack(
+        clipBehavior: Clip.none,
+        children: [
+          AnimatedPositioned(
+            top: position,
+            left: 0,
+            right: 0,
+            curve: _isTapped ? Curves.linear : Curves.elasticOut,
+            duration: Duration(
+              milliseconds: _isTapped
+                  ? 50
+                  : _isShuffling
+                      ? 5000
+                      : 500,
             ),
+            child: IgnorePointer(child: Image.asset('assets/images/block.png')),
+          ),
+          if (!_isShuffling)
             Align(
               alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  '${widget.tile.value}',
-                  style: TextStyle(
+              child: IgnorePointer(
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    '${widget.tile.value}',
+                    style: TextStyle(
                       color: widget.tile.currentPosition ==
                               widget.tile.correctPosition
                           ? Colors.greenAccent
-                          : Colors.red),
+                          : Colors.red,
+                    ),
+                  ),
                 ),
               ),
             ),
-            _Water(
+          IgnorePointer(
+            child: _Water(
               width: constraints.maxWidth,
             ),
-            // CustomPaint(
-            //   size: Size(constraints.maxWidth, constraints.maxWidth * 1.1),
-            //   painter: DrawWaterShape(),
-            // ),
-          ],
-        ),
+          ),
+          GestureDetector(
+            onTapDown: (_) => setState(() => _isTapped = true),
+            onTapUp: (_) => setState(() => _isTapped = false),
+            onTapCancel: () => setState(() => _isTapped = false),
+            onTap: widget.state.puzzleStatus == PuzzleStatus.incomplete
+                ? () => context.read<PuzzleBloc>().add(TileTapped(widget.tile))
+                : null,
+            child: Padding(
+              padding: EdgeInsets.only(top: constraints.maxWidth * 0.05),
+              child: const _Top(),
+            ),
+          ),
+        ],
       );
     });
+  }
+}
+
+class _Top extends StatelessWidget {
+  const _Top({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 2,
+      child: CustomPaint(painter: _TopShape()),
+    );
+  }
+}
+
+class _TopShape extends CustomPainter {
+  _TopShape();
+
+  Paint painter = Paint();
+  Path? _path;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    _path = Path()
+      ..moveTo(size.width / 2, 0)
+      ..lineTo(0, size.height / 2)
+      ..lineTo(size.width / 2, size.height)
+      ..lineTo(size.width, size.height / 2)
+      ..close();
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
+  }
+
+  @override
+  bool? hitTest(Offset position) {
+    final path = _path;
+    if (path == null) return false;
+    return path.contains(position);
   }
 }
 
@@ -416,29 +475,18 @@ class _Water extends StatelessWidget {
       width: width,
       margin: EdgeInsets.only(top: width * (11 / 16)),
       child: Row(
-        children: [
-          Expanded(
-            child: _WaterHalf(width: width, skew: 0.5),
-          ),
-          Expanded(
-              child: _WaterHalf(
-            width: width,
-            skew: -0.5,
-            shiftY: math.pi,
-          ))
+        children: const [
+          Expanded(child: _WaterGradient(skew: 0.5)),
+          Expanded(child: _WaterGradient(skew: -0.5))
         ],
       ),
     );
   }
 }
 
-class _WaterHalf extends StatelessWidget {
-  const _WaterHalf(
-      {required this.width, required this.skew, this.shiftY = 0.0, Key? key})
-      : super(key: key);
+class _WaterGradient extends StatelessWidget {
+  const _WaterGradient({required this.skew, Key? key}) : super(key: key);
   final double skew;
-  final double shiftY;
-  final double width;
 
   @override
   Widget build(BuildContext context) {
@@ -448,16 +496,11 @@ class _WaterHalf extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [
-                0.0,
-                0.3
-              ],
-              colors: [
-                Colors.blue.withOpacity(0.5),
-                Colors.blue,
-              ]),
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: const [0.0, 0.3],
+            colors: [Colors.blue.withOpacity(0.5), Colors.blue],
+          ),
         ),
       ),
     );

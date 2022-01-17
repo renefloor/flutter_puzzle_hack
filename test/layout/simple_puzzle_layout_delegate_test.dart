@@ -21,6 +21,14 @@ void main() {
 
     const themeName = 'Name';
 
+    final simpleTileMap = {
+      Tile(
+        correctPosition: Position(x: 0, y: 0),
+        currentPosition: Position(x: 0, y: 0),
+        value: 1,
+      ): const SizedBox(),
+    };
+
     setUpAll(() {
       final oldComparator = goldenFileComparator as LocalFileComparator;
       final newComparator =
@@ -226,9 +234,7 @@ void main() {
 
         await tester.pumpApp(
           SingleChildScrollView(
-            child: layoutDelegate.boardBuilder(4, [
-              const SizedBox(),
-            ]),
+            child: layoutDelegate.boardBuilder(4, simpleTileMap),
           ),
           themeBloc: themeBloc,
         );
@@ -246,9 +252,7 @@ void main() {
 
         await tester.pumpApp(
           SingleChildScrollView(
-            child: layoutDelegate.boardBuilder(4, [
-              const SizedBox(),
-            ]),
+            child: layoutDelegate.boardBuilder(4, simpleTileMap),
           ),
           themeBloc: themeBloc,
         );
@@ -266,9 +270,7 @@ void main() {
 
         await tester.pumpApp(
           SingleChildScrollView(
-            child: layoutDelegate.boardBuilder(4, [
-              const SizedBox(),
-            ]),
+            child: layoutDelegate.boardBuilder(4, simpleTileMap),
           ),
           themeBloc: themeBloc,
         );
@@ -286,6 +288,8 @@ void main() {
 
       setUp(() {
         tile = MockTile();
+        when(() => tile.currentPosition).thenReturn(Position(x: 3, y: 2));
+        when(() => tile.correctPosition).thenReturn(Position(x: 2, y: 3));
         when(() => tile.value).thenReturn(tileValue);
       });
 
@@ -429,6 +433,8 @@ void main() {
 
       setUp(() {
         tile = MockTile();
+        when(() => tile.currentPosition).thenReturn(Position(x: 3, y: 2));
+        when(() => tile.correctPosition).thenReturn(Position(x: 2, y: 3));
         when(() => tile.value).thenReturn(tileValue);
       });
 
@@ -441,16 +447,21 @@ void main() {
         when(() => puzzleBloc.state).thenReturn(state);
 
         await tester.pumpApp(
-          SimplePuzzleTile(
-            tile: tile,
-            tileFontSize: tileFontSize,
-            state: state,
+          SizedBox(
+            width: 800,
+            height: 600,
+            child: SimplePuzzleTile(
+              tile: tile,
+              tileFontSize: tileFontSize,
+              state: state,
+            ),
           ),
           themeBloc: themeBloc,
           puzzleBloc: puzzleBloc,
         );
+        await tester.pumpAndSettle();
 
-        await tester.tap(find.byType(SimplePuzzleTile));
+        await tester.tap(find.byType(Text));
 
         verify(() => puzzleBloc.add(TileTapped(tile))).called(1);
       });
@@ -494,6 +505,7 @@ void main() {
             ),
             themeBloc: themeBloc,
           );
+          await tester.pumpAndSettle();
 
           await expectLater(
             find.byType(SimplePuzzleTile),

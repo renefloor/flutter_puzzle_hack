@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:very_good_slide_puzzle/colors/colors.dart';
 import 'package:very_good_slide_puzzle/layout/layout.dart';
 import 'package:very_good_slide_puzzle/theme/themes/themes.dart';
@@ -21,7 +22,7 @@ class SimpleTheme extends PuzzleTheme {
   bool get hasCountdown => false;
 
   @override
-  Color get backgroundColor => PuzzleColors.white;
+  Color get backgroundColor => Colors.blue;
 
   @override
   Color get defaultColor => PuzzleColors.primary5;

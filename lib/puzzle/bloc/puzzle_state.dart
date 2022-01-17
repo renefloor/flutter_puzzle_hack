@@ -2,7 +2,7 @@
 
 part of 'puzzle_bloc.dart';
 
-enum PuzzleStatus { incomplete, complete }
+enum PuzzleStatus { incomplete, complete, shuffling, }
 
 enum TileMovementStatus { nothingTapped, cannotBeMoved, moved }
 

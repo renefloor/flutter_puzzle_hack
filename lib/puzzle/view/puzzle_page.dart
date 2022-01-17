@@ -49,15 +49,17 @@ class PuzzleView extends StatelessWidget {
         create: (context) => TimerBloc(
           ticker: const Ticker(),
         ),
-        child: BlocProvider(
-          create: (context) => PuzzleBloc(4)
-            ..add(
-              PuzzleInitialized(
-                shufflePuzzle: shufflePuzzle,
+        child: SafeArea(
+          child: BlocProvider(
+            create: (context) => PuzzleBloc(4)
+              ..add(
+                PuzzleInitialized(
+                  shufflePuzzle: shufflePuzzle,
+                ),
               ),
+            child: const _Puzzle(
+              key: Key('puzzle_view_puzzle'),
             ),
-          child: const _Puzzle(
-            key: Key('puzzle_view_puzzle'),
           ),
         ),
       ),

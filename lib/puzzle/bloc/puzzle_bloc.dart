@@ -73,13 +73,22 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     }
   }
 
-  void _onPuzzleReset(PuzzleReset event, Emitter<PuzzleState> emit) {
+  Future<void> _onPuzzleReset(PuzzleReset event, Emitter<PuzzleState> emit) async {
+    emit(
+      state.copyWith(puzzleStatus: PuzzleStatus.shuffling),
+    );
+    await Future<void>.delayed(const Duration(milliseconds: 1000));
     final puzzle = _generatePuzzle(_size);
     emit(
       PuzzleState(
         puzzle: puzzle.sort(),
         numberOfCorrectTiles: puzzle.getNumberOfCorrectTiles(),
+        puzzleStatus: PuzzleStatus.shuffling,
       ),
+    );
+    await Future<void>.delayed(const Duration(milliseconds: 400));
+    emit(
+      state.copyWith(puzzleStatus: PuzzleStatus.incomplete),
     );
   }
 
@@ -104,7 +113,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     }
 
     if (shuffle) {
-      // Randomize only the current tile posistions.
+      // Randomize only the current tile positions.
       currentPositions.shuffle(random);
     }
 
