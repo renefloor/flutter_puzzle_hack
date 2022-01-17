@@ -8,6 +8,8 @@ import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
 import 'package:very_good_slide_puzzle/theme/theme.dart';
 import 'package:very_good_slide_puzzle/typography/typography.dart';
+import 'dart:ui' as ui;
+import 'dart:math' as math;
 
 /// {@template simple_puzzle_layout_delegate}
 /// A delegate for computing the layout of the puzzle UI
@@ -274,6 +276,7 @@ class SimplePuzzleBoard extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Stack(
+          clipBehavior: Clip.none,
           children: [
             Container(color: Colors.blue),
             ...tiles.keys
@@ -309,8 +312,8 @@ class SimplePuzzleBoard extends StatelessWidget {
 
   double _calculateTop(BoxConstraints constraints, Position position) {
     final blockWidth = _calculateBlockWidth(constraints);
-    return (position.y - 1).toDouble() * (blockWidth * (1 / 3)) +
-        (position.x - 1) * (blockWidth * (1 / 3));
+    return (position.y - 1).toDouble() * (blockWidth * (3/10)) +
+        (position.x - 1) * (blockWidth * (3/10));
   }
 }
 
@@ -352,82 +355,112 @@ class _SimplePuzzleTileState extends State<SimplePuzzleTile> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return GestureDetector(
-          onTapDown: (_) => setState(() => _isTapped = true),
-          onTapUp: (_) => setState(() => _isTapped = false),
-          onTapCancel: () => setState(() => _isTapped = false),
-          onTap: widget.state.puzzleStatus == PuzzleStatus.incomplete
-              ? () => context.read<PuzzleBloc>().add(TileTapped(widget.tile))
-              : null,
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              AnimatedPositioned(
-                top: _isTapped ? constraints.maxWidth * 0.1 : 0,
-                left: 0,
-                right: 0,
-                curve: _isTapped? Curves.linear : Curves.elasticOut,
-                duration: Duration(milliseconds: _isTapped ? 50 : 500),
-                child: Image.asset('assets/images/block.png'),
-              ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    '${widget.tile.value}',
-                    style: TextStyle(
-                        color: widget.tile.currentPosition ==
-                                widget.tile.correctPosition
-                            ? Colors.greenAccent
-                            : Colors.red),
-                  ),
+    return LayoutBuilder(builder: (context, constraints) {
+      return GestureDetector(
+        onTapDown: (_) => setState(() => _isTapped = true),
+        onTapUp: (_) => setState(() => _isTapped = false),
+        onTapCancel: () => setState(() => _isTapped = false),
+        onTap: widget.state.puzzleStatus == PuzzleStatus.incomplete
+            ? () => context.read<PuzzleBloc>().add(TileTapped(widget.tile))
+            : null,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            AnimatedPositioned(
+              top: _isTapped ? constraints.maxWidth * 0.1 : 0,
+              left: 0,
+              right: 0,
+              curve: _isTapped ? Curves.linear : Curves.elasticOut,
+              duration: Duration(milliseconds: _isTapped ? 50 : 500),
+              child: Image.asset('assets/images/block.png'),
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  '${widget.tile.value}',
+                  style: TextStyle(
+                      color: widget.tile.currentPosition ==
+                              widget.tile.correctPosition
+                          ? Colors.greenAccent
+                          : Colors.red),
                 ),
               ),
-              CustomPaint(
-                  size: Size(constraints.maxWidth, constraints.maxWidth*1.1),
-                  painter: DrawWaterShape(),
-              ),
-            ],
+            ),
+            _Water(
+              width: constraints.maxWidth,
+            ),
+            // CustomPaint(
+            //   size: Size(constraints.maxWidth, constraints.maxWidth * 1.1),
+            //   painter: DrawWaterShape(),
+            // ),
+          ],
+        ),
+      );
+    });
+  }
+}
+
+class _Water extends StatelessWidget {
+  const _Water({
+    required this.width,
+    Key? key,
+  }) : super(key: key);
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: width * 2,
+      width: width,
+      margin: EdgeInsets.only(top: width * (11 / 16)),
+      child: Row(
+        children: [
+          Expanded(
+            child: _WaterHalf(width: width, skew: 0.5),
           ),
-        );
-      }
+          Expanded(
+              child: _WaterHalf(
+            width: width,
+            skew: -0.5,
+            shiftY: math.pi,
+          ))
+        ],
+      ),
     );
   }
 }
 
-/// Draws semi transparant water on top of islands
-class DrawWaterShape extends CustomPainter {
-
-  Paint painter = Paint();
-
-  /// Constructor to be used with CustomPaint
-  DrawWaterShape() {
-    painter
-      ..color = Colors.blue.withOpacity(0.5)
-      ..style = PaintingStyle.fill;
-
-  }
+class _WaterHalf extends StatelessWidget {
+  const _WaterHalf(
+      {required this.width, required this.skew, this.shiftY = 0.0, Key? key})
+      : super(key: key);
+  final double skew;
+  final double shiftY;
+  final double width;
 
   @override
-  void paint(Canvas canvas, Size size) {
-
-    var path = Path()
-      ..moveTo(0, size.height/2)
-      ..lineTo(0, size.height)
-      ..lineTo(size.width, size.height)
-      ..lineTo(size.width, size.height/2)
-      ..lineTo(size.width/2, size.height*(3/4))
-      ..close();
-
-    canvas.drawPath(path, painter);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
+  Widget build(BuildContext context) {
+    return Transform(
+      alignment: Alignment.center,
+      transform: Matrix4.skewY(skew),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [
+                0.0,
+                0.3
+              ],
+              colors: [
+                Colors.blue.withOpacity(0.5),
+                Colors.blue,
+              ]),
+        ),
+      ),
+    );
   }
 }
 
