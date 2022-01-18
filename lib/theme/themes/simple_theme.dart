@@ -13,7 +13,7 @@ class SimpleTheme extends PuzzleTheme {
   const SimpleTheme() : super();
 
   @override
-  String get name => 'Simple';
+  String get name => 'Islands';
 
   @override
   bool get hasTimer => false;
@@ -25,7 +25,7 @@ class SimpleTheme extends PuzzleTheme {
   Color get backgroundColor => Colors.blue;
 
   @override
-  Color get defaultColor => PuzzleColors.primary5;
+  Color get defaultColor => Colors.greenAccent;
 
   @override
   Color get hoverColor => PuzzleColors.primary3;

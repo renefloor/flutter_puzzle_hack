@@ -58,31 +58,33 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
     return Positioned(
       right: 0,
       bottom: 0,
-      child: ResponsiveLayoutBuilder(
-        small: (_, __) => SizedBox(
-          width: 184,
-          height: 118,
-          child: Image.asset(
-            'assets/images/simple_dash_small.png',
-            key: const Key('simple_puzzle_dash_small'),
-          ),
-        ),
-        medium: (_, __) => SizedBox(
-          width: 380.44,
-          height: 214,
-          child: Image.asset(
-            'assets/images/simple_dash_medium.png',
-            key: const Key('simple_puzzle_dash_medium'),
-          ),
-        ),
-        large: (_, __) => Padding(
-          padding: const EdgeInsets.only(bottom: 53),
-          child: SizedBox(
-            width: 568.99,
-            height: 320,
+      child: IgnorePointer(
+        child: ResponsiveLayoutBuilder(
+          small: (_, __) => SizedBox(
+            width: 184,
+            height: 118,
             child: Image.asset(
-              'assets/images/simple_dash_large.png',
-              key: const Key('simple_puzzle_dash_large'),
+              'assets/images/simple_dash_small.png',
+              key: const Key('simple_puzzle_dash_small'),
+            ),
+          ),
+          medium: (_, __) => SizedBox(
+            width: 380.44,
+            height: 214,
+            child: Image.asset(
+              'assets/images/simple_dash_medium.png',
+              key: const Key('simple_puzzle_dash_medium'),
+            ),
+          ),
+          large: (_, __) => Padding(
+            padding: const EdgeInsets.only(bottom: 53),
+            child: SizedBox(
+              width: 568.99,
+              height: 320,
+              child: Image.asset(
+                'assets/images/simple_dash_large.png',
+                key: const Key('simple_puzzle_dash_large'),
+              ),
             ),
           ),
         ),
@@ -94,11 +96,6 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
   Widget boardBuilder(int size, Map<Tile, Widget> tiles) {
     return Column(
       children: [
-        const ResponsiveGap(
-          small: 32,
-          medium: 48,
-          large: 96,
-        ),
         ResponsiveLayoutBuilder(
           small: (_, __) => SizedBox.square(
             dimension: _BoardSize.small,
@@ -125,9 +122,14 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
               tiles: tiles,
             ),
           ),
-        ),
-        const ResponsiveGap(
-          large: 96,
+          xLarge: (_, __) => SizedBox.square(
+            dimension: _BoardSize.xLarge,
+            child: SimplePuzzleBoard(
+              key: const Key('simple_puzzle_board_xlarge'),
+              size: size,
+              tiles: tiles,
+            ),
+          ),
         ),
       ],
     );
@@ -188,7 +190,6 @@ class SimpleStartSection extends StatelessWidget {
         const ResponsiveGap(
           small: 20,
           medium: 83,
-          large: 151,
         ),
         const PuzzleName(),
         const ResponsiveGap(large: 16),
@@ -246,6 +247,7 @@ abstract class _BoardSize {
   static double small = 312;
   static double medium = 424;
   static double large = 472;
+  static double xLarge = 700;
 }
 
 /// {@template simple_puzzle_board}
@@ -276,9 +278,7 @@ class SimplePuzzleBoard extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Stack(
-          clipBehavior: Clip.none,
           children: [
-            Container(color: Colors.blue),
             ...tiles.keys
                 .map(
                   (e) => AnimatedPositioned(
@@ -305,14 +305,14 @@ class SimplePuzzleBoard extends StatelessWidget {
 
   double _calculateLeft(BoxConstraints constraints, Position position) {
     final blockWidth = _calculateBlockWidth(constraints);
-    return (constraints.maxWidth / 2 - blockWidth * (1 / 2)) +
-        (position.x - 1).toDouble() * blockWidth / 2 -
-        (position.y - 1) * blockWidth * (1 / 2);
+    return (position.x - 1).toDouble() * blockWidth / 2 +
+        (position.y - 1).toDouble() * blockWidth / 2;
   }
 
   double _calculateTop(BoxConstraints constraints, Position position) {
     final blockWidth = _calculateBlockWidth(constraints);
-    return (position.y - 1).toDouble() * (blockWidth * (3 / 10)) +
+    return (constraints.maxWidth / 2 - blockWidth * (1 / 2)) +
+        (position.y - 1) * (blockWidth * (3 / 10)) -
         (position.x - 1) * (blockWidth * (3 / 10));
   }
 }
@@ -382,16 +382,21 @@ class _SimplePuzzleTileState extends State<SimplePuzzleTile> {
           if (!_isShuffling)
             Align(
               alignment: Alignment.topCenter,
-              child: IgnorePointer(
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    '${widget.tile.value}',
-                    style: TextStyle(
-                      color: widget.tile.currentPosition ==
-                              widget.tile.correctPosition
-                          ? Colors.greenAccent
-                          : Colors.red,
+              child: AspectRatio(
+                aspectRatio: 2,
+                child: IgnorePointer(
+                  child: Center(
+                    child: Transform.rotate(
+                      angle: -math.pi / 4,
+                      child: Text(
+                        '${widget.tile.value}',
+                        style: TextStyle(
+                          color: widget.tile.currentPosition ==
+                                  widget.tile.correctPosition
+                              ? Colors.greenAccent
+                              : Colors.red,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -519,7 +524,7 @@ class SimplePuzzleShuffleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PuzzleButton(
       textColor: PuzzleColors.primary0,
-      backgroundColor: PuzzleColors.primary6,
+      backgroundColor: Colors.green,
       onPressed: () => context.read<PuzzleBloc>().add(const PuzzleReset()),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

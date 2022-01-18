@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
+import 'package:very_good_slide_puzzle/layout/breakpoints.dart';
 import 'package:very_good_slide_puzzle/layout/layout.dart';
 
 /// Represents the layout size passed to [ResponsiveLayoutBuilder.child].
@@ -27,6 +30,7 @@ class ResponsiveLayoutBuilder extends StatelessWidget {
     required this.small,
     required this.medium,
     required this.large,
+    this.xLarge,
     this.child,
   }) : super(key: key);
 
@@ -39,6 +43,9 @@ class ResponsiveLayoutBuilder extends StatelessWidget {
   /// [ResponsiveLayoutWidgetBuilder] for large layout.
   final ResponsiveLayoutWidgetBuilder large;
 
+  /// [ResponsiveLayoutWidgetBuilder] for large layout.
+  final ResponsiveLayoutWidgetBuilder? xLarge;
+
   /// Optional child widget builder based on the current layout size
   /// which will be passed to the `small`, `medium` and `large` builders
   /// as a way to share/optimize shared layout.
@@ -49,18 +56,23 @@ class ResponsiveLayoutBuilder extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenWidth = MediaQuery.of(context).size.width;
+        final screenHeight = MediaQuery.of(context).size.height;
 
-        if (screenWidth <= PuzzleBreakpoints.small) {
+        if (screenWidth <= PuzzleWidthBreakpoints.small ||
+            screenHeight <= PuzzleHeightBreakpoints.small) {
           return small(context, child?.call(ResponsiveLayoutSize.small));
         }
-        if (screenWidth <= PuzzleBreakpoints.medium) {
+        if (screenWidth <= PuzzleWidthBreakpoints.medium ||
+            screenHeight <= PuzzleHeightBreakpoints.medium) {
           return medium(context, child?.call(ResponsiveLayoutSize.medium));
         }
-        if (screenWidth <= PuzzleBreakpoints.large) {
+        if (screenWidth <= PuzzleWidthBreakpoints.large ||
+            screenHeight <= PuzzleHeightBreakpoints.large) {
           return large(context, child?.call(ResponsiveLayoutSize.large));
         }
 
-        return large(context, child?.call(ResponsiveLayoutSize.large));
+        final builder = xLarge ?? large;
+        return builder(context, child?.call(ResponsiveLayoutSize.large));
       },
     );
   }

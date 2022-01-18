@@ -20,6 +20,6 @@ class Position extends Equatable implements Comparable<Position> {
 
   @override
   int compareTo(Position other) {
-    return (x + y) - (other.x + other.y);
+    return (y - x) - (other.y - other.x);
   }
 }

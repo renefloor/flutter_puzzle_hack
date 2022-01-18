@@ -9,7 +9,7 @@ void main() {
     testWidgets(
         'displays a large layout '
         'for sizes greater than large', (tester) async {
-      tester.setDisplaySize(const Size(PuzzleBreakpoints.large + 1, 800));
+      tester.setDisplaySize(const Size(PuzzleWidthBreakpoints.large + 1, 800));
 
       const smallKey = Key('__small__');
       const mediumKey = Key('__medium__');

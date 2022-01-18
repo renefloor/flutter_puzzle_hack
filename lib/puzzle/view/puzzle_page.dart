@@ -79,17 +79,14 @@ class _Puzzle extends StatelessWidget {
       builder: (context, constraints) {
         return Stack(
           children: [
-            theme.layoutDelegate.backgroundBuilder(state),
             SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: constraints.maxHeight,
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    _PuzzleHeader(
-                      key: Key('puzzle_header'),
-                    ),
                     _PuzzleSections(
                       key: Key('puzzle_sections'),
                     ),
@@ -97,6 +94,7 @@ class _Puzzle extends StatelessWidget {
                 ),
               ),
             ),
+            theme.layoutDelegate.backgroundBuilder(state),
           ],
         );
       },
@@ -195,7 +193,6 @@ class _PuzzleSections extends StatelessWidget {
         ],
       ),
       large: (context, child) => Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: theme.layoutDelegate.startSectionBuilder(state),
