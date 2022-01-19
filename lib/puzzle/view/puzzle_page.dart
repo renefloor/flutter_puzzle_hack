@@ -174,35 +174,52 @@ class _PuzzleSections extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ResponsiveLayoutBuilder(
+      small: (context, child) => const _VerticalPage(),
+      medium: (context, child) => const _VerticalPage(),
+      smallWide: (context, child) => const _HorizontalPage(),
+      mediumWide: (context, child) => const _HorizontalPage(),
+      large: (context, child) => const _HorizontalPage(),
+    );
+  }
+}
+
+class _VerticalPage extends StatelessWidget {
+  const _VerticalPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
     final state = context.select((PuzzleBloc bloc) => bloc.state);
 
-    return ResponsiveLayoutBuilder(
-      small: (context, child) => Column(
-        children: [
-          theme.layoutDelegate.startSectionBuilder(state),
-          const PuzzleBoard(),
-          theme.layoutDelegate.endSectionBuilder(state),
-        ],
-      ),
-      medium: (context, child) => Column(
-        children: [
-          theme.layoutDelegate.startSectionBuilder(state),
-          const PuzzleBoard(),
-          theme.layoutDelegate.endSectionBuilder(state),
-        ],
-      ),
-      large: (context, child) => Row(
-        children: [
-          Expanded(
-            child: theme.layoutDelegate.startSectionBuilder(state),
-          ),
-          const PuzzleBoard(),
-          Expanded(
-            child: theme.layoutDelegate.endSectionBuilder(state),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        theme.layoutDelegate.startSectionBuilder(state),
+        const PuzzleBoard(),
+        theme.layoutDelegate.endSectionBuilder(state),
+      ],
+    );
+  }
+}
+
+class _HorizontalPage extends StatelessWidget {
+  const _HorizontalPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
+    final state = context.select((PuzzleBloc bloc) => bloc.state);
+
+    return Row(
+      children: [
+        Expanded(
+          child: theme.layoutDelegate.startSectionBuilder(state),
+        ),
+        const PuzzleBoard(),
+        Expanded(
+          child: theme.layoutDelegate.endSectionBuilder(state),
+        ),
+      ],
     );
   }
 }

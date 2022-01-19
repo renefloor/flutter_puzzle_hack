@@ -73,7 +73,8 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     }
   }
 
-  Future<void> _onPuzzleReset(PuzzleReset event, Emitter<PuzzleState> emit) async {
+  Future<void> _onPuzzleReset(
+      PuzzleReset event, Emitter<PuzzleState> emit) async {
     emit(
       state.copyWith(puzzleStatus: PuzzleStatus.shuffling),
     );

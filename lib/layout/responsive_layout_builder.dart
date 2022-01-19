@@ -30,21 +30,32 @@ class ResponsiveLayoutBuilder extends StatelessWidget {
     required this.small,
     required this.medium,
     required this.large,
-    this.xLarge,
+    ResponsiveLayoutWidgetBuilder? smallWide,
+    ResponsiveLayoutWidgetBuilder? mediumWide,
+    ResponsiveLayoutWidgetBuilder? xLarge,
     this.child,
-  }) : super(key: key);
+  })  : smallWide = smallWide ?? small,
+        mediumWide = mediumWide ?? medium,
+        xLarge = xLarge ?? large,
+        super(key: key);
 
   /// [ResponsiveLayoutWidgetBuilder] for small layout.
   final ResponsiveLayoutWidgetBuilder small;
 
+  /// [ResponsiveLayoutWidgetBuilder] for small in height, but wide layout.
+  final ResponsiveLayoutWidgetBuilder smallWide;
+
   /// [ResponsiveLayoutWidgetBuilder] for medium layout.
   final ResponsiveLayoutWidgetBuilder medium;
+
+  /// [ResponsiveLayoutWidgetBuilder] for medium in height, but wide layout.
+  final ResponsiveLayoutWidgetBuilder mediumWide;
 
   /// [ResponsiveLayoutWidgetBuilder] for large layout.
   final ResponsiveLayoutWidgetBuilder large;
 
-  /// [ResponsiveLayoutWidgetBuilder] for large layout.
-  final ResponsiveLayoutWidgetBuilder? xLarge;
+  /// [ResponsiveLayoutWidgetBuilder] for xlarge layout.
+  final ResponsiveLayoutWidgetBuilder xLarge;
 
   /// Optional child widget builder based on the current layout size
   /// which will be passed to the `small`, `medium` and `large` builders
@@ -58,21 +69,34 @@ class ResponsiveLayoutBuilder extends StatelessWidget {
         final screenWidth = MediaQuery.of(context).size.width;
         final screenHeight = MediaQuery.of(context).size.height;
 
-        if (screenWidth <= PuzzleWidthBreakpoints.small ||
-            screenHeight <= PuzzleHeightBreakpoints.small) {
+        if (screenWidth <= PuzzleWidthBreakpoints.small) {
           return small(context, child?.call(ResponsiveLayoutSize.small));
         }
-        if (screenWidth <= PuzzleWidthBreakpoints.medium ||
-            screenHeight <= PuzzleHeightBreakpoints.medium) {
+        if (screenHeight <= PuzzleHeightBreakpoints.small) {
+          if (screenWidth <= PuzzleWidthBreakpoints.smallWide) {
+            return small(context, child?.call(ResponsiveLayoutSize.small));
+          }
+          return smallWide(
+            context,
+            child?.call(ResponsiveLayoutSize.small),
+          );
+        }
+
+        if (screenWidth <= PuzzleWidthBreakpoints.medium) {
           return medium(context, child?.call(ResponsiveLayoutSize.medium));
         }
+        if (screenHeight <= PuzzleHeightBreakpoints.medium) {
+          return mediumWide(
+            context,
+            child?.call(ResponsiveLayoutSize.medium),
+          );
+        }
+
         if (screenWidth <= PuzzleWidthBreakpoints.large ||
             screenHeight <= PuzzleHeightBreakpoints.large) {
           return large(context, child?.call(ResponsiveLayoutSize.large));
         }
-
-        final builder = xLarge ?? large;
-        return builder(context, child?.call(ResponsiveLayoutSize.large));
+        return xLarge(context, child?.call(ResponsiveLayoutSize.large));
       },
     );
   }

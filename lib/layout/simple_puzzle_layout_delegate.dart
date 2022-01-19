@@ -36,10 +36,6 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
   Widget endSectionBuilder(PuzzleState state) {
     return Column(
       children: [
-        const ResponsiveGap(
-          small: 32,
-          medium: 48,
-        ),
         ResponsiveLayoutBuilder(
           small: (_, child) => const SimplePuzzleShuffleButton(),
           medium: (_, child) => const SimplePuzzleShuffleButton(),
