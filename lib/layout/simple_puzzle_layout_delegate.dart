@@ -300,9 +300,9 @@ class SimplePuzzleBoard extends StatelessWidget {
 }
 
 abstract class _TileFontSize {
-  static double small = 36;
-  static double medium = 50;
-  static double large = 54;
+  static double small = 24;
+  static double medium = 30;
+  static double large = 40;
 }
 
 /// {@template simple_puzzle_tile}
@@ -365,7 +365,7 @@ class _SimplePuzzleTileState extends State<SimplePuzzleTile> {
             Align(
               alignment: Alignment.topCenter,
               child: AspectRatio(
-                aspectRatio: 2,
+                aspectRatio: 1.6,
                 child: IgnorePointer(
                   child: Center(
                     child: Transform.rotate(
@@ -377,6 +377,7 @@ class _SimplePuzzleTileState extends State<SimplePuzzleTile> {
                                   widget.tile.correctPosition
                               ? Colors.greenAccent
                               : Colors.red,
+                          fontSize: widget.tileFontSize,
                         ),
                       ),
                     ),
