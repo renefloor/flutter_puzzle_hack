@@ -8,10 +8,7 @@ class Iceberg extends StatelessWidget {
     return Positioned(
       top: -50,
       right: -50,
-      child: Align(
-        alignment: const FractionalOffset(0.8, 0),
-        child: Image.asset('assets/images/iceberg.png'),
-      ),
+      child: Image.asset('assets/images/iceberg.png'),
     );
   }
 }

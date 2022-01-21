@@ -251,6 +251,7 @@ class SimplePuzzleBoard extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Stack(
+          clipBehavior: Clip.none,
           children: [
             const Iceberg(),
             ...tiles.keys
@@ -267,6 +268,7 @@ class SimplePuzzleBoard extends StatelessWidget {
                   ),
                 )
                 .toList(),
+            const Boat(),
           ],
         );
       },
