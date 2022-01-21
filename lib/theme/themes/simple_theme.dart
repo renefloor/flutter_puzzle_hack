@@ -25,7 +25,7 @@ class SimpleTheme extends PuzzleTheme {
   Color get backgroundColor => PuzzleColors.water;
 
   @override
-  Color get defaultColor => Colors.greenAccent;
+  Color get defaultColor => Colors.indigo;
 
   @override
   Color get hoverColor => PuzzleColors.primary3;

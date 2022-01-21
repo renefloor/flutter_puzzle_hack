@@ -29,6 +29,13 @@ class BackgroundTop extends StatelessWidget {
         fit: BoxFit.cover,
         alignment: Alignment.bottomCenter,
       ),
+      smallWide: (_, __) => Image.asset(
+        _topImage,
+        height: 100,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        alignment: Alignment.bottomCenter,
+      ),
     );
   }
 }

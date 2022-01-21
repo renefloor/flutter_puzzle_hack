@@ -40,13 +40,12 @@ class _CloudsState extends State<Clouds> with SingleTickerProviderStateMixin {
     );
     _controller.value = widget.start;
     _cloudPosition = widget.start;
-    positionAnimation =
-        Tween<double>(begin: 0, end: 0.8).animate(_controller)
-          ..addListener(() {
-            setState(() {
-              _cloudPosition = positionAnimation.value;
-            });
-          });
+    positionAnimation = Tween<double>(begin: 0, end: 0.8).animate(_controller)
+      ..addListener(() {
+        setState(() {
+          _cloudPosition = positionAnimation.value;
+        });
+      });
     opacityAnimation = Tween<double>(begin: 2, end: 0).animate(_controller)
       ..addListener(() {
         setState(() {
@@ -72,6 +71,9 @@ class _CloudsState extends State<Clouds> with SingleTickerProviderStateMixin {
       small: (_, __) => _alignCloud(
         widthFactor: 2,
       ),
+      smallWide: (_, __) => _alignCloud(
+        widthFactor: 0.8,
+      ),
       xLarge: (_, __) => _alignCloud(widthFactor: 0.8),
     );
   }
@@ -80,17 +82,14 @@ class _CloudsState extends State<Clouds> with SingleTickerProviderStateMixin {
     double heightFactor = 1,
     double widthFactor = 1,
   }) {
-
-    final y = (1 - _cloudPosition) *
-        0.6 *
-        heightFactor *
-        (1 - widget.relativeHeight);
+    final y =
+        (1 - _cloudPosition) * 0.6 * heightFactor * (1 - widget.relativeHeight);
     final x = _cloudPosition * 0.8 * widthFactor * (1 - widget.relativeHeight);
 
     return Align(
       alignment: FractionalOffset(x, y),
       child: Transform.translate(
-        offset: const Offset(-260,0),
+        offset: const Offset(-260, 0),
         child: Opacity(
             opacity: _opacity, child: Image.asset('assets/images/clouds.png')),
       ),

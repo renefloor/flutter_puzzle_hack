@@ -69,6 +69,12 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
   Widget boardBuilder(int size, Map<Tile, Widget> tiles) {
     return Column(
       children: [
+        const ResponsiveGap(
+          smallWide: 50,
+          mediumWide: 50,
+          large: 150,
+          // xLarge: 200,
+        ),
         ResponsiveLayoutBuilder(
           small: (_, __) => SizedBox.square(
             dimension: _BoardSize.small,
@@ -498,9 +504,10 @@ class SimplePuzzleShuffleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
     return PuzzleButton(
       textColor: PuzzleColors.primary0,
-      backgroundColor: Colors.green,
+      backgroundColor: theme.defaultColor,
       onPressed: () => context.read<PuzzleBloc>().add(const PuzzleReset()),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

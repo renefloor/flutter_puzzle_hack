@@ -13,7 +13,13 @@ class ResponsiveGap extends StatelessWidget {
     this.small = 0,
     this.medium = 0,
     this.large = 0,
-  }) : super(key: key);
+    double? smallWide,
+    double? mediumWide,
+    double? xLarge,
+  })  : xLarge = xLarge ?? large,
+        smallWide = smallWide ?? small,
+        mediumWide = mediumWide ?? medium,
+        super(key: key);
 
   /// A gap rendered on a small layout.
   final double small;
@@ -24,12 +30,21 @@ class ResponsiveGap extends StatelessWidget {
   /// A gap rendered on a large layout.
   final double large;
 
+  /// A gap rendered on a xLarge layout.
+  final double xLarge;
+
+  final double smallWide;
+  final double mediumWide;
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveLayoutBuilder(
       small: (_, __) => Gap(small),
       medium: (_, __) => Gap(medium),
       large: (_, __) => Gap(large),
+      xLarge: (_, __) => Gap(xLarge),
+      smallWide: (_, __) => Gap(smallWide),
+      mediumWide: (_, __) => Gap(mediumWide),
     );
   }
 }
