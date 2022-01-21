@@ -11,6 +11,8 @@ import 'package:very_good_slide_puzzle/typography/typography.dart';
 import 'dart:ui' as ui;
 import 'dart:math' as math;
 
+import 'components/index.dart';
+
 /// {@template simple_puzzle_layout_delegate}
 /// A delegate for computing the layout of the puzzle UI
 /// that uses a [SimpleTheme].
@@ -51,39 +53,14 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
 
   @override
   Widget backgroundBuilder(PuzzleState state) {
-    return Positioned(
-      right: 0,
-      bottom: 0,
-      child: IgnorePointer(
-        child: ResponsiveLayoutBuilder(
-          small: (_, __) => SizedBox(
-            width: 184,
-            height: 118,
-            child: Image.asset(
-              'assets/images/simple_dash_small.png',
-              key: const Key('simple_puzzle_dash_small'),
-            ),
-          ),
-          medium: (_, __) => SizedBox(
-            width: 380.44,
-            height: 214,
-            child: Image.asset(
-              'assets/images/simple_dash_medium.png',
-              key: const Key('simple_puzzle_dash_medium'),
-            ),
-          ),
-          large: (_, __) => Padding(
-            padding: const EdgeInsets.only(bottom: 53),
-            child: SizedBox(
-              width: 568.99,
-              height: 320,
-              child: Image.asset(
-                'assets/images/simple_dash_large.png',
-                key: const Key('simple_puzzle_dash_large'),
-              ),
-            ),
-          ),
-        ),
+    return Positioned.fill(
+      child: Stack(
+        children: [
+          BackgroundTop(),
+          Clouds(start: 0.3, relativeHeight: 0.3, durationInSeconds: 40),
+          Clouds(start: 0.8, relativeHeight: 0.15, durationInSeconds: 30),
+          Clouds(start: 0, relativeHeight: 0, durationInSeconds: 50),
+        ],
       ),
     );
   }
@@ -500,7 +477,7 @@ class _WaterGradient extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             stops: const [0.0, 0.3],
-            colors: [Colors.blue.withOpacity(0.5), Colors.blue],
+            colors: [PuzzleColors.water.withOpacity(0.5), PuzzleColors.water],
           ),
         ),
       ),

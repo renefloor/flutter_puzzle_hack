@@ -22,7 +22,7 @@ class SimpleTheme extends PuzzleTheme {
   bool get hasCountdown => false;
 
   @override
-  Color get backgroundColor => Colors.blue;
+  Color get backgroundColor => PuzzleColors.water;
 
   @override
   Color get defaultColor => Colors.greenAccent;
