@@ -55,7 +55,7 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
   Widget backgroundBuilder(PuzzleState state) {
     return Positioned.fill(
       child: Stack(
-        children: [
+        children: const [
           BackgroundTop(),
           Clouds(start: 0.3, relativeHeight: 0.3, durationInSeconds: 40),
           Clouds(start: 0.8, relativeHeight: 0.15, durationInSeconds: 30),
@@ -252,6 +252,7 @@ class SimplePuzzleBoard extends StatelessWidget {
       builder: (context, constraints) {
         return Stack(
           children: [
+            const Iceberg(),
             ...tiles.keys
                 .map(
                   (e) => AnimatedPositioned(
