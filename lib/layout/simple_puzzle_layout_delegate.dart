@@ -3,15 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:very_good_slide_puzzle/colors/colors.dart';
 import 'package:very_good_slide_puzzle/l10n/l10n.dart';
+import 'package:very_good_slide_puzzle/layout/components/index.dart';
+import 'package:very_good_slide_puzzle/layout/components/island_puzzle_tile.dart';
 import 'package:very_good_slide_puzzle/layout/layout.dart';
 import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
 import 'package:very_good_slide_puzzle/theme/theme.dart';
-import 'package:very_good_slide_puzzle/typography/typography.dart';
-import 'dart:ui' as ui;
-import 'dart:math' as math;
-
-import 'components/index.dart';
 
 /// {@template simple_puzzle_layout_delegate}
 /// A delegate for computing the layout of the puzzle UI
@@ -117,19 +114,19 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
   @override
   Widget tileBuilder(Tile tile, PuzzleState state) {
     return ResponsiveLayoutBuilder(
-      small: (_, __) => SimplePuzzleTile(
+      small: (_, __) => IslandPuzzleTile(
         key: Key('simple_puzzle_tile_${tile.value}_small'),
         tile: tile,
         tileFontSize: _TileFontSize.small,
         state: state,
       ),
-      medium: (_, __) => SimplePuzzleTile(
+      medium: (_, __) => IslandPuzzleTile(
         key: Key('simple_puzzle_tile_${tile.value}_medium'),
         tile: tile,
         tileFontSize: _TileFontSize.medium,
         state: state,
       ),
-      large: (_, __) => SimplePuzzleTile(
+      large: (_, __) => IslandPuzzleTile(
         key: Key('simple_puzzle_tile_${tile.value}_large'),
         tile: tile,
         tileFontSize: _TileFontSize.large,
@@ -303,196 +300,6 @@ abstract class _TileFontSize {
   static double small = 24;
   static double medium = 30;
   static double large = 40;
-}
-
-/// {@template simple_puzzle_tile}
-/// Displays the puzzle tile associated with [tile] and
-/// the font size of [tileFontSize] based on the puzzle [state].
-/// {@endtemplate}
-@visibleForTesting
-class SimplePuzzleTile extends StatefulWidget {
-  /// {@macro simple_puzzle_tile}
-  const SimplePuzzleTile({
-    Key? key,
-    required this.tile,
-    required this.tileFontSize,
-    required this.state,
-  }) : super(key: key);
-
-  /// The tile to be displayed.
-  final Tile tile;
-
-  /// The font size of the tile to be displayed.
-  final double tileFontSize;
-
-  /// The state of the puzzle.
-  final PuzzleState state;
-
-  @override
-  State<SimplePuzzleTile> createState() => _SimplePuzzleTileState();
-}
-
-class _SimplePuzzleTileState extends State<SimplePuzzleTile> {
-  var _isTapped = false;
-
-  bool get _isShuffling => widget.state.puzzleStatus == PuzzleStatus.shuffling;
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      var position = 0.0;
-      if (_isTapped) position += constraints.maxWidth * 0.1;
-      if (_isShuffling) position += constraints.maxWidth * 1.2;
-
-      return Stack(
-        clipBehavior: Clip.none,
-        children: [
-          AnimatedPositioned(
-            top: position,
-            left: 0,
-            right: 0,
-            curve: _isTapped ? Curves.linear : Curves.elasticOut,
-            duration: Duration(
-              milliseconds: _isTapped
-                  ? 50
-                  : _isShuffling
-                      ? 5000
-                      : 500,
-            ),
-            child: IgnorePointer(child: Image.asset('assets/images/block.png')),
-          ),
-          if (!_isShuffling)
-            Align(
-              alignment: Alignment.topCenter,
-              child: AspectRatio(
-                aspectRatio: 1.6,
-                child: IgnorePointer(
-                  child: Center(
-                    child: Transform.rotate(
-                      angle: -math.pi / 4,
-                      child: Text(
-                        '${widget.tile.value}',
-                        style: TextStyle(
-                          color: widget.tile.currentPosition ==
-                                  widget.tile.correctPosition
-                              ? Colors.greenAccent
-                              : Colors.red,
-                          fontSize: widget.tileFontSize,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          IgnorePointer(
-            child: _Water(
-              width: constraints.maxWidth,
-            ),
-          ),
-          GestureDetector(
-            onTapDown: (_) => setState(() => _isTapped = true),
-            onTapUp: (_) => setState(() => _isTapped = false),
-            onTapCancel: () => setState(() => _isTapped = false),
-            onTap: widget.state.puzzleStatus == PuzzleStatus.incomplete
-                ? () => context.read<PuzzleBloc>().add(TileTapped(widget.tile))
-                : null,
-            child: Padding(
-              padding: EdgeInsets.only(top: constraints.maxWidth * 0.05),
-              child: const _Top(),
-            ),
-          ),
-        ],
-      );
-    });
-  }
-}
-
-class _Top extends StatelessWidget {
-  const _Top({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 2,
-      child: CustomPaint(painter: _TopShape()),
-    );
-  }
-}
-
-class _TopShape extends CustomPainter {
-  _TopShape();
-
-  Paint painter = Paint();
-  Path? _path;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    _path = Path()
-      ..moveTo(size.width / 2, 0)
-      ..lineTo(0, size.height / 2)
-      ..lineTo(size.width / 2, size.height)
-      ..lineTo(size.width, size.height / 2)
-      ..close();
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
-  }
-
-  @override
-  bool? hitTest(Offset position) {
-    final path = _path;
-    if (path == null) return false;
-    return path.contains(position);
-  }
-}
-
-class _Water extends StatelessWidget {
-  const _Water({
-    required this.width,
-    Key? key,
-  }) : super(key: key);
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: width * 2,
-      width: width,
-      margin: EdgeInsets.only(top: width * (11 / 16)),
-      child: Row(
-        children: const [
-          Expanded(child: _WaterGradient(skew: 0.5)),
-          Expanded(child: _WaterGradient(skew: -0.5))
-        ],
-      ),
-    );
-  }
-}
-
-class _WaterGradient extends StatelessWidget {
-  const _WaterGradient({required this.skew, Key? key}) : super(key: key);
-  final double skew;
-
-  @override
-  Widget build(BuildContext context) {
-    return Transform(
-      alignment: Alignment.center,
-      transform: Matrix4.skewY(skew),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: const [0.0, 0.3],
-            colors: [PuzzleColors.water.withOpacity(0.5), PuzzleColors.water],
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 /// {@template puzzle_shuffle_button}

@@ -450,7 +450,7 @@ void main() {
           SizedBox(
             width: 800,
             height: 600,
-            child: SimplePuzzleTile(
+            child: IslandPuzzleTile(
               tile: tile,
               tileFontSize: tileFontSize,
               state: state,
@@ -475,7 +475,7 @@ void main() {
         when(() => puzzleBloc.state).thenReturn(state);
 
         await tester.pumpApp(
-          SimplePuzzleTile(
+          IslandPuzzleTile(
             tile: tile,
             tileFontSize: tileFontSize,
             state: state,
@@ -484,7 +484,7 @@ void main() {
           puzzleBloc: puzzleBloc,
         );
 
-        await tester.tap(find.byType(SimplePuzzleTile));
+        await tester.tap(find.byType(IslandPuzzleTile));
 
         verifyNever(() => puzzleBloc.add(TileTapped(tile)));
       });
@@ -498,7 +498,7 @@ void main() {
 
         testWidgets('given default state', (tester) async {
           await tester.pumpApp(
-            SimplePuzzleTile(
+            IslandPuzzleTile(
               tile: tile,
               tileFontSize: tileFontSize,
               state: state,
@@ -508,7 +508,7 @@ void main() {
           await tester.pumpAndSettle();
 
           await expectLater(
-            find.byType(SimplePuzzleTile),
+            find.byType(IslandPuzzleTile),
             matchesGoldenFile('goldens/simple_puzzle_tile_default.png'),
           );
         });
@@ -517,7 +517,7 @@ void main() {
           when(() => state.lastTappedTile).thenReturn(tile);
 
           await tester.pumpApp(
-            SimplePuzzleTile(
+            IslandPuzzleTile(
               tile: tile,
               tileFontSize: tileFontSize,
               state: state,
@@ -526,14 +526,14 @@ void main() {
           );
 
           await expectLater(
-            find.byType(SimplePuzzleTile),
+            find.byType(IslandPuzzleTile),
             matchesGoldenFile('goldens/simple_puzzle_tile_tapped.png'),
           );
         });
 
         testWidgets('given hover state', (tester) async {
           await tester.pumpApp(
-            SimplePuzzleTile(
+            IslandPuzzleTile(
               tile: tile,
               tileFontSize: tileFontSize,
               state: state,
@@ -545,11 +545,11 @@ void main() {
               await tester.createGesture(kind: PointerDeviceKind.mouse);
           await gesture.addPointer(location: Offset.zero);
           addTearDown(gesture.removePointer);
-          await gesture.moveTo(tester.getCenter(find.byType(SimplePuzzleTile)));
+          await gesture.moveTo(tester.getCenter(find.byType(IslandPuzzleTile)));
           await tester.pumpAndSettle();
 
           await expectLater(
-            find.byType(SimplePuzzleTile),
+            find.byType(IslandPuzzleTile),
             matchesGoldenFile('goldens/simple_puzzle_tile_hover.png'),
           );
         });
