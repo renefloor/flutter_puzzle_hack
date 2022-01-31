@@ -122,4 +122,21 @@ class PuzzleTextStyle {
     color: PuzzleColors.black,
     fontWeight: PuzzleFontWeight.regular,
   );
+
+  static TextStyle get title {
+    return GoogleFonts.roboto(
+      textStyle: const TextStyle(
+        fontWeight: FontWeight.w900,
+      ),
+    );
+  }
+
+  static TextStyle get name {
+    return GoogleFonts.pacifico(
+      textStyle: const TextStyle(
+        color: Color(0xFF589FC1),
+        fontSize: 22,
+      ),
+    );
+  }
 }

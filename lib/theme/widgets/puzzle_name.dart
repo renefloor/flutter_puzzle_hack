@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:very_good_slide_puzzle/colors/colors.dart';
 import 'package:very_good_slide_puzzle/layout/layout.dart';
 import 'package:very_good_slide_puzzle/theme/theme.dart';
@@ -22,9 +23,7 @@ class PuzzleName extends StatelessWidget {
       medium: (context, child) => const SizedBox(),
       large: (context, child) => Text(
         name,
-        style: PuzzleTextStyle.headline5.copyWith(
-          color: PuzzleColors.grey1,
-        ),
+        style: PuzzleTextStyle.name,
       ),
     );
   }

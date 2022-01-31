@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:very_good_slide_puzzle/colors/colors.dart';
 import 'package:very_good_slide_puzzle/layout/layout.dart';
 import 'package:very_good_slide_puzzle/typography/typography.dart';
@@ -30,8 +31,9 @@ class PuzzleTitle extends StatelessWidget {
             child: Text(
               title,
               textAlign: TextAlign.center,
-              style: PuzzleTextStyle.headline3.copyWith(
+              style: PuzzleTextStyle.title.copyWith(
                 color: color,
+                fontSize: 34,
               ),
             ),
           ),
@@ -40,17 +42,19 @@ class PuzzleTitle extends StatelessWidget {
       medium: (context, child) => Center(
         child: Text(
           title,
-          style: PuzzleTextStyle.headline3.copyWith(
-            color: color,
+          style: PuzzleTextStyle.title.copyWith(
+              color: color,
+              fontSize: 34,
+            ),
           ),
-        ),
       ),
       large: (context, child) => SizedBox(
         width: 300,
         child: Text(
           title,
-          style: PuzzleTextStyle.headline2.copyWith(
+          style: PuzzleTextStyle.title.copyWith(
             color: color,
+            fontSize: 54,
           ),
         ),
       ),
