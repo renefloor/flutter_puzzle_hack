@@ -7,7 +7,7 @@ on:
       - "pubspec.yaml"
       - "pubspec.lock"
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
@@ -19,7 +19,7 @@ jobs:
 
       - uses: subosito/flutter-action@v1.5.3
         with:
-          flutter-version: 2.8.0
+          flutter-version: 2.10.0
           channel: stable
 
       - name: Install Dependencies
@@ -33,7 +33,6 @@ jobs:
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_HOSTING_DEV }}"
-          projectId: very-good-flutter-dev
+          projectId: slide-puzzle-1a294
           target: very-good-puzzle
-          expires: 30d
           channelId: live
