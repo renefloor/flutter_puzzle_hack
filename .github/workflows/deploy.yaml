@@ -32,7 +32,6 @@ jobs:
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_HOSTING_DEV }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SLIDE_PUZZLE_1A294 }}"
           projectId: slide-puzzle-1a294
-          target: very-good-puzzle
           channelId: live
