@@ -20,6 +20,7 @@ dependencies:
   gap: ^2.0.0
   google_fonts: ^2.1.0
   intl: ^0.17.0
+  platform: ^3.1.0
 
 dev_dependencies:
   bloc_test: ^9.0.1

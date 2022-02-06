@@ -63,13 +63,26 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
             child: IgnorePointer(
                 child: Stack(children: [
               Image.asset('assets/images/block.png'),
-
-                  if (!_isShuffling)
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child:
-                      Image.asset('assets/images/Number=${widget.tile.value}.png'),
-                    ),
+              if (!_isShuffling) ...[
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: AnimatedOpacity(
+                      curve: Curves.easeInQuad,
+                    duration: const Duration(milliseconds: 400),
+                      opacity: widget.tile.correctPosition ==
+                          widget.tile.currentPosition ? 0 : 1,
+                      child: Image.asset('assets/images/Number=${widget.tile.value}.png')),
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: AnimatedOpacity(
+                    curve: Curves.easeInQuad,
+                      duration: const Duration(milliseconds: 400),
+                      opacity: widget.tile.correctPosition ==
+                          widget.tile.currentPosition ? 1 : 0,
+                      child: Image.asset('assets/images/tile_correct.png')),
+                ),
+              ]
             ])),
           ),
           IgnorePointer(
