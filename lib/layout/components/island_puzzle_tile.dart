@@ -1,8 +1,10 @@
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:very_good_slide_puzzle/colors/colors.dart';
+import 'package:very_good_slide_puzzle/layout/components/mouse_region_hittest.dart';
 import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,9 +47,12 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       var position = 0.0;
-      if (_isTapped)
+      if (_isTapped) {
         position += constraints.maxWidth * 0.1;
-      else if (_isHovered) position += constraints.maxWidth * 0.01;
+      }
+      else if (_isHovered) {
+        position += constraints.maxWidth * 0.01;
+      }
       if (_isShuffling) position += constraints.maxWidth * 1.2;
 
       return Stack(
@@ -100,18 +105,19 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
               width: constraints.maxWidth,
             ),
           ),
-          GestureDetector(
-            onTapDown: (_) => setState(() => _isTapped = true),
-            onTapUp: (_) => setState(() => _isTapped = false),
-            onTapCancel: () => setState(() => _isTapped = false),
-            onTap: widget.state.puzzleStatus == PuzzleStatus.incomplete
-                ? () => context.read<PuzzleBloc>().add(TileTapped(widget.tile))
-                : null,
-            child: MouseRegion(
-              onEnter: (_) => setState(() => _isHovered = true),
-              onExit: (_) => setState(() => _isHovered = false),
-              child: Padding(
-                padding: EdgeInsets.only(top: constraints.maxWidth * 0.05),
+          Padding(
+            padding: EdgeInsets.only(top: constraints.maxWidth * 0.07),
+            child: GestureDetector(
+              behavior: HitTestBehavior.deferToChild,
+              onTapDown: (_) => setState(() => _isTapped = true),
+              onTapUp: (_) => setState(() => _isTapped = false),
+              onTapCancel: () => setState(() => _isTapped = false),
+              onTap: widget.state.puzzleStatus == PuzzleStatus.incomplete
+                  ? () => context.read<PuzzleBloc>().add(TileTapped(widget.tile))
+                  : null,
+              child: MouseRegionHittest(
+                onEnter: (_) => setState(() => _isHovered = true),
+                onExit: (_) => setState(() => _isHovered = false),
                 child: const _Top(),
               ),
             ),
@@ -128,14 +134,18 @@ class _Top extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 2,
+      aspectRatio: 1.8,
       child: CustomPaint(painter: _TopShape()),
     );
   }
 }
 
 class _TopShape extends CustomPainter {
-  _TopShape();
+  _TopShape(){
+    painter = Paint()
+      ..color = Colors.purpleAccent
+      ..style = PaintingStyle.stroke;
+  }
 
   Paint painter = Paint();
   Path? _path;
@@ -148,6 +158,10 @@ class _TopShape extends CustomPainter {
       ..lineTo(size.width / 2, size.height)
       ..lineTo(size.width, size.height / 2)
       ..close();
+
+    if(kDebugMode){
+      canvas.drawPath(_path!, painter);
+    }
   }
 
   @override
