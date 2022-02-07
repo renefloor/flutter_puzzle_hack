@@ -121,6 +121,11 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
                 onEnter: (_) => setState(() => _isHovered = true),
                 onExit: (_) => setState(() => _isHovered = false),
                 child: Semantics(
+                  sortKey: OrdinalSortKey(
+                    widget.tile.currentPosition.y * 100.0 +
+                        widget.tile.currentPosition.x,
+                    name: 'tile',
+                  ),
                   label: context.l10n.puzzleTileLabelText(
                     widget.tile.value.toString(),
                     widget.tile.currentPosition.x.toString(),
