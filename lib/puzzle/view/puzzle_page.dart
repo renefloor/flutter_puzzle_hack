@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:very_good_slide_puzzle/colors/colors.dart';
+import 'package:very_good_slide_puzzle/layout/components/puzzle_keyboard_handler.dart';
 import 'package:very_good_slide_puzzle/layout/layout.dart';
 import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
@@ -256,9 +257,11 @@ class PuzzleBoard extends StatelessWidget {
           context.read<TimerBloc>().add(const TimerStopped());
         }
       },
-      child: theme.layoutDelegate.boardBuilder(
-        size,
-        tilesMap,
+      child: PuzzleKeyboardHandler(
+        child: theme.layoutDelegate.boardBuilder(
+          size,
+          tilesMap,
+        ),
       ),
     );
   }

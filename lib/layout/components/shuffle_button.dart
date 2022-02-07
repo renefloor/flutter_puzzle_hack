@@ -15,6 +15,8 @@ class IslandPuzzleShuffleButton extends StatefulWidget {
 }
 
 const _animationDuration = Duration(milliseconds: 100);
+const double _xShadow = 2;
+const double _yShadow = 6;
 
 class _IslandPuzzleShuffleButtonState extends State<IslandPuzzleShuffleButton>
     with SingleTickerProviderStateMixin {
@@ -31,11 +33,11 @@ class _IslandPuzzleShuffleButtonState extends State<IslandPuzzleShuffleButton>
       });
     _xAnimation = Tween<double>(
       begin: 0,
-      end: 2,
+      end: _xShadow,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInQuad));
     _yAnimation = Tween<double>(
       begin: 0,
-      end: 8,
+      end: _yShadow,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInQuad));
   }
 
@@ -65,7 +67,7 @@ class _IslandPuzzleShuffleButtonState extends State<IslandPuzzleShuffleButton>
             boxShadow: createShadow(dx, dy),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -89,7 +91,7 @@ class _IslandPuzzleShuffleButtonState extends State<IslandPuzzleShuffleButton>
     return [
       BoxShadow(
         color: _borderColor,
-        offset: Offset(2 - dx, 8 - dy),
+        offset: Offset(_xShadow - dx, _yShadow - dy),
       ),
     ];
   }

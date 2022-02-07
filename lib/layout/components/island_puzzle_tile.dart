@@ -44,7 +44,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
     return LayoutBuilder(builder: (context, constraints) {
       var position = 0.0;
       if (_isTapped) {
-        position += constraints.maxWidth * 0.1;
+        position += constraints.maxWidth * 1;
       } else if (_isHovered) {
         position += constraints.maxWidth * 0.01;
       }
@@ -60,40 +60,41 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
             curve: _isTapped ? Curves.linear : Curves.elasticOut,
             duration: Duration(
               milliseconds: _isTapped
-                  ? 50
+                  ? 5000
                   : _isShuffling
                       ? 5000
                       : 500,
             ),
             child: IgnorePointer(
-                child: Stack(children: [
-              Image.asset('assets/images/block.png'),
-              if (!_isShuffling) ...[
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: AnimatedOpacity(
-                      curve: Curves.easeInQuad,
-                      duration: const Duration(milliseconds: 400),
-                      opacity: widget.tile.correctPosition ==
-                              widget.tile.currentPosition
-                          ? 0
-                          : 1,
-                      child: Image.asset(
-                          'assets/images/Number=${widget.tile.value}.png')),
-                ),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: AnimatedOpacity(
-                      curve: Curves.easeInQuad,
-                      duration: const Duration(milliseconds: 400),
-                      opacity: widget.tile.correctPosition ==
-                              widget.tile.currentPosition
-                          ? 1
-                          : 0,
-                      child: Image.asset('assets/images/tile_correct.png')),
-                ),
-              ]
-            ])),
+              child: Stack(
+                children: [
+                  Image.asset('assets/images/block.png'),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: AnimatedOpacity(
+                        curve: Curves.easeInQuad,
+                        duration: const Duration(milliseconds: 400),
+                        opacity: widget.tile.correctPosition ==
+                                widget.tile.currentPosition
+                            ? 0
+                            : 1,
+                        child: Image.asset(
+                            'assets/images/Number=${widget.tile.value}.png')),
+                  ),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: AnimatedOpacity(
+                        curve: Curves.easeInQuad,
+                        duration: const Duration(milliseconds: 400),
+                        opacity: widget.tile.correctPosition ==
+                                widget.tile.currentPosition
+                            ? 1
+                            : 0,
+                        child: Image.asset('assets/images/tile_correct.png')),
+                  ),
+                ],
+              ),
+            ),
           ),
           IgnorePointer(
             child: _Water(
@@ -195,11 +196,11 @@ class _Water extends StatelessWidget {
             left: 0,
             top: 0,
             bottom: 0,
-            right: (width / 2).floorToDouble(),
+            right: (width / 2) - 1,
             child: const _WaterGradient(skew: 0.5),
           ),
           Positioned(
-            left: (width / 2).floorToDouble(),
+            left: (width / 2) - 1,
             right: 0,
             top: 0,
             bottom: 0,
