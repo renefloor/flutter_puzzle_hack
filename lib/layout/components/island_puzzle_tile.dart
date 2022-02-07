@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:very_good_slide_puzzle/l10n/l10n.dart';
 import 'package:very_good_slide_puzzle/layout/components/mouse_region_hittest.dart';
 import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
@@ -32,6 +35,8 @@ class IslandPuzzleTile extends StatefulWidget {
   @override
   State<IslandPuzzleTile> createState() => _IslandPuzzleTileState();
 }
+
+final semanticFormatter = NumberFormat('##');
 
 class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
   var _isTapped = false;
@@ -115,7 +120,14 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
               child: MouseRegionHittest(
                 onEnter: (_) => setState(() => _isHovered = true),
                 onExit: (_) => setState(() => _isHovered = false),
-                child: const _Top(),
+                child: Semantics(
+                  label: context.l10n.puzzleTileLabelText(
+                    widget.tile.value.toString(),
+                    widget.tile.currentPosition.x.toString(),
+                    widget.tile.currentPosition.y.toString(),
+                  ),
+                  child: const _Top(),
+                ),
               ),
             ),
           ),

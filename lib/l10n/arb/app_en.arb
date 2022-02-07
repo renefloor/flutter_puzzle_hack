@@ -19,5 +19,23 @@
     "puzzleCompleted": "Well done. Congrats!",
     "@puzzleCompleted": {
         "description": "Shown as the success state when the puzzle is completed"
+    },
+    "puzzleTileLabelText": "Value: {value}, position: {x}, {y}",
+    "@puzzleTileLabelText": {
+        "description": "Semantic label for the puzzle tile",
+        "placeholders": {
+            "value": {
+                "type": "String",
+                "example": "5"
+            },
+            "x": {
+                "type": "String",
+                "example": "1"
+            },
+            "y": {
+                "type": "String",
+                "example": "0"
+            }
+        }
     }
 }

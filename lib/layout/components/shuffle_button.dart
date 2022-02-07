@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:very_good_slide_puzzle/colors/colors.dart';
 import 'package:very_good_slide_puzzle/l10n/l10n.dart';
 import 'package:very_good_slide_puzzle/puzzle/bloc/puzzle_bloc.dart';
-import 'package:very_good_slide_puzzle/theme/theme.dart';
 
 class IslandPuzzleShuffleButton extends StatefulWidget {
   const IslandPuzzleShuffleButton({Key? key}) : super(key: key);
