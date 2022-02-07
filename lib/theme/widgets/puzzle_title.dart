@@ -43,10 +43,10 @@ class PuzzleTitle extends StatelessWidget {
         child: Text(
           title,
           style: PuzzleTextStyle.title.copyWith(
-              color: color,
-              fontSize: 34,
-            ),
+            color: color,
+            fontSize: 34,
           ),
+        ),
       ),
       large: (context, child) => SizedBox(
         width: 300,

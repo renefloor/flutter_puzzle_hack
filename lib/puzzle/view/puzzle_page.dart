@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:very_good_slide_puzzle/colors/colors.dart';
 import 'package:very_good_slide_puzzle/layout/layout.dart';
 import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
@@ -18,10 +19,12 @@ class PuzzlePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
     return BlocProvider(
       create: (context) => ThemeBloc(
-        themes: const [
-          SimpleTheme(),
+        themes: [
+          if (isDarkMode) const IslandDarkTheme() else const IslandTheme(),
         ],
       ),
       child: const PuzzleView(),
@@ -41,7 +44,7 @@ class PuzzleView extends StatelessWidget {
     final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
 
     /// Shuffle only if the current theme is Simple.
-    final shufflePuzzle = theme is SimpleTheme;
+    final shufflePuzzle = theme is IslandTheme;
 
     return Scaffold(
       backgroundColor: theme.backgroundColor,

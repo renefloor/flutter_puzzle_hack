@@ -62,10 +62,10 @@ class __AnimatedBoatState extends State<_AnimatedBoat>
       duration: const Duration(seconds: 2),
     );
     _controller
-        ..addListener(() {
-          setState(() {});
-        })
-        ..addStatusListener((status) {
+      ..addListener(() {
+        setState(() {});
+      })
+      ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           setState(() {
             _controller.reset();
@@ -76,18 +76,22 @@ class __AnimatedBoatState extends State<_AnimatedBoat>
     _waterAnimation = Tween<double>(
       begin: 0,
       end: 1,
-    ).animate(CurvedAnimation(
+    ).animate(
+      CurvedAnimation(
         parent: _controller,
         curve: Curves.easeOut,
-    ),);
+      ),
+    );
 
     _boatAnimation = Tween<double>(
       begin: 0,
       end: 1,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.elasticOut,
-    ),);
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.elasticOut,
+      ),
+    );
   }
 
   @override

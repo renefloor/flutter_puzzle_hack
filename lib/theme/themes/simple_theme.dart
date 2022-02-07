@@ -8,9 +8,9 @@ import 'package:very_good_slide_puzzle/theme/themes/themes.dart';
 /// {@template simple_theme}
 /// The simple puzzle theme.
 /// {@endtemplate}
-class SimpleTheme extends PuzzleTheme {
+class IslandTheme extends PuzzleTheme {
   /// {@macro simple_theme}
-  const SimpleTheme() : super();
+  const IslandTheme() : super();
 
   @override
   String get name => 'Islands';
@@ -22,7 +22,7 @@ class SimpleTheme extends PuzzleTheme {
   bool get hasCountdown => false;
 
   @override
-  Color get backgroundColor => PuzzleColors.water;
+  Color get backgroundColor => PuzzleColors.water_light;
 
   @override
   Color get defaultColor => Colors.indigo;
@@ -47,4 +47,12 @@ class SimpleTheme extends PuzzleTheme {
         pressedColor,
         layoutDelegate,
       ];
+}
+
+class IslandDarkTheme extends IslandTheme {
+  /// {@macro simple_theme}
+  const IslandDarkTheme() : super();
+
+  @override
+  Color get backgroundColor => PuzzleColors.water_dark;
 }

@@ -8,14 +8,14 @@ void main() {
   group('SimpleTheme', () {
     test('supports value equality', () {
       expect(
-        SimpleTheme(),
-        equals(SimpleTheme()),
+        IslandTheme(),
+        equals(IslandTheme()),
       );
     });
 
     test('uses SimplePuzzleLayoutDelegate', () {
       expect(
-        SimpleTheme().layoutDelegate,
+        IslandTheme().layoutDelegate,
         equals(SimplePuzzleLayoutDelegate()),
       );
     });

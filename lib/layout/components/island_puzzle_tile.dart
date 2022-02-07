@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:very_good_slide_puzzle/colors/colors.dart';
 import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:very_good_slide_puzzle/theme/theme.dart';
 
 /// {@template simple_puzzle_tile}
 /// Displays the puzzle tile associated with [tile] and
@@ -35,6 +37,7 @@ class IslandPuzzleTile extends StatefulWidget {
 
 class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
   var _isTapped = false;
+  var _isHovered = false;
 
   bool get _isShuffling => widget.state.puzzleStatus == PuzzleStatus.shuffling;
 
@@ -42,7 +45,9 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       var position = 0.0;
-      if (_isTapped) position += constraints.maxWidth * 0.1;
+      if (_isTapped)
+        position += constraints.maxWidth * 0.1;
+      else if (_isHovered) position += constraints.maxWidth * 0.01;
       if (_isShuffling) position += constraints.maxWidth * 1.2;
 
       return Stack(
@@ -68,18 +73,23 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
                   alignment: Alignment.topCenter,
                   child: AnimatedOpacity(
                       curve: Curves.easeInQuad,
-                    duration: const Duration(milliseconds: 400),
+                      duration: const Duration(milliseconds: 400),
                       opacity: widget.tile.correctPosition ==
-                          widget.tile.currentPosition ? 0 : 1,
-                      child: Image.asset('assets/images/Number=${widget.tile.value}.png')),
+                              widget.tile.currentPosition
+                          ? 0
+                          : 1,
+                      child: Image.asset(
+                          'assets/images/Number=${widget.tile.value}.png')),
                 ),
                 Align(
                   alignment: Alignment.topCenter,
                   child: AnimatedOpacity(
-                    curve: Curves.easeInQuad,
+                      curve: Curves.easeInQuad,
                       duration: const Duration(milliseconds: 400),
                       opacity: widget.tile.correctPosition ==
-                          widget.tile.currentPosition ? 1 : 0,
+                              widget.tile.currentPosition
+                          ? 1
+                          : 0,
                       child: Image.asset('assets/images/tile_correct.png')),
                 ),
               ]
@@ -97,9 +107,13 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
             onTap: widget.state.puzzleStatus == PuzzleStatus.incomplete
                 ? () => context.read<PuzzleBloc>().add(TileTapped(widget.tile))
                 : null,
-            child: Padding(
-              padding: EdgeInsets.only(top: constraints.maxWidth * 0.05),
-              child: const _Top(),
+            child: MouseRegion(
+              onEnter: (_) => setState(() => _isHovered = true),
+              onExit: (_) => setState(() => _isHovered = false),
+              child: Padding(
+                padding: EdgeInsets.only(top: constraints.maxWidth * 0.05),
+                child: const _Top(),
+              ),
             ),
           ),
         ],
@@ -178,6 +192,9 @@ class _WaterGradient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
+    final waterColor = theme.backgroundColor;
+
     return Transform(
       alignment: Alignment.center,
       transform: Matrix4.skewY(skew),
@@ -187,7 +204,7 @@ class _WaterGradient extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             stops: const [0.0, 0.3],
-            colors: [PuzzleColors.water.withOpacity(0.5), PuzzleColors.water],
+            colors: [waterColor.withOpacity(0.5), waterColor],
           ),
         ),
       ),

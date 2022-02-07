@@ -9,7 +9,7 @@ void main() {
     });
 
     test('default theme is SimpleTheme', () {
-      expect(ThemeState().theme, equals(SimpleTheme()));
+      expect(ThemeState().theme, equals(IslandTheme()));
     });
   });
 }

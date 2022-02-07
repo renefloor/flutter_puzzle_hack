@@ -53,5 +53,6 @@ abstract class PuzzleColors {
   /// White
   static const Color white = Color(0xFFFFFFFF);
 
-  static const Color water = Color(0xFFA4D9F2);
+  static const Color water_light = Color(0xFFA4D9F2);
+  static const Color water_dark = Color(0xFF3C4F77);
 }

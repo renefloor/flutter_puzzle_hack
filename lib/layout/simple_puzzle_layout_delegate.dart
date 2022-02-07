@@ -12,7 +12,7 @@ import 'package:very_good_slide_puzzle/theme/theme.dart';
 
 /// {@template simple_puzzle_layout_delegate}
 /// A delegate for computing the layout of the puzzle UI
-/// that uses a [SimpleTheme].
+/// that uses a [IslandTheme].
 /// {@endtemplate}
 class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
   /// {@macro simple_puzzle_layout_delegate}
