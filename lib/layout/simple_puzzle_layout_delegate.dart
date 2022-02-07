@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
-import 'package:very_good_slide_puzzle/colors/colors.dart';
 import 'package:very_good_slide_puzzle/l10n/l10n.dart';
 import 'package:very_good_slide_puzzle/layout/components/index.dart';
 import 'package:very_good_slide_puzzle/layout/components/island_puzzle_tile.dart';
+import 'package:very_good_slide_puzzle/layout/components/shuffle_button.dart';
 import 'package:very_good_slide_puzzle/layout/layout.dart';
 import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
@@ -36,8 +34,8 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
     return Column(
       children: [
         ResponsiveLayoutBuilder(
-          small: (_, child) => const SimplePuzzleShuffleButton(),
-          medium: (_, child) => const SimplePuzzleShuffleButton(),
+          small: (_, child) => const IslandPuzzleShuffleButton(),
+          medium: (_, child) => const IslandPuzzleShuffleButton(),
           large: (_, __) => const SizedBox(),
         ),
         const ResponsiveGap(
@@ -185,7 +183,7 @@ class SimpleStartSection extends StatelessWidget {
         ResponsiveLayoutBuilder(
           small: (_, __) => const SizedBox(),
           medium: (_, __) => const SizedBox(),
-          large: (_, __) => const SimplePuzzleShuffleButton(),
+          large: (_, __) => const IslandPuzzleShuffleButton(),
         ),
       ],
     );
@@ -300,35 +298,4 @@ abstract class _TileFontSize {
   static double small = 24;
   static double medium = 30;
   static double large = 40;
-}
-
-/// {@template puzzle_shuffle_button}
-/// Displays the button to shuffle the puzzle.
-/// {@endtemplate}
-@visibleForTesting
-class SimplePuzzleShuffleButton extends StatelessWidget {
-  /// {@macro puzzle_shuffle_button}
-  const SimplePuzzleShuffleButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
-    return PuzzleButton(
-      textColor: PuzzleColors.primary0,
-      backgroundColor: theme.defaultColor,
-      onPressed: () => context.read<PuzzleBloc>().add(const PuzzleReset()),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            'assets/images/shuffle_icon.png',
-            width: 17,
-            height: 17,
-          ),
-          const Gap(10),
-          Text(context.l10n.puzzleShuffle),
-        ],
-      ),
-    );
-  }
 }

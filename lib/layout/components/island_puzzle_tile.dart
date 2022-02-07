@@ -1,13 +1,9 @@
-import 'dart:math' as math;
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:very_good_slide_puzzle/colors/colors.dart';
 import 'package:very_good_slide_puzzle/layout/components/mouse_region_hittest.dart';
 import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:very_good_slide_puzzle/theme/theme.dart';
 
 /// {@template simple_puzzle_tile}
@@ -49,8 +45,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
       var position = 0.0;
       if (_isTapped) {
         position += constraints.maxWidth * 0.1;
-      }
-      else if (_isHovered) {
+      } else if (_isHovered) {
         position += constraints.maxWidth * 0.01;
       }
       if (_isShuffling) position += constraints.maxWidth * 1.2;
@@ -113,7 +108,8 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
               onTapUp: (_) => setState(() => _isTapped = false),
               onTapCancel: () => setState(() => _isTapped = false),
               onTap: widget.state.puzzleStatus == PuzzleStatus.incomplete
-                  ? () => context.read<PuzzleBloc>().add(TileTapped(widget.tile))
+                  ? () =>
+                      context.read<PuzzleBloc>().add(TileTapped(widget.tile))
                   : null,
               child: MouseRegionHittest(
                 onEnter: (_) => setState(() => _isHovered = true),
@@ -141,7 +137,7 @@ class _Top extends StatelessWidget {
 }
 
 class _TopShape extends CustomPainter {
-  _TopShape(){
+  _TopShape() {
     painter = Paint()
       ..color = Colors.purpleAccent
       ..style = PaintingStyle.stroke;
@@ -159,7 +155,7 @@ class _TopShape extends CustomPainter {
       ..lineTo(size.width, size.height / 2)
       ..close();
 
-    if(kDebugMode){
+    if (kDebugMode) {
       canvas.drawPath(_path!, painter);
     }
   }
@@ -190,10 +186,25 @@ class _Water extends StatelessWidget {
       height: width * 2,
       width: width,
       margin: EdgeInsets.only(top: width * (11 / 16)),
-      child: Row(
-        children: const [
-          Expanded(child: _WaterGradient(skew: 0.5)),
-          Expanded(child: _WaterGradient(skew: -0.5))
+      // We are using a stack instead of a Row because there can be 1 pixel
+      // between the widgets in a row.
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned(
+            left: 0,
+            top: 0,
+            bottom: 0,
+            right: (width / 2).floorToDouble(),
+            child: const _WaterGradient(skew: 0.5),
+          ),
+          Positioned(
+            left: (width / 2).floorToDouble(),
+            right: 0,
+            top: 0,
+            bottom: 0,
+            child: const _WaterGradient(skew: -0.5),
+          ),
         ],
       ),
     );
