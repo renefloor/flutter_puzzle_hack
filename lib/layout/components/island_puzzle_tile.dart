@@ -8,6 +8,7 @@ import 'package:very_good_slide_puzzle/layout/components/mouse_region_hittest.da
 import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
 import 'package:very_good_slide_puzzle/theme/theme.dart';
+import 'dart:math' as math;
 
 /// {@template simple_puzzle_tile}
 /// Displays the puzzle tile associated with [tile] and
@@ -51,7 +52,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
       } else if (_isHovered) {
         position += 0.01;
       }
-      if (_isShuffling) position += 1.2;
+      if (_isShuffling) position += 0.4;
 
       return TweenAnimationBuilder<double>(
           tween: Tween<double>(begin: 0, end: position),
@@ -60,7 +61,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
             milliseconds: _isTapped
                 ? 50
                 : _isShuffling
-                    ? 5000
+                    ? 10000
                     : 500,
           ),
           builder: (context, value, _) {
@@ -103,10 +104,9 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
                     ),
                   ),
                 ),
-                IgnorePointer(
-                  child: _Water(
-                    width: constraints.maxWidth,
-                  ),
+                _Water(
+                  width: constraints.maxWidth,
+                  relativeDepth: value,
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: constraints.maxWidth * 0.07),
@@ -147,25 +147,30 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
 }
 
 class _Top extends StatelessWidget {
-  const _Top({Key? key}) : super(key: key);
+  const _Top({this.color = Colors.transparent, Key? key}) : super(key: key);
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1.8,
-      child: CustomPaint(painter: _TopShape()),
+      child: CustomPaint(painter: _TopShape(color)),
     );
   }
 }
 
 class _TopShape extends CustomPainter {
-  _TopShape() {
-    painter = Paint()
+  _TopShape(Color color) {
+    _strokePainter = Paint()
       ..color = Colors.purpleAccent
       ..style = PaintingStyle.stroke;
+    _fillPainter = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
   }
 
-  Paint painter = Paint();
+  Paint _strokePainter = Paint();
+  Paint _fillPainter = Paint();
   Path? _path;
 
   @override
@@ -178,8 +183,9 @@ class _TopShape extends CustomPainter {
       ..close();
 
     if (kDebugMode) {
-      canvas.drawPath(_path!, painter);
+      canvas.drawPath(_path!, _strokePainter);
     }
+    canvas.drawPath(_path!, _fillPainter);
   }
 
   @override
@@ -198,61 +204,108 @@ class _TopShape extends CustomPainter {
 class _Water extends StatelessWidget {
   const _Water({
     required this.width,
+    required this.relativeDepth,
     Key? key,
   }) : super(key: key);
   final double width;
+  final double relativeDepth;
+
+  static const _waterLevel = 11 / 16;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: width * 2,
-      width: width,
-      margin: EdgeInsets.only(top: width * (11 / 16)),
-      // We are using a stack instead of a Row because there can be 1 pixel
-      // between the widgets in a row.
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Positioned(
-            left: 0,
-            top: 0,
-            bottom: 0,
-            right: (width / 2) - 1,
-            child: const _WaterGradient(skew: 0.5),
-          ),
-          Positioned(
-            left: (width / 2) - 1,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            child: const _WaterGradient(skew: -0.5),
-          ),
-        ],
+    final relativeHeightOfIsland = 8 / 16 + relativeDepth;
+    final heightOfIsland = width * relativeHeightOfIsland;
+    final heightOfWater = width * _waterLevel;
+
+    final relativeUnderWater =
+        math.max<double>(0, relativeHeightOfIsland - _waterLevel);
+    final waterColor =
+        context.select((ThemeBloc bloc) => bloc.state.theme).backgroundColor;
+    final double waterOpacity;
+    if (relativeUnderWater < 0.0) {
+      waterOpacity = 0.0;
+    } else if (relativeUnderWater < _startOfDarkWater) {
+      waterOpacity = Tween<double>(begin: 0.5, end: 1)
+          .transform(relativeUnderWater / _startOfDarkWater);
+    } else {
+      waterOpacity = 1.0;
+    }
+
+    return IgnorePointer(
+      child: SizedBox(
+        height: width * 3,
+        width: width,
+        child: Stack(
+          fit: StackFit.expand,
+          clipBehavior: Clip.none,
+          children: [
+            if (relativeUnderWater > 0.0)
+              Positioned(
+                left: -0.3,
+                top: width * (relativeDepth + 0.07),
+                right: -0.3,
+                child: _Top(color: waterColor.withOpacity(waterOpacity)),
+              ),
+            Positioned(
+              left: 0,
+              top: math.max(heightOfIsland, heightOfWater) - 2,
+              bottom: 0,
+              right: (width / 2) - 1,
+              child: _WaterGradient(
+                skew: 0.5,
+                removeFirstPart: relativeUnderWater,
+              ),
+            ),
+            Positioned(
+              left: (width / 2) - 1,
+              right: 0,
+              top: math.max(heightOfIsland, heightOfWater) - 2,
+              bottom: 0,
+              child: _WaterGradient(
+                skew: -0.5,
+                removeFirstPart: relativeUnderWater,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
+const _startOfDarkWater = 0.1;
+
 class _WaterGradient extends StatelessWidget {
-  const _WaterGradient({required this.skew, Key? key}) : super(key: key);
+  const _WaterGradient(
+      {required this.skew, required this.removeFirstPart, Key? key})
+      : super(key: key);
   final double skew;
+  final double removeFirstPart;
+
+  bool get hasTransparentWater => removeFirstPart < _startOfDarkWater;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
     final waterColor = theme.backgroundColor;
+    final startOpacity = Tween<double>(begin: 0.5, end: 1)
+        .transform(removeFirstPart / _startOfDarkWater);
 
     return Transform(
       alignment: Alignment.center,
       transform: Matrix4.skewY(skew),
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: const [0.0, 0.3],
-            colors: [waterColor.withOpacity(0.5), waterColor],
-          ),
+          gradient: hasTransparentWater
+              ? LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [removeFirstPart, _startOfDarkWater],
+                  colors: [waterColor.withOpacity(startOpacity), waterColor],
+                )
+              : null,
+          color: hasTransparentWater ? null : waterColor,
         ),
       ),
     );
