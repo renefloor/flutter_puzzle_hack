@@ -52,7 +52,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
       } else if (_isHovered) {
         position += 0.01;
       }
-      if (_isShuffling) position += 0.4;
+      if (_isShuffling) position += 0.8;
 
       return TweenAnimationBuilder<double>(
           tween: Tween<double>(begin: 0, end: position),
@@ -226,7 +226,7 @@ class _Water extends StatelessWidget {
     if (relativeUnderWater < 0.0) {
       waterOpacity = 0.0;
     } else if (relativeUnderWater < _startOfDarkWater) {
-      waterOpacity = Tween<double>(begin: 0.5, end: 1)
+      waterOpacity = Tween<double>(begin: _startOpacity, end: 1)
           .transform(relativeUnderWater / _startOfDarkWater);
     } else {
       waterOpacity = 1.0;
@@ -274,7 +274,8 @@ class _Water extends StatelessWidget {
   }
 }
 
-const _startOfDarkWater = 0.1;
+const _startOfDarkWater = 0.3;
+const _startOpacity = 0.4;
 
 class _WaterGradient extends StatelessWidget {
   const _WaterGradient(
@@ -289,7 +290,7 @@ class _WaterGradient extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
     final waterColor = theme.backgroundColor;
-    final startOpacity = Tween<double>(begin: 0.5, end: 1)
+    final startOpacity = Tween<double>(begin: _startOpacity, end: 1)
         .transform(removeFirstPart / _startOfDarkWater);
 
     return Transform(

@@ -22,12 +22,13 @@ class PuzzlePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkMode =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
-    return BlocProvider(
-      create: (context) => ThemeBloc(
-        themes: [
-          if (isDarkMode) const IslandDarkTheme() else const IslandTheme(),
-        ],
-      ),
+    final themeBloc = ThemeBloc(
+      themes: [
+        if (isDarkMode) const IslandDarkTheme() else const IslandTheme(),
+      ],
+    );
+    return BlocProvider.value(
+      value: themeBloc,
       child: const PuzzleView(),
     );
   }
