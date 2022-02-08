@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:very_good_slide_puzzle/l10n/l10n.dart';
 import 'package:very_good_slide_puzzle/puzzle/bloc/puzzle_bloc.dart';
+import 'package:very_good_slide_puzzle/theme/theme.dart';
+import 'package:very_good_slide_puzzle/typography/text_styles.dart';
 
 class IslandPuzzleShuffleButton extends StatefulWidget {
   const IslandPuzzleShuffleButton({Key? key}) : super(key: key);
@@ -49,6 +51,7 @@ class _IslandPuzzleShuffleButtonState extends State<IslandPuzzleShuffleButton>
   Widget build(BuildContext context) {
     final dx = _xAnimation.value;
     final dy = _yAnimation.value;
+    final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
 
     return Transform.translate(
       offset: Offset(dx, dy),
@@ -76,7 +79,10 @@ class _IslandPuzzleShuffleButtonState extends State<IslandPuzzleShuffleButton>
                   height: 17,
                 ),
                 const Gap(10),
-                Text(context.l10n.puzzleShuffle),
+                Text(
+                  context.l10n.puzzleShuffle,
+                  style: PuzzleTextStyle.headline4,
+                ),
               ],
             ),
           ),

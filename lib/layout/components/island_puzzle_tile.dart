@@ -54,6 +54,9 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
       }
       if (_isShuffling) position += 0.8;
 
+      final showImage = !_isHovered &&
+          widget.tile.correctPosition == widget.tile.currentPosition;
+
       return TweenAnimationBuilder<double>(
           tween: Tween<double>(begin: 0, end: position),
           curve: _isTapped ? Curves.linear : Curves.elasticOut,
@@ -81,10 +84,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
                           child: AnimatedOpacity(
                               curve: Curves.easeInQuad,
                               duration: const Duration(milliseconds: 400),
-                              opacity: widget.tile.correctPosition ==
-                                      widget.tile.currentPosition
-                                  ? 0
-                                  : 1,
+                              opacity: showImage ? 0 : 1,
                               child: Image.asset(
                                   'assets/images/Number=${widget.tile.value}.png')),
                         ),
@@ -93,10 +93,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
                           child: AnimatedOpacity(
                               curve: Curves.easeInQuad,
                               duration: const Duration(milliseconds: 400),
-                              opacity: widget.tile.correctPosition ==
-                                      widget.tile.currentPosition
-                                  ? 1
-                                  : 0,
+                              opacity: showImage ? 1 : 0,
                               child: Image.asset(
                                   'assets/images/tile_correct.png')),
                         ),

@@ -18,13 +18,9 @@ class PuzzleName extends StatelessWidget {
   Widget build(BuildContext context) {
     final name = context.select((ThemeBloc bloc) => bloc.state.theme).name;
 
-    return ResponsiveLayoutBuilder(
-      small: (context, child) => const SizedBox(),
-      medium: (context, child) => const SizedBox(),
-      large: (context, child) => Text(
-        name,
-        style: PuzzleTextStyle.name,
-      ),
+    return Text(
+      name,
+      style: PuzzleTextStyle.name,
     );
   }
 }

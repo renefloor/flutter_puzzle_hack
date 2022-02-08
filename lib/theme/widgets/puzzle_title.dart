@@ -23,39 +23,14 @@ class PuzzleTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveLayoutBuilder(
-      small: (context, child) => Center(
-        child: SizedBox(
-          width: 300,
-          child: Center(
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: PuzzleTextStyle.title.copyWith(
-                color: color,
-                fontSize: 34,
-              ),
-            ),
-          ),
-        ),
-      ),
-      medium: (context, child) => Center(
-        child: Text(
-          title,
-          style: PuzzleTextStyle.title.copyWith(
-            color: color,
-            fontSize: 34,
-          ),
-        ),
-      ),
-      large: (context, child) => SizedBox(
-        width: 300,
-        child: Text(
-          title,
-          style: PuzzleTextStyle.title.copyWith(
-            color: color,
-            fontSize: 54,
-          ),
+    return SizedBox(
+      width: 300,
+      child: Text(
+        title,
+        style: PuzzleTextStyle.title.copyWith(
+          color: color,
+          fontSize: 54,
+          height: 1,
         ),
       ),
     );

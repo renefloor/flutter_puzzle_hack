@@ -46,7 +46,7 @@ class PuzzleView extends StatelessWidget {
     final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
 
     /// Shuffle only if the current theme is Simple.
-    final shufflePuzzle = theme is IslandTheme;
+    final shufflePuzzle = false;
 
     return Scaffold(
       backgroundColor: theme.backgroundColor,
@@ -56,8 +56,9 @@ class PuzzleView extends StatelessWidget {
         ),
         child: SafeArea(
           child: BlocProvider(
-            create: (context) => PuzzleBloc(4)
-              ..add(
+            create: (context) => PuzzleBloc(
+              4,
+            )..add(
                 PuzzleInitialized(
                   shufflePuzzle: shufflePuzzle,
                 ),
@@ -85,19 +86,9 @@ class _Puzzle extends StatelessWidget {
         return Stack(
           children: [
             theme.layoutDelegate.backgroundBuilder(state),
-            SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    _PuzzleSections(
-                      key: Key('puzzle_sections'),
-                    ),
-                  ],
-                ),
+            Positioned.fill(
+              child: const _PuzzleSections(
+                key: Key('puzzle_sections'),
               ),
             ),
           ],
@@ -199,8 +190,13 @@ class _VerticalPage extends StatelessWidget {
 
     return Column(
       children: [
-        theme.layoutDelegate.startSectionBuilder(state),
-        const PuzzleBoard(),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: theme.layoutDelegate.startSectionBuilder(state),
+        ),
+        const Expanded(
+          child: PuzzleBoard(),
+        ),
         theme.layoutDelegate.endSectionBuilder(state),
       ],
     );
@@ -218,12 +214,21 @@ class _HorizontalPage extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: theme.layoutDelegate.startSectionBuilder(state),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              theme.layoutDelegate.startSectionBuilder(state),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: theme.layoutDelegate.endSectionBuilder(state),
+                ),
+              ),
+            ],
+          ),
         ),
-        const PuzzleBoard(),
-        Expanded(
-          child: theme.layoutDelegate.endSectionBuilder(state),
-        ),
+        PuzzleBoard(),
+        Expanded(child: SizedBox.shrink()),
       ],
     );
   }

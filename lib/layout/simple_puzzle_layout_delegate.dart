@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:very_good_slide_puzzle/l10n/l10n.dart';
 import 'package:very_good_slide_puzzle/layout/components/index.dart';
 import 'package:very_good_slide_puzzle/layout/components/island_puzzle_tile.dart';
@@ -18,30 +19,52 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
 
   @override
   Widget startSectionBuilder(PuzzleState state) {
-    return ResponsiveLayoutBuilder(
-      small: (_, child) => child!,
-      medium: (_, child) => child!,
-      large: (_, child) => Padding(
-        padding: const EdgeInsets.only(left: 50, right: 32),
-        child: child,
-      ),
-      child: (_) => SimpleStartSection(state: state),
-    );
+    return SimpleStartSection(state: state);
   }
 
   @override
   Widget endSectionBuilder(PuzzleState state) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         ResponsiveLayoutBuilder(
-          small: (_, child) => const IslandPuzzleShuffleButton(),
-          medium: (_, child) => const IslandPuzzleShuffleButton(),
-          large: (_, __) => const SizedBox(),
+          small: (_, child) => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              NumberOfMoves(state.numberOfMoves),
+              const IslandPuzzleShuffleButton(),
+              NumberOfTilesLeft(state.numberOfTilesLeft),
+            ],
+          ),
+          medium: (_, child) => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              NumberOfMoves(state.numberOfMoves),
+              const IslandPuzzleShuffleButton(),
+              NumberOfTilesLeft(state.numberOfTilesLeft),
+            ],
+          ),
+          large: (_, __) => Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const IslandPuzzleShuffleButton(),
+                const Gap(32),
+                Padding(
+                  padding: const EdgeInsets.only(left: 32),
+                  child: NumberOfMoves(state.numberOfMoves),
+                ),
+                const Gap(32),
+                Padding(
+                  padding: const EdgeInsets.only(left: 32),
+                  child: NumberOfTilesLeft(state.numberOfTilesLeft),
+                ),
+              ],
+            ),
+          ),
         ),
-        const ResponsiveGap(
-          small: 32,
-          medium: 48,
-        ),
+        const Gap(32),
       ],
     );
   }
@@ -63,13 +86,8 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
   @override
   Widget boardBuilder(int size, Map<Tile, Widget> tiles) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const ResponsiveGap(
-          smallWide: 50,
-          mediumWide: 50,
-          large: 150,
-          // xLarge: 200,
-        ),
         ResponsiveLayoutBuilder(
           small: (_, __) => SizedBox.square(
             dimension: _BoardSize.small,
@@ -158,34 +176,18 @@ class SimpleStartSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const ResponsiveGap(
-          small: 20,
-          medium: 83,
-        ),
-        const PuzzleName(),
-        const ResponsiveGap(large: 16),
-        SimplePuzzleTitle(
-          status: state.puzzleStatus,
-        ),
-        const ResponsiveGap(
-          small: 12,
-          medium: 16,
-          large: 32,
-        ),
-        NumberOfMovesAndTilesLeft(
-          numberOfMoves: state.numberOfMoves,
-          numberOfTilesLeft: state.numberOfTilesLeft,
-        ),
-        const ResponsiveGap(large: 32),
-        ResponsiveLayoutBuilder(
-          small: (_, __) => const SizedBox(),
-          medium: (_, __) => const SizedBox(),
-          large: (_, __) => const IslandPuzzleShuffleButton(),
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Gap(16),
+          const PuzzleName(),
+          SimplePuzzleTitle(
+            status: state.puzzleStatus,
+          ),
+        ],
+      ),
     );
   }
 }

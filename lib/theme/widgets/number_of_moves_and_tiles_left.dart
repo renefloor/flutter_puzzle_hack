@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:very_good_slide_puzzle/colors/colors.dart';
 import 'package:very_good_slide_puzzle/l10n/l10n.dart';
 import 'package:very_good_slide_puzzle/layout/layout.dart';
 import 'package:very_good_slide_puzzle/theme/theme.dart';
@@ -74,6 +75,45 @@ class NumberOfMovesAndTilesLeft extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class NumberOfMoves extends StatelessWidget {
+  const NumberOfMoves(this.numberOfMoves, {Key? key}) : super(key: key);
+
+  /// The number of moves to be displayed.
+  final int numberOfMoves;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    const textColor = PuzzleColors.white;
+    return Text(
+      '${numberOfMoves.toString()} ${l10n.puzzleNumberOfMoves}',
+      style: PuzzleTextStyle.headline4.copyWith(
+        color: textColor,
+      ),
+    );
+  }
+}
+
+class NumberOfTilesLeft extends StatelessWidget {
+  const NumberOfTilesLeft(this.numberOfTilesLeft, {Key? key}) : super(key: key);
+
+  /// The number of moves to be displayed.
+  final int numberOfTilesLeft;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    const textColor = PuzzleColors.white;
+
+    return Text(
+      '${numberOfTilesLeft.toString()} ${l10n.puzzleNumberOfTilesLeft}',
+      style: PuzzleTextStyle.headline4.copyWith(
+        color: textColor,
+      ),
     );
   }
 }
