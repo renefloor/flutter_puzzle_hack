@@ -52,6 +52,7 @@ class _IslandPuzzleShuffleButtonState extends State<IslandPuzzleShuffleButton>
     final dx = _xAnimation.value;
     final dy = _yAnimation.value;
     final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
+    final status = context.select((PuzzleBloc bloc) => bloc.state.puzzleStatus);
 
     return Transform.translate(
       offset: Offset(dx, dy),
@@ -80,7 +81,9 @@ class _IslandPuzzleShuffleButtonState extends State<IslandPuzzleShuffleButton>
                 ),
                 const Gap(10),
                 Text(
-                  context.l10n.puzzleShuffle,
+                  status == PuzzleStatus.start
+                      ? context.l10n.puzzleStart
+                      : context.l10n.puzzleShuffle,
                   style: PuzzleTextStyle.headline4,
                 ),
               ],

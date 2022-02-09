@@ -64,7 +64,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
             milliseconds: _isTapped
                 ? 50
                 : _isShuffling
-                    ? 10000
+                    ? 5000
                     : 500,
           ),
           builder: (context, value, _) {

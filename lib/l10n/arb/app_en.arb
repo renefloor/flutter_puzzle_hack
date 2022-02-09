@@ -16,6 +16,10 @@
     "@puzzleShuffle": {
         "description": "Shown on the button that shuffle the puzzle"
     },
+    "puzzleStart": "Start",
+    "@puzzleStart": {
+        "description": "Shown on the button that shuffle the puzzle before start"
+    },
     "puzzleCompleted": "Well done. Congrats!",
     "@puzzleCompleted": {
         "description": "Shown as the success state when the puzzle is completed"

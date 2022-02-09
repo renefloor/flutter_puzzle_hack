@@ -7,6 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:very_good_slide_puzzle/models/models.dart';
 
 part 'puzzle_event.dart';
+
 part 'puzzle_state.dart';
 
 class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
@@ -28,6 +29,8 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     emit(
       PuzzleState(
         puzzle: puzzle.sort(),
+        puzzleStatus:
+            event.shufflePuzzle ? PuzzleStatus.incomplete : PuzzleStatus.start,
         numberOfCorrectTiles: puzzle.getNumberOfCorrectTiles(),
       ),
     );

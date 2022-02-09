@@ -3,6 +3,7 @@
 part of 'puzzle_bloc.dart';
 
 enum PuzzleStatus {
+  start,
   incomplete,
   complete,
   shuffling,
