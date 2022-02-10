@@ -25,18 +25,34 @@ typedef ResponsiveLayoutWidgetBuilder = Widget Function(BuildContext, Widget?);
 /// {@endtemplate}
 class ResponsiveLayoutBuilder extends StatelessWidget {
   /// {@macro responsive_layout_builder}
-  const ResponsiveLayoutBuilder({
+  ResponsiveLayoutBuilder({
     Key? key,
-    required this.small,
-    required this.medium,
-    required this.large,
+    ResponsiveLayoutWidgetBuilder? defaultBuilder,
+    ResponsiveLayoutWidgetBuilder? small,
+    ResponsiveLayoutWidgetBuilder? medium,
+    ResponsiveLayoutWidgetBuilder? large,
     ResponsiveLayoutWidgetBuilder? smallWide,
     ResponsiveLayoutWidgetBuilder? mediumWide,
     ResponsiveLayoutWidgetBuilder? xLarge,
     this.child,
-  })  : smallWide = smallWide ?? small,
-        mediumWide = mediumWide ?? medium,
-        xLarge = xLarge ?? large,
+  })  : assert(
+          small != null || defaultBuilder != null,
+          'supply at least either small or defaultBuilder',
+        ),
+        small = small ?? defaultBuilder!,
+        smallWide = smallWide ?? small ?? defaultBuilder!,
+        assert(
+          medium != null || defaultBuilder != null,
+          'supply at least either medium or defaultBuilder',
+        ),
+        medium = medium ?? defaultBuilder!,
+        mediumWide = mediumWide ?? medium ?? defaultBuilder!,
+        assert(
+          large != null || defaultBuilder != null,
+          'supply at least either large or defaultBuilder',
+        ),
+        large = large ?? defaultBuilder!,
+        xLarge = xLarge ?? large ?? defaultBuilder!,
         super(key: key);
 
   /// [ResponsiveLayoutWidgetBuilder] for small layout.

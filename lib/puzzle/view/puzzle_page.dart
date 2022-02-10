@@ -86,8 +86,8 @@ class _Puzzle extends StatelessWidget {
         return Stack(
           children: [
             theme.layoutDelegate.backgroundBuilder(state),
-            Positioned.fill(
-              child: const _PuzzleSections(
+            const Positioned.fill(
+              child: _PuzzleSections(
                 key: Key('puzzle_sections'),
               ),
             ),
@@ -188,6 +188,22 @@ class _VerticalPage extends StatelessWidget {
     final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
     final state = context.select((PuzzleBloc bloc) => bloc.state);
 
+    return Stack(
+      children: [
+        const Positioned.fill(
+          child: PuzzleBoard(),
+        ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: theme.layoutDelegate.startSectionBuilder(state),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: theme.layoutDelegate.endSectionBuilder(state),
+        )
+      ],
+    );
+
     return Column(
       children: [
         Align(
@@ -211,24 +227,24 @@ class _HorizontalPage extends StatelessWidget {
     final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
     final state = context.select((PuzzleBloc bloc) => bloc.state);
 
-    return Row(
+    return Stack(
+      alignment: Alignment.topLeft,
       children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              theme.layoutDelegate.startSectionBuilder(state),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: theme.layoutDelegate.endSectionBuilder(state),
-                ),
-              ),
-            ],
-          ),
+        const Positioned.fill(
+          child: PuzzleBoard(),
         ),
-        PuzzleBoard(),
-        Expanded(child: SizedBox.shrink()),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            theme.layoutDelegate.startSectionBuilder(state),
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: theme.layoutDelegate.endSectionBuilder(state),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -263,12 +279,23 @@ class PuzzleBoard extends StatelessWidget {
           context.read<TimerBloc>().add(const TimerStopped());
         }
       },
-      child: PuzzleKeyboardHandler(
-        child: theme.layoutDelegate.boardBuilder(
-          size,
-          tilesMap,
-        ),
-      ),
+      child: ResponsiveLayoutBuilder(
+          defaultBuilder: (context, child) => Padding(
+                padding: const EdgeInsets.only(top: 200, bottom: 100),
+                child: child,
+              ),
+          smallWide: (context, child) => Padding(
+                padding: const EdgeInsets.only(top: 100, bottom: 50),
+                child: child,
+              ),
+          child: (_) {
+            return PuzzleKeyboardHandler(
+              child: theme.layoutDelegate.boardBuilder(
+                size,
+                tilesMap,
+              ),
+            );
+          }),
     );
   }
 }

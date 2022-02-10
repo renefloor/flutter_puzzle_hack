@@ -85,12 +85,49 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
 
   @override
   Widget boardBuilder(int size, Map<Tile, Widget> tiles) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final screenWidth = MediaQuery.of(context).size.width;
+        final screenHeight = MediaQuery.of(context).size.height;
+
+        final Size boardSize;
+        final Key boardKey;
+        if (screenWidth <= PuzzleWidthBreakpoints.small) {
+          boardSize = _BoardSize.small;
+          boardKey = const Key('simple_puzzle_board_small');
+        } else if (screenWidth <= PuzzleWidthBreakpoints.medium) {
+          boardSize = _BoardSize.medium;
+          boardKey = const Key('simple_puzzle_board_medium');
+        } else if (screenWidth <= PuzzleWidthBreakpoints.large) {
+          boardSize = _BoardSize.large;
+          boardKey = const Key('simple_puzzle_board_large');
+        } else {
+          boardSize = _BoardSize.xLarge;
+          boardKey = const Key('simple_puzzle_board_xlarge');
+        }
+
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            SizedBox.fromSize(
+              size: boardSize,
+              child: SimplePuzzleBoard(
+                key: boardKey,
+                size: size,
+                tiles: tiles,
+              ),
+            )
+          ],
+        );
+      },
+    );
+
+    return Stack(
+      alignment: Alignment.center,
       children: [
         ResponsiveLayoutBuilder(
-          small: (_, __) => SizedBox.square(
-            dimension: _BoardSize.small,
+          small: (_, __) => SizedBox.fromSize(
+            size: _BoardSize.small,
             child: SimplePuzzleBoard(
               key: const Key('simple_puzzle_board_small'),
               size: size,
@@ -98,24 +135,24 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
               spacing: 5,
             ),
           ),
-          medium: (_, __) => SizedBox.square(
-            dimension: _BoardSize.medium,
+          medium: (_, __) => SizedBox.fromSize(
+            size: _BoardSize.medium,
             child: SimplePuzzleBoard(
               key: const Key('simple_puzzle_board_medium'),
               size: size,
               tiles: tiles,
             ),
           ),
-          large: (_, __) => SizedBox.square(
-            dimension: _BoardSize.large,
+          large: (_, __) => SizedBox.fromSize(
+            size: _BoardSize.large,
             child: SimplePuzzleBoard(
               key: const Key('simple_puzzle_board_large'),
               size: size,
               tiles: tiles,
             ),
           ),
-          xLarge: (_, __) => SizedBox.square(
-            dimension: _BoardSize.xLarge,
+          xLarge: (_, __) => SizedBox.fromSize(
+            size: _BoardSize.xLarge,
             child: SimplePuzzleBoard(
               key: const Key('simple_puzzle_board_xlarge'),
               size: size,
@@ -220,10 +257,15 @@ class SimplePuzzleTitle extends StatelessWidget {
 }
 
 abstract class _BoardSize {
-  static double small = 312;
-  static double medium = 424;
-  static double large = 472;
-  static double xLarge = 700;
+  static double aspectRatio = 1.5;
+  static double _small = 312;
+  static Size small = Size(_small, _small / aspectRatio);
+  static double _medium = 424;
+  static Size medium = Size(_medium, _medium / aspectRatio);
+  static double _large = 472;
+  static Size large = Size(_large, _large / aspectRatio);
+  static double _xLarge = 700;
+  static Size xLarge = Size(_xLarge, _xLarge / aspectRatio);
 }
 
 /// {@template simple_puzzle_board}
@@ -290,7 +332,7 @@ class SimplePuzzleBoard extends StatelessWidget {
 
   double _calculateTop(BoxConstraints constraints, Position position) {
     final blockWidth = _calculateBlockWidth(constraints);
-    return (constraints.maxWidth / 2 - blockWidth * (1 / 2)) +
+    return (constraints.maxWidth / 3 - blockWidth * (1 / 2)) +
         (position.y - 1) * (blockWidth * (3 / 10)) -
         (position.x - 1) * (blockWidth * (3 / 10));
   }
