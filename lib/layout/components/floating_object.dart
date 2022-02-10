@@ -30,6 +30,70 @@ class FloatingDirection {
   final Point _anchor;
 }
 
+class FloatingObjectFactory {
+  const FloatingObjectFactory({
+    this.distance = 1,
+    required this.puzzleSize,
+    required this.screenSize,
+    required this.childSize,
+    required this.bottomPadding,
+  });
+
+  final double distance;
+  final Size puzzleSize;
+  final Size screenSize;
+  final double childSize;
+  final double bottomPadding;
+
+  FloatingObject _create({
+    required Widget child,
+    required FloatingDirection direction,
+    required double speed,
+  }) {
+    return FloatingObject(
+      direction: direction,
+      puzzleSize: puzzleSize,
+      screenSize: screenSize,
+      childSize: childSize,
+      bottomPadding: bottomPadding,
+      speed: speed,
+      child: child,
+    );
+  }
+
+  FloatingObject nw(Widget child, {double speed = 1}) {
+    return _create(
+      child: child,
+      direction: FloatingDirection.nw(),
+      speed: speed,
+    );
+  }
+
+  FloatingObject ne(Widget child, {double speed = 1}) {
+    return _create(
+      child: child,
+      direction: FloatingDirection.ne(),
+      speed: speed,
+    );
+  }
+
+  FloatingObject se(Widget child, {double speed = 1}) {
+    return _create(
+      child: child,
+      direction: FloatingDirection.se(),
+      speed: speed,
+    );
+  }
+
+  FloatingObject sw(Widget child, {double speed = 1}) {
+    return _create(
+      child: child,
+      direction: FloatingDirection.sw(),
+      speed: speed,
+    );
+  }
+}
+
 class FloatingObject extends StatefulWidget {
   const FloatingObject({
     required this.direction,
@@ -39,6 +103,7 @@ class FloatingObject extends StatefulWidget {
     required this.child,
     required this.childSize,
     required this.bottomPadding,
+    required this.speed,
     Key? key,
   }) : super(key: key);
   final FloatingDirection direction;
@@ -48,6 +113,7 @@ class FloatingObject extends StatefulWidget {
   final Widget child;
   final double childSize;
   final double bottomPadding;
+  final double speed;
 
   @override
   _FloatingObjectState createState() => _FloatingObjectState();
@@ -64,7 +130,7 @@ class _FloatingObjectState extends State<FloatingObject>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 40),
+      duration: Duration(seconds: (80 / widget.speed).floor()),
     );
     _controller.addListener(() => setState(() {}));
     _calculateAnimation();
@@ -99,12 +165,23 @@ class _FloatingObjectState extends State<FloatingObject>
 
   @override
   Widget build(BuildContext context) {
+    final topArea = widget.screenSize.height / 3;
+    final height = _verticalAnimation.value + widget.childSize * 0.90;
+    final scale = Curves.easeOutCubic.transform(
+      (height / topArea).clamp(0.0, 1.0),
+    );
+
     return Positioned(
       top: _verticalAnimation.value,
       left: _horizontalAnimation.value,
-      child: SizedBox.square(
-        dimension: widget.childSize,
-        child: widget.child,
+      child: Container(
+        height: widget.childSize,
+        width: widget.childSize,
+        alignment: Alignment.bottomCenter,
+        child: SizedBox.square(
+          dimension: widget.childSize * scale,
+          child: widget.child,
+        ),
       ),
     );
   }

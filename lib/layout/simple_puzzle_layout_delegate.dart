@@ -10,6 +10,7 @@ import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
 import 'package:very_good_slide_puzzle/theme/theme.dart';
 
 import 'components/floating_object.dart';
+import 'components/paper_plane.dart';
 
 /// {@template simple_puzzle_layout_delegate}
 /// A delegate for computing the layout of the puzzle UI
@@ -77,9 +78,9 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
       child: Stack(
         children: const [
           BackgroundTop(),
-          Clouds(start: 0.3, relativeHeight: 0.3, durationInSeconds: 40),
-          Clouds(start: 0.8, relativeHeight: 0.15, durationInSeconds: 30),
-          Clouds(start: 0, relativeHeight: 0, durationInSeconds: 50),
+          // Clouds(start: 0.3, relativeHeight: 0.3, durationInSeconds: 40),
+          // Clouds(start: 0.8, relativeHeight: 0.15, durationInSeconds: 30),
+          // Clouds(start: 0, relativeHeight: 0, durationInSeconds: 50),
         ],
       ),
     );
@@ -121,28 +122,27 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
           boardKey = const Key('simple_puzzle_board_xlarge');
           floatingObjectSize = 300;
         }
+        final factory = FloatingObjectFactory(
+          puzzleSize: boardSize,
+          screenSize: screenSize,
+          childSize: floatingObjectSize,
+          bottomPadding: bottomPadding,
+        );
 
         return Stack(
           alignment: Alignment.center,
+          clipBehavior: Clip.none,
           children: [
-            FloatingObject(
-              key: const Key('floating_iceberg'),
-              direction: FloatingDirection.ne(),
-              puzzleSize: boardSize,
-              screenSize: screenSize,
-              childSize: floatingObjectSize,
-              bottomPadding: bottomPadding,
-              child: Image.asset('assets/images/iceberg.png'),
+            factory.ne(
+              Row(
+                children: [
+                  const Expanded(child: SizedBox.shrink()),
+                  Expanded(child: Image.asset('assets/images/iceberg.png')),
+                ],
+              ),
+              speed: 0.7,
             ),
-            FloatingObject(
-              key: const Key('floating_boat1'),
-              direction: FloatingDirection.nw(),
-              puzzleSize: boardSize,
-              screenSize: screenSize,
-              childSize: floatingObjectSize,
-              bottomPadding: bottomPadding,
-              child: Image.asset('assets/images/boat.png'),
-            ),
+            factory.nw(const PaperPlane(), speed: 2),
             Padding(
               padding: EdgeInsets.only(bottom: bottomPadding),
               child: SizedBox.fromSize(
@@ -154,24 +154,8 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
                 ),
               ),
             ),
-            FloatingObject(
-              key: const Key('floating_boat2'),
-              direction: FloatingDirection.se(),
-              puzzleSize: boardSize,
-              screenSize: screenSize,
-              childSize: floatingObjectSize,
-              bottomPadding: bottomPadding,
-              child: Image.asset('assets/images/boat.png'),
-            ),
-            FloatingObject(
-              key: const Key('floating_boat3'),
-              direction: FloatingDirection.sw(),
-              puzzleSize: boardSize,
-              screenSize: screenSize,
-              childSize: floatingObjectSize,
-              bottomPadding: bottomPadding,
-              child: Image.asset('assets/images/boat.png'),
-            ),
+            factory.se(Image.asset('assets/images/submarine.png')),
+            factory.sw(Image.asset('assets/images/boat_new.png'), speed: 2.5),
           ],
         );
       },
