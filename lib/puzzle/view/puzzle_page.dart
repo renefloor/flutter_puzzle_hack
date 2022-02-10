@@ -171,17 +171,30 @@ class _PuzzleSections extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveLayoutBuilder(
-      small: (context, child) => const _VerticalPage(),
-      medium: (context, child) => const _VerticalPage(),
-      smallWide: (context, child) => const _HorizontalPage(),
-      mediumWide: (context, child) => const _HorizontalPage(),
-      large: (context, child) => const _HorizontalPage(),
+      small: (context, child) => const _Page(
+        orientation: Orientation.portrait,
+      ),
+      medium: (context, child) => const _Page(
+        orientation: Orientation.portrait,
+      ),
+      smallWide: (context, child) => const _Page(
+        orientation: Orientation.landscape,
+      ),
+      mediumWide: (context, child) => const _Page(
+        orientation: Orientation.landscape,
+      ),
+      large: (context, child) => const _Page(
+        orientation: Orientation.landscape,
+      ),
     );
   }
 }
 
-class _VerticalPage extends StatelessWidget {
-  const _VerticalPage({Key? key}) : super(key: key);
+const _puzzleBoardKey = Key('puzzle_board_stack');
+
+class _Page extends StatelessWidget {
+  const _Page({required this.orientation, Key? key}) : super(key: key);
+  final Orientation orientation;
 
   @override
   Widget build(BuildContext context) {
@@ -192,6 +205,48 @@ class _VerticalPage extends StatelessWidget {
       children: [
         const Positioned.fill(
           child: PuzzleBoard(),
+        ),
+        if (orientation == Orientation.portrait) ...[
+          Align(
+            alignment: Alignment.topLeft,
+            child: theme.layoutDelegate.startSectionBuilder(state),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: theme.layoutDelegate.endSectionBuilder(state),
+          ),
+        ],
+        if (orientation == Orientation.landscape)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              theme.layoutDelegate.startSectionBuilder(state),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: theme.layoutDelegate.endSectionBuilder(state),
+                ),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+}
+
+class _VerticalPage extends StatelessWidget {
+  const _VerticalPage(this.puzzleBoard, {Key? key}) : super(key: key);
+  final Widget puzzleBoard;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
+    final state = context.select((PuzzleBloc bloc) => bloc.state);
+
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: puzzleBoard,
         ),
         Align(
           alignment: Alignment.topLeft,
@@ -203,24 +258,12 @@ class _VerticalPage extends StatelessWidget {
         )
       ],
     );
-
-    return Column(
-      children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: theme.layoutDelegate.startSectionBuilder(state),
-        ),
-        const Expanded(
-          child: PuzzleBoard(),
-        ),
-        theme.layoutDelegate.endSectionBuilder(state),
-      ],
-    );
   }
 }
 
 class _HorizontalPage extends StatelessWidget {
-  const _HorizontalPage({Key? key}) : super(key: key);
+  const _HorizontalPage(this.puzzleBoard, {Key? key}) : super(key: key);
+  final Widget puzzleBoard;
 
   @override
   Widget build(BuildContext context) {
@@ -230,8 +273,8 @@ class _HorizontalPage extends StatelessWidget {
     return Stack(
       alignment: Alignment.topLeft,
       children: [
-        const Positioned.fill(
-          child: PuzzleBoard(),
+        Positioned.fill(
+          child: puzzleBoard,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -281,11 +324,11 @@ class PuzzleBoard extends StatelessWidget {
       },
       child: ResponsiveLayoutBuilder(
           defaultBuilder: (context, child) => Padding(
-                padding: const EdgeInsets.only(top: 200, bottom: 100),
+                padding: const EdgeInsets.only(top: 200),
                 child: child,
               ),
           smallWide: (context, child) => Padding(
-                padding: const EdgeInsets.only(top: 100, bottom: 50),
+                padding: const EdgeInsets.only(top: 100),
                 child: child,
               ),
           child: (_) {

@@ -9,6 +9,8 @@ import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
 import 'package:very_good_slide_puzzle/theme/theme.dart';
 
+import 'components/floating_object.dart';
+
 /// {@template simple_puzzle_layout_delegate}
 /// A delegate for computing the layout of the puzzle UI
 /// that uses a [IslandTheme].
@@ -89,78 +91,90 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
       builder: (context, constraints) {
         final screenWidth = MediaQuery.of(context).size.width;
         final screenHeight = MediaQuery.of(context).size.height;
+        final screenSize = Size(constraints.maxWidth, constraints.maxHeight);
 
+        final double floatingObjectSize;
         final Size boardSize;
         final Key boardKey;
+        var bottomPadding = 100.0;
+
+        if (screenWidth > PuzzleWidthBreakpoints.small &&
+            screenHeight <= PuzzleHeightBreakpoints.small &&
+            screenWidth <= PuzzleWidthBreakpoints.smallWide) {
+          bottomPadding = 50;
+        }
+
         if (screenWidth <= PuzzleWidthBreakpoints.small) {
           boardSize = _BoardSize.small;
           boardKey = const Key('simple_puzzle_board_small');
+          floatingObjectSize = 150;
         } else if (screenWidth <= PuzzleWidthBreakpoints.medium) {
           boardSize = _BoardSize.medium;
           boardKey = const Key('simple_puzzle_board_medium');
+          floatingObjectSize = 200;
         } else if (screenWidth <= PuzzleWidthBreakpoints.large) {
           boardSize = _BoardSize.large;
           boardKey = const Key('simple_puzzle_board_large');
+          floatingObjectSize = 250;
         } else {
           boardSize = _BoardSize.xLarge;
           boardKey = const Key('simple_puzzle_board_xlarge');
+          floatingObjectSize = 300;
         }
 
         return Stack(
           alignment: Alignment.center,
           children: [
-            SizedBox.fromSize(
-              size: boardSize,
-              child: SimplePuzzleBoard(
-                key: boardKey,
-                size: size,
-                tiles: tiles,
+            FloatingObject(
+              key: const Key('floating_iceberg'),
+              direction: FloatingDirection.ne(),
+              puzzleSize: boardSize,
+              screenSize: screenSize,
+              childSize: floatingObjectSize,
+              bottomPadding: bottomPadding,
+              child: Image.asset('assets/images/iceberg.png'),
+            ),
+            FloatingObject(
+              key: const Key('floating_boat1'),
+              direction: FloatingDirection.nw(),
+              puzzleSize: boardSize,
+              screenSize: screenSize,
+              childSize: floatingObjectSize,
+              bottomPadding: bottomPadding,
+              child: Image.asset('assets/images/boat.png'),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: bottomPadding),
+              child: SizedBox.fromSize(
+                size: boardSize,
+                child: SimplePuzzleBoard(
+                  key: boardKey,
+                  size: size,
+                  tiles: tiles,
+                ),
               ),
-            )
+            ),
+            FloatingObject(
+              key: const Key('floating_boat2'),
+              direction: FloatingDirection.se(),
+              puzzleSize: boardSize,
+              screenSize: screenSize,
+              childSize: floatingObjectSize,
+              bottomPadding: bottomPadding,
+              child: Image.asset('assets/images/boat.png'),
+            ),
+            FloatingObject(
+              key: const Key('floating_boat3'),
+              direction: FloatingDirection.sw(),
+              puzzleSize: boardSize,
+              screenSize: screenSize,
+              childSize: floatingObjectSize,
+              bottomPadding: bottomPadding,
+              child: Image.asset('assets/images/boat.png'),
+            ),
           ],
         );
       },
-    );
-
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        ResponsiveLayoutBuilder(
-          small: (_, __) => SizedBox.fromSize(
-            size: _BoardSize.small,
-            child: SimplePuzzleBoard(
-              key: const Key('simple_puzzle_board_small'),
-              size: size,
-              tiles: tiles,
-              spacing: 5,
-            ),
-          ),
-          medium: (_, __) => SizedBox.fromSize(
-            size: _BoardSize.medium,
-            child: SimplePuzzleBoard(
-              key: const Key('simple_puzzle_board_medium'),
-              size: size,
-              tiles: tiles,
-            ),
-          ),
-          large: (_, __) => SizedBox.fromSize(
-            size: _BoardSize.large,
-            child: SimplePuzzleBoard(
-              key: const Key('simple_puzzle_board_large'),
-              size: size,
-              tiles: tiles,
-            ),
-          ),
-          xLarge: (_, __) => SizedBox.fromSize(
-            size: _BoardSize.xLarge,
-            child: SimplePuzzleBoard(
-              key: const Key('simple_puzzle_board_xlarge'),
-              size: size,
-              tiles: tiles,
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -298,7 +312,7 @@ class SimplePuzzleBoard extends StatelessWidget {
         return Stack(
           clipBehavior: Clip.none,
           children: [
-            const Iceberg(),
+            // const Iceberg(),
             ...tiles.keys
                 .map(
                   (e) => AnimatedPositioned(
@@ -313,7 +327,7 @@ class SimplePuzzleBoard extends StatelessWidget {
                   ),
                 )
                 .toList(),
-            const Boat(),
+            // const Boat(),
           ],
         );
       },

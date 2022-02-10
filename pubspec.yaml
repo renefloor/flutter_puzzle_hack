@@ -1,6 +1,6 @@
 name: very_good_slide_puzzle
 description: A Very Good Project created by Very Good CLI.
-version: 1.0.0+13
+version: 1.0.0+14
 publish_to: none
 
 environment:
