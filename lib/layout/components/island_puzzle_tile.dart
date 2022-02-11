@@ -46,9 +46,9 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      var position = 0.0;
+      var position = 0/16;
       if (_isTapped) {
-        position += 0.1;
+        position += 0.05;
       } else if (_isHovered) {
         position += 0.01;
       }
@@ -78,6 +78,8 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
                   child: IgnorePointer(
                     child: Stack(
                       children: [
+                        Image.asset(
+                            'assets/images/block_empty.png'),
                         Align(
                           alignment: Alignment.topCenter,
                           child: AnimatedOpacity(
@@ -208,7 +210,7 @@ class _Water extends StatelessWidget {
   final double width;
   final double relativeDepth;
 
-  static const _waterLevel = 11 / 16;
+  static const _waterLevel = 12 / 16;
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +221,9 @@ class _Water extends StatelessWidget {
     final relativeUnderWater =
         math.max<double>(0, relativeHeightOfIsland - _waterLevel);
     final waterColor =
-        context.select((ThemeBloc bloc) => bloc.state.theme).backgroundColor;
+        context.select((ThemeBloc bloc) => bloc.state.theme).backgroundColor
+    ;
+
     final double waterOpacity;
     if (relativeUnderWater < 0.0) {
       waterOpacity = 0.0;
@@ -240,9 +244,9 @@ class _Water extends StatelessWidget {
           children: [
             if (relativeUnderWater > 0.0)
               Positioned(
-                left: -0.3,
-                top: width * (relativeDepth + 0.07),
-                right: -0.3,
+                left: -width * 0.3,
+                top: width * relativeDepth * 0.8,
+                right: -width * 0.3,
                 child: _Top(color: waterColor.withOpacity(waterOpacity)),
               ),
             Positioned(

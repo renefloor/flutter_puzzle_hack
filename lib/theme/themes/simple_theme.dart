@@ -24,6 +24,8 @@ class IslandTheme extends PuzzleTheme {
   @override
   Color get backgroundColor => PuzzleColors.water_light;
 
+  Color get backgroundColorSecondary => PuzzleColors.water_light_secondary;
+
   @override
   Color get defaultColor => Colors.indigo;
 
@@ -55,4 +57,7 @@ class IslandDarkTheme extends IslandTheme {
 
   @override
   Color get backgroundColor => PuzzleColors.water_dark;
+
+  @override
+  Color get backgroundColorSecondary => PuzzleColors.water_dark_secondary;
 }

@@ -12,7 +12,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     on<ThemeChanged>(_onThemeChanged);
   }
 
-  final List<PuzzleTheme> themes;
+  final List<IslandTheme> themes;
 
   void _onThemeChanged(ThemeChanged event, Emitter<ThemeState> emit) {
     emit(ThemeState(theme: themes[event.themeIndex]));

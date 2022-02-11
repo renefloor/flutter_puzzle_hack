@@ -49,22 +49,34 @@ class PuzzleView extends StatelessWidget {
     final shufflePuzzle = false;
 
     return Scaffold(
-      backgroundColor: theme.backgroundColor,
-      body: BlocProvider(
-        create: (context) => TimerBloc(
-          ticker: const Ticker(),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: const [0.1, 0.5],
+            colors: [
+              theme.backgroundColorSecondary,
+              theme.backgroundColor,
+            ],
+          ),
         ),
-        child: SafeArea(
-          child: BlocProvider(
-            create: (context) => PuzzleBloc(
-              4,
-            )..add(
-                PuzzleInitialized(
-                  shufflePuzzle: shufflePuzzle,
+        child: BlocProvider(
+          create: (context) => TimerBloc(
+            ticker: const Ticker(),
+          ),
+          child: SafeArea(
+            child: BlocProvider(
+              create: (context) => PuzzleBloc(
+                4,
+              )..add(
+                  PuzzleInitialized(
+                    shufflePuzzle: shufflePuzzle,
+                  ),
                 ),
+              child: const _Puzzle(
+                key: Key('puzzle_view_puzzle'),
               ),
-            child: const _Puzzle(
-              key: Key('puzzle_view_puzzle'),
             ),
           ),
         ),
@@ -198,7 +210,6 @@ enum PageOrientation {
 
   /// Wider than tall.
   landscape,
-
   landscapeLow,
 }
 
@@ -233,7 +244,7 @@ class _Page extends StatelessWidget {
               child: theme.layoutDelegate.endSectionBuilder(state),
             ),
           ),
-        if(orientation == PageOrientation.landscapeLow)
+        if (orientation == PageOrientation.landscapeLow)
           Align(
             alignment: Alignment.bottomRight,
             child: theme.layoutDelegate.endSectionBuilder(state),
