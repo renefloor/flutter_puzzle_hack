@@ -11,6 +11,7 @@ import 'package:very_good_slide_puzzle/theme/theme.dart';
 
 import 'components/floating_object.dart';
 import 'components/paper_plane.dart';
+import 'components/sun.dart';
 
 /// {@template simple_puzzle_layout_delegate}
 /// A delegate for computing the layout of the puzzle UI
@@ -47,9 +48,50 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
               NumberOfTilesLeft(state.numberOfTilesLeft),
             ],
           ),
+          smallWide: (_, __) => Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              // mainAxisSize: MainAxisSize.max,
+              children: [
+                const IslandPuzzleShuffleButton(),
+                const Gap(32),
+                Padding(
+                  padding: const EdgeInsets.only(left: 32),
+                  child: NumberOfMoves(state.numberOfMoves),
+                ),
+                const Gap(32),
+                Padding(
+                  padding: const EdgeInsets.only(left: 32),
+                  child: NumberOfTilesLeft(state.numberOfTilesLeft),
+                ),
+              ],
+            ),
+          ),
+          mediumWide: (_, __) => Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const IslandPuzzleShuffleButton(),
+                const Gap(32),
+                Padding(
+                  padding: const EdgeInsets.only(left: 32),
+                  child: NumberOfMoves(state.numberOfMoves),
+                ),
+                const Gap(32),
+                Padding(
+                  padding: const EdgeInsets.only(left: 32),
+                  child: NumberOfTilesLeft(state.numberOfTilesLeft),
+                ),
+              ],
+            ),
+          ),
           large: (_, __) => Padding(
             padding: const EdgeInsets.all(32.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 const IslandPuzzleShuffleButton(),
@@ -78,7 +120,10 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
       child: Stack(
         children: const [
           BackgroundTop(),
-          // Clouds(start: 0.3, relativeHeight: 0.3, durationInSeconds: 40),
+          SunAndMoon(),
+          Clouds(start: 0.7, relativeDistance: 0.25),
+          Clouds(start: 0.6, relativeDistance: 0.5),
+          Clouds(start: 0.3, relativeDistance: 0),
           // Clouds(start: 0.8, relativeHeight: 0.15, durationInSeconds: 30),
           // Clouds(start: 0, relativeHeight: 0, durationInSeconds: 50),
         ],
@@ -108,19 +153,19 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
         if (screenWidth <= PuzzleWidthBreakpoints.small) {
           boardSize = _BoardSize.small;
           boardKey = const Key('simple_puzzle_board_small');
-          floatingObjectSize = 150;
+          floatingObjectSize = 75;
         } else if (screenWidth <= PuzzleWidthBreakpoints.medium) {
           boardSize = _BoardSize.medium;
           boardKey = const Key('simple_puzzle_board_medium');
-          floatingObjectSize = 200;
+          floatingObjectSize = 100;
         } else if (screenWidth <= PuzzleWidthBreakpoints.large) {
           boardSize = _BoardSize.large;
           boardKey = const Key('simple_puzzle_board_large');
-          floatingObjectSize = 250;
+          floatingObjectSize = 125;
         } else {
           boardSize = _BoardSize.xLarge;
           boardKey = const Key('simple_puzzle_board_xlarge');
-          floatingObjectSize = 300;
+          floatingObjectSize = 150;
         }
         final factory = FloatingObjectFactory(
           puzzleSize: boardSize,
@@ -256,13 +301,13 @@ class SimplePuzzleTitle extends StatelessWidget {
 
 abstract class _BoardSize {
   static double aspectRatio = 1.5;
-  static double _small = 312;
+  static double _small = 400;
   static Size small = Size(_small, _small / aspectRatio);
-  static double _medium = 424;
+  static double _medium = 550;
   static Size medium = Size(_medium, _medium / aspectRatio);
-  static double _large = 472;
+  static double _large = 700;
   static Size large = Size(_large, _large / aspectRatio);
-  static double _xLarge = 700;
+  static double _xLarge = 1000;
   static Size xLarge = Size(_xLarge, _xLarge / aspectRatio);
 }
 
@@ -324,15 +369,14 @@ class SimplePuzzleBoard extends StatelessWidget {
 
   double _calculateLeft(BoxConstraints constraints, Position position) {
     final blockWidth = _calculateBlockWidth(constraints);
-    return (position.x - 1).toDouble() * blockWidth / 2 +
-        (position.y - 1).toDouble() * blockWidth / 2;
+    return (position.x + position.y - 2).toDouble() * blockWidth / 2 * 1.02;
   }
 
   double _calculateTop(BoxConstraints constraints, Position position) {
     final blockWidth = _calculateBlockWidth(constraints);
     return (constraints.maxWidth / 3 - blockWidth * (1 / 2)) +
-        (position.y - 1) * (blockWidth * (3 / 10)) -
-        (position.x - 1) * (blockWidth * (3 / 10));
+        (position.y - 1) * (blockWidth * (29 / 100)) -
+        (position.x - 1) * (blockWidth * (29 / 100));
   }
 }
 

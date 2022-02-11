@@ -179,9 +179,9 @@ class _TopShape extends CustomPainter {
       ..lineTo(size.width, size.height / 2)
       ..close();
 
-    if (kDebugMode) {
-      canvas.drawPath(_path!, _strokePainter);
-    }
+    // if (kDebugMode) {
+    //   canvas.drawPath(_path!, _strokePainter);
+    // }
     canvas.drawPath(_path!, _fillPainter);
   }
 

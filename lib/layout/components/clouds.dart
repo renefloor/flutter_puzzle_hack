@@ -6,19 +6,15 @@ import '../responsive_layout_builder.dart';
 class Clouds extends StatefulWidget {
   const Clouds({
     Key? key,
-    required this.durationInSeconds,
     required this.start,
-    required this.relativeHeight,
+    required this.relativeDistance,
   }) : super(key: key);
-
-  /// Duration in seconds from entering the screen to leaving the screen.
-  final int durationInSeconds;
 
   /// Start is between 0 and 1, with 0 entering the screen and 1 leaving the screen.
   final double start;
 
-  /// Height is between 0 and 1, with 0 being lowest
-  final double relativeHeight;
+  /// Distance is between 0 and 1, with 0 being closest
+  final double relativeDistance;
 
   @override
   _CloudsState createState() => _CloudsState();
@@ -29,29 +25,25 @@ class _CloudsState extends State<Clouds> with SingleTickerProviderStateMixin {
   late Animation<double> positionAnimation;
   late Animation<double> opacityAnimation;
   late double _cloudPosition;
-  late double _opacity = 1;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: widget.durationInSeconds),
+      duration: Duration(
+        seconds: (300 * (1 + widget.relativeDistance*3)).floor(),
+      ),
     );
     _controller.value = widget.start;
     _cloudPosition = widget.start;
-    positionAnimation = Tween<double>(begin: 0, end: 0.8).animate(_controller)
-      ..addListener(() {
-        setState(() {
-          _cloudPosition = positionAnimation.value;
-        });
-      });
-    opacityAnimation = Tween<double>(begin: 2, end: 0).animate(_controller)
-      ..addListener(() {
-        setState(() {
-          _opacity = max(0, min(1, opacityAnimation.value));
-        });
-      });
+    positionAnimation =
+        Tween<double>(begin: 1.5, end: -1.5).animate(_controller)
+          ..addListener(() {
+            setState(() {
+              _cloudPosition = positionAnimation.value;
+            });
+          });
     _controller.repeat();
   }
 
@@ -64,34 +56,23 @@ class _CloudsState extends State<Clouds> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return ResponsiveLayoutBuilder(
-      large: (_, __) => _alignCloud(),
-      medium: (_, __) => _alignCloud(
-        widthFactor: 1.5,
+      defaultBuilder: (_, child) => Container(
+        margin: EdgeInsets.only(top: 100 + 100 * widget.relativeDistance),
+        height: 50 * (1 - widget.relativeDistance),
+        alignment: Alignment.centerRight,
+        child: child,
       ),
-      small: (_, __) => _alignCloud(
-        widthFactor: 2,
+      smallWide: (_, child) => Container(
+        margin: EdgeInsets.only(top: 50 + 50 * widget.relativeDistance),
+        height: 25 * (1 - widget.relativeDistance),
+        alignment: Alignment.centerRight,
+        child: child,
       ),
-      smallWide: (_, __) => _alignCloud(
-        widthFactor: 0.8,
-      ),
-      xLarge: (_, __) => _alignCloud(widthFactor: 0.8),
-    );
-  }
-
-  Widget _alignCloud({
-    double heightFactor = 1,
-    double widthFactor = 1,
-  }) {
-    final y =
-        (1 - _cloudPosition) * 0.6 * heightFactor * (1 - widget.relativeHeight);
-    final x = _cloudPosition * 0.8 * widthFactor * (1 - widget.relativeHeight);
-
-    return Align(
-      alignment: FractionalOffset(x, y),
-      child: Transform.translate(
-        offset: const Offset(-260, 0),
-        child: Opacity(
-            opacity: _opacity, child: Image.asset('assets/images/clouds.png')),
+      child: (_) => Align(
+        alignment: Alignment(_cloudPosition, 0),
+        child: Image.asset(
+          'assets/images/clouds.png',
+        ),
       ),
     );
   }

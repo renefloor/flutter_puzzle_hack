@@ -172,19 +172,19 @@ class _PuzzleSections extends StatelessWidget {
   Widget build(BuildContext context) {
     return ResponsiveLayoutBuilder(
       small: (context, child) => const _Page(
-        orientation: Orientation.portrait,
+        orientation: PageOrientation.portrait,
       ),
       medium: (context, child) => const _Page(
-        orientation: Orientation.portrait,
+        orientation: PageOrientation.portrait,
       ),
       smallWide: (context, child) => const _Page(
-        orientation: Orientation.landscape,
+        orientation: PageOrientation.landscapeLow,
       ),
       mediumWide: (context, child) => const _Page(
-        orientation: Orientation.landscape,
+        orientation: PageOrientation.landscapeLow,
       ),
       large: (context, child) => const _Page(
-        orientation: Orientation.landscape,
+        orientation: PageOrientation.landscape,
       ),
     );
   }
@@ -192,9 +192,19 @@ class _PuzzleSections extends StatelessWidget {
 
 const _puzzleBoardKey = Key('puzzle_board_stack');
 
+enum PageOrientation {
+  /// Taller than wide.
+  portrait,
+
+  /// Wider than tall.
+  landscape,
+
+  landscapeLow,
+}
+
 class _Page extends StatelessWidget {
   const _Page({required this.orientation, Key? key}) : super(key: key);
-  final Orientation orientation;
+  final PageOrientation orientation;
 
   @override
   Widget build(BuildContext context) {
@@ -203,31 +213,30 @@ class _Page extends StatelessWidget {
 
     return Stack(
       children: [
+        Align(
+          alignment: Alignment.topLeft,
+          child: theme.layoutDelegate.startSectionBuilder(state),
+        ),
         const Positioned.fill(
           child: PuzzleBoard(),
         ),
-        if (orientation == Orientation.portrait) ...[
-          Align(
-            alignment: Alignment.topLeft,
-            child: theme.layoutDelegate.startSectionBuilder(state),
-          ),
+        if (orientation == PageOrientation.portrait)
           Align(
             alignment: Alignment.bottomCenter,
             child: theme.layoutDelegate.endSectionBuilder(state),
           ),
-        ],
-        if (orientation == Orientation.landscape)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              theme.layoutDelegate.startSectionBuilder(state),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: theme.layoutDelegate.endSectionBuilder(state),
-                ),
-              ),
-            ],
+        if (orientation == PageOrientation.landscape)
+          Padding(
+            padding: const EdgeInsets.only(top: 200),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: theme.layoutDelegate.endSectionBuilder(state),
+            ),
+          ),
+        if(orientation == PageOrientation.landscapeLow)
+          Align(
+            alignment: Alignment.bottomRight,
+            child: theme.layoutDelegate.endSectionBuilder(state),
           ),
       ],
     );

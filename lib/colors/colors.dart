@@ -55,4 +55,6 @@ abstract class PuzzleColors {
 
   static const Color water_light = Color(0xFFA4D9F2);
   static const Color water_dark = Color(0xFF3C4F77);
+  static const Color sun = Color(0xFFFFD600);
+  static const Color moon = Color(0xFFF0F5E3);
 }

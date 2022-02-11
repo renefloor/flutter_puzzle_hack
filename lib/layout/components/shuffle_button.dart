@@ -76,15 +76,17 @@ class _IslandPuzzleShuffleButtonState extends State<IslandPuzzleShuffleButton>
               children: [
                 Image.asset(
                   'assets/images/shuffle_icon.png',
-                  width: 17,
-                  height: 17,
+                  width: 24,
+                  height: 24,
                 ),
                 const Gap(10),
                 Text(
                   status == PuzzleStatus.start
                       ? context.l10n.puzzleStart
                       : context.l10n.puzzleShuffle,
-                  style: PuzzleTextStyle.headline4,
+                  style: PuzzleTextStyle.headline4.copyWith(
+                    color: const Color(0xFF284A65),
+                  ),
                 ),
               ],
             ),
@@ -104,4 +106,4 @@ class _IslandPuzzleShuffleButtonState extends State<IslandPuzzleShuffleButton>
   }
 }
 
-const _borderColor = Color(0xFF75B9D9);
+const _borderColor = Color(0xFF284A65);
