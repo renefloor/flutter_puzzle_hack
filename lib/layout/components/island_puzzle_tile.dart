@@ -46,7 +46,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      var position = 0/16;
+      var position = 0.0;
       if (_isTapped) {
         position += 0.05;
       } else if (_isHovered) {
@@ -59,13 +59,13 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
 
       return TweenAnimationBuilder<double>(
           tween: Tween<double>(begin: 0, end: position),
-          curve: _isTapped ? Curves.linear : Curves.elasticOut,
+          curve: _isTapped ? Curves.linear : Curves.linear,
           duration: Duration(
             milliseconds: _isTapped
                 ? 50
                 : _isShuffling
                     ? 5000
-                    : 500,
+                    : 50,
           ),
           builder: (context, value, _) {
             return Stack(
@@ -78,14 +78,13 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
                   child: IgnorePointer(
                     child: Stack(
                       children: [
-                        Image.asset(
-                            'assets/images/block_empty.png'),
+                        Image.asset('assets/images/block_empty.png'),
                         Align(
                           alignment: Alignment.topCenter,
                           child: AnimatedOpacity(
-                              curve: Curves.easeInQuad,
-                              duration: const Duration(milliseconds: 400),
-                              opacity: showImage ? 0 : 1,
+                            curve: Curves.easeInQuad,
+                            duration: const Duration(milliseconds: 400),
+                            opacity: showImage ? 0 : 1,
                             child: Image.asset(
                                 'assets/images/block_${widget.tile.value}_complete.png'),
                           ),
@@ -221,8 +220,7 @@ class _Water extends StatelessWidget {
     final relativeUnderWater =
         math.max<double>(0, relativeHeightOfIsland - _waterLevel);
     final waterColor =
-        context.select((ThemeBloc bloc) => bloc.state.theme).backgroundColor
-    ;
+        context.select((ThemeBloc bloc) => bloc.state.theme).backgroundColor;
 
     final double waterOpacity;
     if (relativeUnderWater < 0.0) {

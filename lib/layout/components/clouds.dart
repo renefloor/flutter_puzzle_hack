@@ -32,7 +32,7 @@ class _CloudsState extends State<Clouds> with SingleTickerProviderStateMixin {
     _controller = AnimationController(
       vsync: this,
       duration: Duration(
-        seconds: (300 * (1 + widget.relativeDistance*3)).floor(),
+        seconds: (300 * (1 + widget.relativeDistance * 3)).floor(),
       ),
     );
     _controller.value = widget.start;

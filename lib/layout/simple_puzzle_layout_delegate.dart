@@ -149,6 +149,7 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
             screenWidth <= PuzzleWidthBreakpoints.smallWide) {
           bottomPadding = 50;
         }
+        bool hasRock = false;
 
         if (screenWidth <= PuzzleWidthBreakpoints.small) {
           boardSize = _BoardSize.small;
@@ -162,10 +163,12 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
           boardSize = _BoardSize.large;
           boardKey = const Key('simple_puzzle_board_large');
           floatingObjectSize = 125;
+          hasRock = true;
         } else {
           boardSize = _BoardSize.xLarge;
           boardKey = const Key('simple_puzzle_board_xlarge');
           floatingObjectSize = 150;
+          hasRock = true;
         }
         final factory = FloatingObjectFactory(
           puzzleSize: boardSize,
@@ -199,6 +202,13 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
                 ),
               ),
             ),
+            if (hasRock)
+              Positioned(
+                right: screenSize.width / 2 - boardSize.width * 0.75,
+                top: (screenSize.height - 200) / 2,
+                width: 200,
+                child: Image.asset('assets/images/rock.png'),
+              ),
             factory.se(Image.asset('assets/images/submarine.png')),
             factory.sw(Image.asset('assets/images/boat_new.png'), speed: 2.5),
           ],
