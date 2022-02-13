@@ -66,17 +66,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
                   child: IgnorePointer(
                     child: Stack(
                       children: [
-                        Image.asset('assets/images/block_empty.png'),
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: AnimatedOpacity(
-                            curve: Curves.easeInQuad,
-                            duration: const Duration(milliseconds: 400),
-                            opacity: showImage ? 0 : 1,
-                            child: Image.asset(
-                                'assets/images/block_${widget.tile.value}_complete.png'),
-                          ),
-                        ),
+                        Image.asset('assets/images/block_${widget.tile.value}_complete.png'),
                         Align(
                           alignment: Alignment.topCenter,
                           child: AnimatedOpacity(
