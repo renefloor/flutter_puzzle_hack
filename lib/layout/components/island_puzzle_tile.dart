@@ -10,6 +10,8 @@ import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
 import 'package:very_good_slide_puzzle/theme/theme.dart';
 import 'dart:math' as math;
 
+import 'island_height_animator.dart';
+
 /// {@template simple_puzzle_tile}
 /// Displays the puzzle tile associated with [tile] and
 /// the font size of [tileFontSize] based on the puzzle [state].
@@ -46,28 +48,14 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      var position = 0.0;
-      if (_isTapped) {
-        position += 0.05;
-      } else if (_isHovered) {
-        position += 0.02;
-      }
-      if (_isShuffling) position += 0.8;
-
       final showImage = !_isHovered &&
           widget.tile.correctPosition == widget.tile.currentPosition;
 
-      return TweenAnimationBuilder<double>(
-          tween: Tween<double>(begin: 0, end: position),
-          curve: _isTapped || _isHovered ? Curves.linear : Curves.easeOutBack,
-          duration: Duration(
-            milliseconds: _isTapped || _isHovered
-                ? 50
-                : _isShuffling
-                    ? 5000
-                    : 500,
-          ),
-          builder: (context, value, _) {
+      return IslandHeightAnimator(
+        isShuffling: _isShuffling,
+        isTapped: _isTapped,
+        isHovered: _isHovered,
+        builder: (value){
             return Stack(
               clipBehavior: Clip.none,
               children: [
