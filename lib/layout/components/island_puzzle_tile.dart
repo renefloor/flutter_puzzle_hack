@@ -50,7 +50,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
       if (_isTapped) {
         position += 0.05;
       } else if (_isHovered) {
-        position += 0.01;
+        position += 0.02;
       }
       if (_isShuffling) position += 0.8;
 
@@ -59,13 +59,13 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
 
       return TweenAnimationBuilder<double>(
           tween: Tween<double>(begin: 0, end: position),
-          curve: _isTapped ? Curves.linear : Curves.linear,
+          curve: _isTapped || _isHovered ? Curves.linear : Curves.easeOutBack,
           duration: Duration(
-            milliseconds: _isTapped
+            milliseconds: _isTapped || _isHovered
                 ? 50
                 : _isShuffling
                     ? 5000
-                    : 50,
+                    : 500,
           ),
           builder: (context, value, _) {
             return Stack(
