@@ -4,6 +4,7 @@ import 'package:very_good_slide_puzzle/l10n/l10n.dart';
 import 'package:very_good_slide_puzzle/layout/components/index.dart';
 import 'package:very_good_slide_puzzle/layout/components/island_puzzle_tile.dart';
 import 'package:very_good_slide_puzzle/layout/components/shuffle_button.dart';
+import 'package:very_good_slide_puzzle/layout/components/waves.dart';
 import 'package:very_good_slide_puzzle/layout/layout.dart';
 import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
@@ -210,6 +211,18 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
                 child: Image.asset('assets/images/rock.png'),
               ),
             factory.se(Image.asset('assets/images/submarine.png')),
+            Waves(
+              right: screenSize.width / 2 - boardSize.width * 0.9,
+              top: screenSize.height * 0.75,
+            ),
+            Waves(
+              top: screenSize.height * 0.65,
+              left: screenSize.width / 2 - boardSize.width * 0.8,
+            ),
+            Waves(
+              top: screenSize.height / 2 + boardSize.height * 0.5,
+              left: screenSize.width / 2 - boardSize.width * 0.2,
+            ),
             factory.sw(Image.asset('assets/images/boat_new.png'), speed: 2.5),
           ],
         );
