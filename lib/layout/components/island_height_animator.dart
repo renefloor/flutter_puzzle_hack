@@ -24,11 +24,13 @@ class IslandHeightAnimator extends StatelessWidget {
     }
     if (isShuffling) position += 0.8;
 
+    final tapOrHover = (isTapped || isHovered) && !isShuffling;
+
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 0, end: position),
-      curve: isTapped || isHovered ? Curves.linear : Curves.easeOutBack,
+      curve: tapOrHover ? Curves.linear : Curves.easeOutBack,
       duration: Duration(
-        milliseconds: isTapped || isHovered
+        milliseconds: tapOrHover
             ? 50
             : isShuffling
                 ? 5000
