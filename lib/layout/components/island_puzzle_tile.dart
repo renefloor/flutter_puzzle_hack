@@ -131,10 +131,10 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
 
   Future<void> playSound() async {
     if (tileAudioPlayer.playing) {
-      await tileAudioPlayer.stop();
+      await tileAudioPlayer.seek(Duration.zero);
+    } else {
+      await tileAudioPlayer.play();
     }
-    await tileAudioPlayer.setAsset('assets/sounds/splash_small2.mp3');
-    await tileAudioPlayer.play();
   }
 }
 
