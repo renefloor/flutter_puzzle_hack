@@ -49,7 +49,7 @@ abstract class PuzzleLayoutDelegate extends Equatable {
   ///
   /// To complete the puzzle, all tiles must be arranged
   /// in order by their [Tile.value].
-  Widget tileBuilder(Tile tile, PuzzleState state, AudioPlayer audioPlayer);
+  Widget tileBuilder(Tile tile, PuzzleState state);
 
   /// A widget builder for the whitespace puzzle tile.
   Widget whitespaceTileBuilder();

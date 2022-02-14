@@ -324,11 +324,7 @@ class _HorizontalPage extends StatelessWidget {
 /// {@endtemplate}
 class PuzzleBoard extends StatelessWidget {
   /// {@macro puzzle_board}
-  PuzzleBoard({Key? key}) : super(key: key) {
-    _audioPlayer.setAsset('assets/sounds/splash_small.mp3');
-  }
-
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  PuzzleBoard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -343,36 +339,32 @@ class PuzzleBoard extends StatelessWidget {
       tilesMap[tile] = _PuzzleTile(
         key: Key('puzzle_tile_${tile.value.toString()}'),
         tile: tile,
-        audioPlayer: _audioPlayer,
       );
     }
 
-    return AudioControlListener(
-      audioPlayer: _audioPlayer,
-      child: BlocListener<PuzzleBloc, PuzzleState>(
-        listener: (context, state) {
-          if (theme.hasTimer && state.puzzleStatus == PuzzleStatus.complete) {
-            context.read<TimerBloc>().add(const TimerStopped());
-          }
-        },
-        child: ResponsiveLayoutBuilder(
-            defaultBuilder: (context, child) => Padding(
-                  padding: const EdgeInsets.only(top: 200),
-                  child: child,
-                ),
-            smallWide: (context, child) => Padding(
-                  padding: const EdgeInsets.only(top: 100),
-                  child: child,
-                ),
-            child: (_) {
-              return PuzzleKeyboardHandler(
-                child: theme.layoutDelegate.boardBuilder(
-                  size,
-                  tilesMap,
-                ),
-              );
-            }),
-      ),
+    return BlocListener<PuzzleBloc, PuzzleState>(
+      listener: (context, state) {
+        if (theme.hasTimer && state.puzzleStatus == PuzzleStatus.complete) {
+          context.read<TimerBloc>().add(const TimerStopped());
+        }
+      },
+      child: ResponsiveLayoutBuilder(
+          defaultBuilder: (context, child) => Padding(
+                padding: const EdgeInsets.only(top: 200),
+                child: child,
+              ),
+          smallWide: (context, child) => Padding(
+                padding: const EdgeInsets.only(top: 100),
+                child: child,
+              ),
+          child: (_) {
+            return PuzzleKeyboardHandler(
+              child: theme.layoutDelegate.boardBuilder(
+                size,
+                tilesMap,
+              ),
+            );
+          }),
     );
   }
 }
@@ -381,13 +373,10 @@ class _PuzzleTile extends StatelessWidget {
   const _PuzzleTile({
     Key? key,
     required this.tile,
-    required this.audioPlayer,
   }) : super(key: key);
 
   /// The tile to be displayed.
   final Tile tile;
-
-  final AudioPlayer audioPlayer;
 
   @override
   Widget build(BuildContext context) {
@@ -396,6 +385,6 @@ class _PuzzleTile extends StatelessWidget {
 
     return tile.isWhitespace
         ? theme.layoutDelegate.whitespaceTileBuilder()
-        : theme.layoutDelegate.tileBuilder(tile, state, audioPlayer);
+        : theme.layoutDelegate.tileBuilder(tile, state);
   }
 }

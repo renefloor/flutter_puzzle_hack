@@ -232,28 +232,25 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
   }
 
   @override
-  Widget tileBuilder(Tile tile, PuzzleState state, AudioPlayer audioPlayer) {
+  Widget tileBuilder(Tile tile, PuzzleState state) {
     return ResponsiveLayoutBuilder(
       small: (_, __) => IslandPuzzleTile(
         key: Key('simple_puzzle_tile_${tile.value}_small'),
         tile: tile,
         tileFontSize: _TileFontSize.small,
         state: state,
-        audioPlayer: audioPlayer,
       ),
       medium: (_, __) => IslandPuzzleTile(
         key: Key('simple_puzzle_tile_${tile.value}_medium'),
         tile: tile,
         tileFontSize: _TileFontSize.medium,
         state: state,
-        audioPlayer: audioPlayer,
       ),
       large: (_, __) => IslandPuzzleTile(
         key: Key('simple_puzzle_tile_${tile.value}_large'),
         tile: tile,
         tileFontSize: _TileFontSize.large,
         state: state,
-        audioPlayer: audioPlayer,
       ),
     );
   }
