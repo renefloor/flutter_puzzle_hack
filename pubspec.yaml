@@ -1,6 +1,6 @@
 name: very_good_slide_puzzle
 description: A Very Good Project created by Very Good CLI.
-version: 1.0.0+20
+version: 1.0.0+21
 publish_to: none
 
 environment:
@@ -20,6 +20,8 @@ dependencies:
   gap: ^2.0.0
   google_fonts: ^2.1.0
   intl: ^0.17.0
+  just_audio: ^0.9.20
+  just_audio_libwinmedia: ^0.0.4
   platform: ^3.1.0
 
 dev_dependencies:
@@ -34,6 +36,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/sounds/
   fonts:
     - family: GoogleSans
       fonts:

@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:very_good_slide_puzzle/models/models.dart';
 
 part 'puzzle_event.dart';
@@ -20,6 +21,8 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
   final int _size;
 
   final Random? random;
+
+  final audioPlayer = AudioPlayer();
 
   void _onPuzzleInitialized(
     PuzzleInitialized event,

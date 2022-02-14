@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:very_good_slide_puzzle/l10n/l10n.dart';
 import 'package:very_good_slide_puzzle/layout/components/index.dart';
 import 'package:very_good_slide_puzzle/layout/components/island_puzzle_tile.dart';
@@ -37,7 +38,7 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               NumberOfMoves(state.numberOfMoves),
-              const IslandPuzzleShuffleButton(),
+              ShuffleAndMuteButtons(),
               NumberOfTilesLeft(state.numberOfTilesLeft),
             ],
           ),
@@ -45,7 +46,7 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               NumberOfMoves(state.numberOfMoves),
-              const IslandPuzzleShuffleButton(),
+              ShuffleAndMuteButtons(),
               NumberOfTilesLeft(state.numberOfTilesLeft),
             ],
           ),
@@ -55,7 +56,7 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
               crossAxisAlignment: CrossAxisAlignment.end,
               // mainAxisSize: MainAxisSize.max,
               children: [
-                const IslandPuzzleShuffleButton(),
+                ShuffleAndMuteButtons(),
                 const Gap(32),
                 Padding(
                   padding: const EdgeInsets.only(left: 32),
@@ -75,7 +76,7 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const IslandPuzzleShuffleButton(),
+                ShuffleAndMuteButtons(),
                 const Gap(32),
                 Padding(
                   padding: const EdgeInsets.only(left: 32),
@@ -95,7 +96,7 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const IslandPuzzleShuffleButton(),
+                ShuffleAndMuteButtons(),
                 const Gap(32),
                 Padding(
                   padding: const EdgeInsets.only(left: 32),
@@ -231,25 +232,28 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
   }
 
   @override
-  Widget tileBuilder(Tile tile, PuzzleState state) {
+  Widget tileBuilder(Tile tile, PuzzleState state, AudioPlayer audioPlayer) {
     return ResponsiveLayoutBuilder(
       small: (_, __) => IslandPuzzleTile(
         key: Key('simple_puzzle_tile_${tile.value}_small'),
         tile: tile,
         tileFontSize: _TileFontSize.small,
         state: state,
+        audioPlayer: audioPlayer,
       ),
       medium: (_, __) => IslandPuzzleTile(
         key: Key('simple_puzzle_tile_${tile.value}_medium'),
         tile: tile,
         tileFontSize: _TileFontSize.medium,
         state: state,
+        audioPlayer: audioPlayer,
       ),
       large: (_, __) => IslandPuzzleTile(
         key: Key('simple_puzzle_tile_${tile.value}_large'),
         tile: tile,
         tileFontSize: _TileFontSize.large,
         state: state,
+        audioPlayer: audioPlayer,
       ),
     );
   }

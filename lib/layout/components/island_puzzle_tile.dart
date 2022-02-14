@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:very_good_slide_puzzle/l10n/l10n.dart';
 import 'package:very_good_slide_puzzle/layout/components/mouse_region_hittest.dart';
 import 'package:very_good_slide_puzzle/models/models.dart';
@@ -24,6 +25,7 @@ class IslandPuzzleTile extends StatefulWidget {
     required this.tile,
     required this.tileFontSize,
     required this.state,
+    required this.audioPlayer,
   }) : super(key: key);
 
   /// The tile to be displayed.
@@ -34,6 +36,8 @@ class IslandPuzzleTile extends StatefulWidget {
 
   /// The state of the puzzle.
   final PuzzleState state;
+
+  final AudioPlayer audioPlayer;
 
   @override
   State<IslandPuzzleTile> createState() => _IslandPuzzleTileState();
@@ -52,10 +56,10 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
           widget.tile.correctPosition == widget.tile.currentPosition;
 
       return IslandHeightAnimator(
-        isShuffling: _isShuffling,
-        isTapped: _isTapped,
-        isHovered: _isHovered,
-        builder: (value){
+          isShuffling: _isShuffling,
+          isTapped: _isTapped,
+          isHovered: _isHovered,
+          builder: (value) {
             return Stack(
               clipBehavior: Clip.none,
               children: [
@@ -66,7 +70,8 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
                   child: IgnorePointer(
                     child: Stack(
                       children: [
-                        Image.asset('assets/images/block_${widget.tile.value}_complete.png'),
+                        Image.asset(
+                            'assets/images/block_${widget.tile.value}_complete.png'),
                         Align(
                           alignment: Alignment.topCenter,
                           child: AnimatedOpacity(
@@ -92,11 +97,10 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
                     onTapDown: (_) => setState(() => _isTapped = true),
                     onTapUp: (_) => setState(() => _isTapped = false),
                     onTapCancel: () => setState(() => _isTapped = false),
-                    onTap: widget.state.puzzleStatus == PuzzleStatus.incomplete
-                        ? () => context
-                            .read<PuzzleBloc>()
-                            .add(TileTapped(widget.tile))
-                        : null,
+                    onTap: () {
+                      widget.audioPlayer.play();
+                      context.read<PuzzleBloc>().add(TileTapped(widget.tile));
+                    },
                     child: MouseRegionHittest(
                       onEnter: (_) => setState(() => _isHovered = true),
                       onExit: (_) => setState(() => _isHovered = false),

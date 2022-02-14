@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:very_good_slide_puzzle/audio/audio_control_bloc.dart';
 import 'package:very_good_slide_puzzle/colors/colors.dart';
 import 'package:very_good_slide_puzzle/layout/components/puzzle_keyboard_handler.dart';
 import 'package:very_good_slide_puzzle/layout/layout.dart';
@@ -7,6 +9,8 @@ import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
 import 'package:very_good_slide_puzzle/theme/theme.dart';
 import 'package:very_good_slide_puzzle/timer/timer.dart';
+
+import '../../audio/audio_control_listener.dart';
 
 /// {@template puzzle_page}
 /// The root page of the puzzle UI.
@@ -62,24 +66,26 @@ class PuzzleView extends StatelessWidget {
           ),
         ),
         child: BlocProvider(
-          create: (context) => TimerBloc(
-            ticker: const Ticker(),
-          ),
-          child: SafeArea(
+            create: (context) => AudioControlBloc(),
             child: BlocProvider(
-              create: (context) => PuzzleBloc(
-                4,
-              )..add(
-                  PuzzleInitialized(
-                    shufflePuzzle: shufflePuzzle,
+              create: (context) => TimerBloc(
+                ticker: const Ticker(),
+              ),
+              child: SafeArea(
+                child: BlocProvider(
+                  create: (context) => PuzzleBloc(
+                    4,
+                  )..add(
+                      PuzzleInitialized(
+                        shufflePuzzle: shufflePuzzle,
+                      ),
+                    ),
+                  child: const _Puzzle(
+                    key: Key('puzzle_view_puzzle'),
                   ),
                 ),
-              child: const _Puzzle(
-                key: Key('puzzle_view_puzzle'),
               ),
-            ),
-          ),
-        ),
+            )),
       ),
     );
   }
@@ -228,7 +234,7 @@ class _Page extends StatelessWidget {
           alignment: Alignment.topLeft,
           child: theme.layoutDelegate.startSectionBuilder(state),
         ),
-        const Positioned.fill(
+        Positioned.fill(
           child: PuzzleBoard(),
         ),
         if (orientation == PageOrientation.portrait)
@@ -318,7 +324,11 @@ class _HorizontalPage extends StatelessWidget {
 /// {@endtemplate}
 class PuzzleBoard extends StatelessWidget {
   /// {@macro puzzle_board}
-  const PuzzleBoard({Key? key}) : super(key: key);
+  PuzzleBoard({Key? key}) : super(key: key) {
+    _audioPlayer.setAsset('assets/sounds/splash_small.mp3');
+  }
+
+  final AudioPlayer _audioPlayer = AudioPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -333,32 +343,36 @@ class PuzzleBoard extends StatelessWidget {
       tilesMap[tile] = _PuzzleTile(
         key: Key('puzzle_tile_${tile.value.toString()}'),
         tile: tile,
+        audioPlayer: _audioPlayer,
       );
     }
 
-    return BlocListener<PuzzleBloc, PuzzleState>(
-      listener: (context, state) {
-        if (theme.hasTimer && state.puzzleStatus == PuzzleStatus.complete) {
-          context.read<TimerBloc>().add(const TimerStopped());
-        }
-      },
-      child: ResponsiveLayoutBuilder(
-          defaultBuilder: (context, child) => Padding(
-                padding: const EdgeInsets.only(top: 200),
-                child: child,
-              ),
-          smallWide: (context, child) => Padding(
-                padding: const EdgeInsets.only(top: 100),
-                child: child,
-              ),
-          child: (_) {
-            return PuzzleKeyboardHandler(
-              child: theme.layoutDelegate.boardBuilder(
-                size,
-                tilesMap,
-              ),
-            );
-          }),
+    return AudioControlListener(
+      audioPlayer: _audioPlayer,
+      child: BlocListener<PuzzleBloc, PuzzleState>(
+        listener: (context, state) {
+          if (theme.hasTimer && state.puzzleStatus == PuzzleStatus.complete) {
+            context.read<TimerBloc>().add(const TimerStopped());
+          }
+        },
+        child: ResponsiveLayoutBuilder(
+            defaultBuilder: (context, child) => Padding(
+                  padding: const EdgeInsets.only(top: 200),
+                  child: child,
+                ),
+            smallWide: (context, child) => Padding(
+                  padding: const EdgeInsets.only(top: 100),
+                  child: child,
+                ),
+            child: (_) {
+              return PuzzleKeyboardHandler(
+                child: theme.layoutDelegate.boardBuilder(
+                  size,
+                  tilesMap,
+                ),
+              );
+            }),
+      ),
     );
   }
 }
@@ -367,10 +381,13 @@ class _PuzzleTile extends StatelessWidget {
   const _PuzzleTile({
     Key? key,
     required this.tile,
+    required this.audioPlayer,
   }) : super(key: key);
 
   /// The tile to be displayed.
   final Tile tile;
+
+  final AudioPlayer audioPlayer;
 
   @override
   Widget build(BuildContext context) {
@@ -379,6 +396,6 @@ class _PuzzleTile extends StatelessWidget {
 
     return tile.isWhitespace
         ? theme.layoutDelegate.whitespaceTileBuilder()
-        : theme.layoutDelegate.tileBuilder(tile, state);
+        : theme.layoutDelegate.tileBuilder(tile, state, audioPlayer);
   }
 }

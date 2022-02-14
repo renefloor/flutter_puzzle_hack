@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 typedef IslandHeightAnimatorBuilder = Widget Function(double relativeDepth);
+
 class IslandHeightAnimator extends StatelessWidget {
   const IslandHeightAnimator({
     required this.isShuffling,

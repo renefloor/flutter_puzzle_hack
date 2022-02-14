@@ -90,12 +90,11 @@ class _MoonState extends State<Moon> with SingleTickerProviderStateMixin {
     final moonShape = CustomPaint(
       painter: MoonShape(fraction),
     );
-    var angle = - math.pi / 5;
-    if(_controller.status == AnimationStatus.forward){
+    var angle = -math.pi / 5;
+    if (_controller.status == AnimationStatus.forward) {
       angle += math.pi;
     }
     return Transform.rotate(angle: angle, child: moonShape);
-
 
     if (_controller.status == AnimationStatus.reverse) {
       return moonShape;

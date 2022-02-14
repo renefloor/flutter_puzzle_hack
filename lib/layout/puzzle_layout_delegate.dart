@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
 
@@ -48,7 +49,7 @@ abstract class PuzzleLayoutDelegate extends Equatable {
   ///
   /// To complete the puzzle, all tiles must be arranged
   /// in order by their [Tile.value].
-  Widget tileBuilder(Tile tile, PuzzleState state);
+  Widget tileBuilder(Tile tile, PuzzleState state, AudioPlayer audioPlayer);
 
   /// A widget builder for the whitespace puzzle tile.
   Widget whitespaceTileBuilder();

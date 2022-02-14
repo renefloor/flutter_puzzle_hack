@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Waves extends StatelessWidget {
-  const Waves({required this.top, this.left, this.right, Key? key}) : super(key: key);
+  const Waves({required this.top, this.left, this.right, Key? key})
+      : super(key: key);
   final double? left;
   final double? right;
   final double top;
