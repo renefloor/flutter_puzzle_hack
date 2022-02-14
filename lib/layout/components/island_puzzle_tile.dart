@@ -134,7 +134,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
     if (widget.audioPlayer.playing) {
       await widget.audioPlayer.stop();
     }
-    await widget.audioPlayer.setAsset('assets/sounds/splash_small.mp3');
+    await widget.audioPlayer.setAsset('assets/sounds/splash_small2.mp3');
     await widget.audioPlayer.play();
   }
 }

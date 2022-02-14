@@ -14,6 +14,7 @@ class ShuffleAndMuteButtons extends StatelessWidget {
   ShuffleAndMuteButtons({Key? key}) : super(key: key) {
     _audioPlayer.setAsset('assets/sounds/splash_big2.mp3');
   }
+
   final _audioPlayer = AudioPlayer();
 
   @override
@@ -120,6 +121,7 @@ class _IslandPuzzleButtonState extends State<IslandPuzzleButton>
   late AnimationController _controller;
   late Animation<double> _xAnimation;
   late Animation<double> _yAnimation;
+  bool isHovered = false;
 
   @override
   void initState() {
@@ -151,19 +153,25 @@ class _IslandPuzzleButtonState extends State<IslandPuzzleButton>
 
     return Transform.translate(
       offset: Offset(dx, dy),
-      child: GestureDetector(
-        onTapDown: (_) => _controller.forward(),
-        onTapCancel: () => _controller.reverse(),
-        onTapUp: (_) => _controller.reverse(),
-        onTap: widget.onTap,
-        child: Container(
-          decoration: BoxDecoration(
-            color: const Color(0xFF9BCAE1),
-            border: Border.all(color: _borderColor, width: 2),
-            borderRadius: BorderRadius.circular(45),
-            boxShadow: createShadow(dx, dy),
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        onEnter: (_) => setState(() => isHovered = true),
+        onExit: (_) => setState(() => isHovered = false),
+        child: GestureDetector(
+          onTapDown: (_) => _controller.forward(),
+          onTapCancel: () => _controller.reverse(),
+          onTapUp: (_) => _controller.reverse(),
+          onTap: widget.onTap,
+          child: Container(
+            decoration: BoxDecoration(
+              color:
+                  isHovered ? const Color(0xFF2EBED4) : const Color(0xFF35D1E9),
+              border: Border.all(color: _borderColor, width: 2),
+              borderRadius: BorderRadius.circular(45),
+              boxShadow: createShadow(dx, dy),
+            ),
+            child: widget.child,
           ),
-          child: widget.child,
         ),
       ),
     );
