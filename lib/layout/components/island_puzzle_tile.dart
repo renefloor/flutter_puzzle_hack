@@ -104,6 +104,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
                       context.read<PuzzleBloc>().add(TileTapped(widget.tile));
                     },
                     child: MouseRegionHittest(
+                      cursor: SystemMouseCursors.click,
                       onEnter: (_) => setState(() => _isHovered = true),
                       onExit: (_) => setState(() => _isHovered = false),
                       child: Semantics(
