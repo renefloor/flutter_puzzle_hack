@@ -11,6 +11,7 @@ import 'package:very_good_slide_puzzle/theme/theme.dart';
 import 'package:very_good_slide_puzzle/timer/timer.dart';
 
 import '../../audio/audio_control_listener.dart';
+import '../../layout/components/island_puzzle_tile.dart';
 
 /// {@template puzzle_page}
 /// The root page of the puzzle UI.
@@ -99,19 +100,22 @@ class _Puzzle extends StatelessWidget {
     final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
     final state = context.select((PuzzleBloc bloc) => bloc.state);
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Stack(
-          children: [
-            theme.layoutDelegate.backgroundBuilder(state),
-            const Positioned.fill(
-              child: _PuzzleSections(
-                key: Key('puzzle_sections'),
+    return AudioControlListener(
+      audioPlayer: tileAudioPlayer,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Stack(
+            children: [
+              theme.layoutDelegate.backgroundBuilder(state),
+              const Positioned.fill(
+                child: _PuzzleSections(
+                  key: Key('puzzle_sections'),
+                ),
               ),
-            ),
-          ],
-        );
-      },
+            ],
+          );
+        },
+      ),
     );
   }
 }

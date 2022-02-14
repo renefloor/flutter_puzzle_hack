@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:very_good_slide_puzzle/audio/audio_control_listener.dart';
 import 'package:very_good_slide_puzzle/l10n/l10n.dart';
 import 'package:very_good_slide_puzzle/layout/components/index.dart';
 import 'package:very_good_slide_puzzle/layout/components/island_puzzle_tile.dart';
@@ -233,24 +234,26 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
 
   @override
   Widget tileBuilder(Tile tile, PuzzleState state) {
-    return ResponsiveLayoutBuilder(
-      small: (_, __) => IslandPuzzleTile(
-        key: Key('simple_puzzle_tile_${tile.value}_small'),
-        tile: tile,
-        tileFontSize: _TileFontSize.small,
-        state: state,
-      ),
-      medium: (_, __) => IslandPuzzleTile(
-        key: Key('simple_puzzle_tile_${tile.value}_medium'),
-        tile: tile,
-        tileFontSize: _TileFontSize.medium,
-        state: state,
-      ),
-      large: (_, __) => IslandPuzzleTile(
-        key: Key('simple_puzzle_tile_${tile.value}_large'),
-        tile: tile,
-        tileFontSize: _TileFontSize.large,
-        state: state,
+    return AudioControlListener(
+      child: ResponsiveLayoutBuilder(
+        small: (_, __) => IslandPuzzleTile(
+          key: Key('simple_puzzle_tile_${tile.value}_small'),
+          tile: tile,
+          tileFontSize: _TileFontSize.small,
+          state: state,
+        ),
+        medium: (_, __) => IslandPuzzleTile(
+          key: Key('simple_puzzle_tile_${tile.value}_medium'),
+          tile: tile,
+          tileFontSize: _TileFontSize.medium,
+          state: state,
+        ),
+        large: (_, __) => IslandPuzzleTile(
+          key: Key('simple_puzzle_tile_${tile.value}_large'),
+          tile: tile,
+          tileFontSize: _TileFontSize.large,
+          state: state,
+        ),
       ),
     );
   }

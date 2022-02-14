@@ -12,13 +12,16 @@ import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
 import 'package:very_good_slide_puzzle/theme/theme.dart';
 import 'dart:math' as math;
-
 import 'island_height_animator.dart';
+
+final tileAudioPlayer = AudioPlayer()
+  ..setAsset('assets/sounds/splash_small2.mp3');
 
 /// {@template simple_puzzle_tile}
 /// Displays the puzzle tile associated with [tile] and
 /// the font size of [tileFontSize] based on the puzzle [state].
 /// {@endtemplate}
+///
 @visibleForTesting
 class IslandPuzzleTile extends StatefulWidget {
   /// {@macro simple_puzzle_tile}
@@ -38,8 +41,6 @@ class IslandPuzzleTile extends StatefulWidget {
   /// The state of the puzzle.
   final PuzzleState state;
 
-  final AudioPlayer audioPlayer = AudioPlayer();
-
   @override
   State<IslandPuzzleTile> createState() => _IslandPuzzleTileState();
 }
@@ -56,86 +57,83 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
       final showImage = !_isHovered &&
           widget.tile.correctPosition == widget.tile.currentPosition;
 
-      return AudioControlListener(
-        audioPlayer: widget.audioPlayer,
-        child: IslandHeightAnimator(
-            isShuffling: _isShuffling,
-            isTapped: _isTapped,
-            isHovered: _isHovered,
-            builder: (value) {
-              return Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Positioned(
-                    top: value * constraints.maxWidth,
-                    left: 0,
-                    right: 0,
-                    child: IgnorePointer(
-                      child: Stack(
-                        children: [
-                          Image.asset(
-                              'assets/images/block_${widget.tile.value}_complete.png'),
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: AnimatedOpacity(
-                              curve: Curves.easeInQuad,
-                              duration: const Duration(milliseconds: 400),
-                              opacity: showImage ? 1 : 0,
-                              child: Image.asset(
-                                  'assets/images/block_${widget.tile.value}_incomplete.png'),
-                            ),
+      return IslandHeightAnimator(
+          isShuffling: _isShuffling,
+          isTapped: _isTapped,
+          isHovered: _isHovered,
+          builder: (value) {
+            return Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Positioned(
+                  top: value * constraints.maxWidth,
+                  left: 0,
+                  right: 0,
+                  child: IgnorePointer(
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                            'assets/images/block_${widget.tile.value}_complete.png'),
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: AnimatedOpacity(
+                            curve: Curves.easeInQuad,
+                            duration: const Duration(milliseconds: 400),
+                            opacity: showImage ? 1 : 0,
+                            child: Image.asset(
+                                'assets/images/block_${widget.tile.value}_incomplete.png'),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  _Water(
-                    width: constraints.maxWidth,
-                    relativeDepth: value,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: constraints.maxWidth * 0.07),
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.deferToChild,
-                      onTapDown: (_) => setState(() => _isTapped = true),
-                      onTapUp: (_) => setState(() => _isTapped = false),
-                      onTapCancel: () => setState(() => _isTapped = false),
-                      onTap: () {
-                        playSound();
-                        context.read<PuzzleBloc>().add(TileTapped(widget.tile));
-                      },
-                      child: MouseRegionHittest(
-                        onEnter: (_) => setState(() => _isHovered = true),
-                        onExit: (_) => setState(() => _isHovered = false),
-                        child: Semantics(
-                          sortKey: OrdinalSortKey(
-                            widget.tile.currentPosition.y * 100.0 +
-                                widget.tile.currentPosition.x,
-                            name: 'tile',
-                          ),
-                          label: context.l10n.puzzleTileLabelText(
-                            widget.tile.value.toString(),
-                            widget.tile.currentPosition.x.toString(),
-                            widget.tile.currentPosition.y.toString(),
-                          ),
-                          child: const _Top(),
                         ),
+                      ],
+                    ),
+                  ),
+                ),
+                _Water(
+                  width: constraints.maxWidth,
+                  relativeDepth: value,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: constraints.maxWidth * 0.07),
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.deferToChild,
+                    onTapDown: (_) => setState(() => _isTapped = true),
+                    onTapUp: (_) => setState(() => _isTapped = false),
+                    onTapCancel: () => setState(() => _isTapped = false),
+                    onTap: () {
+                      playSound();
+                      context.read<PuzzleBloc>().add(TileTapped(widget.tile));
+                    },
+                    child: MouseRegionHittest(
+                      onEnter: (_) => setState(() => _isHovered = true),
+                      onExit: (_) => setState(() => _isHovered = false),
+                      child: Semantics(
+                        sortKey: OrdinalSortKey(
+                          widget.tile.currentPosition.y * 100.0 +
+                              widget.tile.currentPosition.x,
+                          name: 'tile',
+                        ),
+                        label: context.l10n.puzzleTileLabelText(
+                          widget.tile.value.toString(),
+                          widget.tile.currentPosition.x.toString(),
+                          widget.tile.currentPosition.y.toString(),
+                        ),
+                        child: const _Top(),
                       ),
                     ),
                   ),
-                ],
-              );
-            }),
-      );
+                ),
+              ],
+            );
+          });
     });
   }
 
   Future<void> playSound() async {
-    if (widget.audioPlayer.playing) {
-      await widget.audioPlayer.stop();
+    if (tileAudioPlayer.playing) {
+      await tileAudioPlayer.stop();
     }
-    await widget.audioPlayer.setAsset('assets/sounds/splash_small2.mp3');
-    await widget.audioPlayer.play();
+    await tileAudioPlayer.setAsset('assets/sounds/splash_small2.mp3');
+    await tileAudioPlayer.play();
   }
 }
 
