@@ -30,6 +30,7 @@ dev_dependencies:
     sdk: flutter
   mocktail: ^0.2.0
   very_good_analysis: ^2.4.0
+  msix: ^3.1.0
 
 flutter:
   generate: true
