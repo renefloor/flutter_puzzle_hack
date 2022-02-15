@@ -32,6 +32,7 @@ jobs:
         with:
           files: build/macos/Build/Products/Release/slide_puzzle.app
           dest: slide_puzzle_app.zip
+          recursive: false
       - uses: actions/upload-artifact@v1
         with:
           name: macos-test-build
@@ -40,6 +41,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: deploy
+    if: ${{ false }}  # disable for now
+
     steps:
       - uses: actions/checkout@v2
 
