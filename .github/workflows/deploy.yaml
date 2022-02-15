@@ -9,6 +9,8 @@ jobs:
   build-macos:
     runs-on: macos-latest
     name: Build macOS app
+    env:
+      MACOS_APP_RELEASE_PATH: build/macos/Build/Products/Release
     steps:
       - uses: actions/checkout@v2
 
@@ -27,10 +29,21 @@ jobs:
       - name: Build for mac
         run: flutter build macos
 
-      - name: copy release files
+      - name: Create a dmg
         run: |
-          mkdir releases
-          cp -R "build/macos/Build/Products/Release/slide_puzzle.app" "releases/slide_puzzle.app"
+          echo "Install create-dmg"
+          brew install create-dmg
+          
+          cd $MACOS_APP_RELEASE_PATH
+          
+          create-dmg \
+            "slide_puzzle.dmg" \
+            "slide_puzzle.app"
+
+#      - name: copy release files
+#        run: |
+#          mkdir releases
+#          cp -R "build/macos/Build/Products/Release/slide_puzzle.app" "releases/slide_puzzle.app"
 #      - name: Zip release files
 #        uses: papeloto/action-zip@v1
 #        with:
@@ -39,7 +52,7 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: macos-test-build
-          path: releases/
+          path: build/macos/Build/Products/Release/slide_puzzle.dmg
 
   deploy:
     runs-on: ubuntu-latest
