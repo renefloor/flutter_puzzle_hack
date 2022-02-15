@@ -24,15 +24,18 @@ jobs:
       - name: Install Dependencies
         run: flutter packages get
 
-      - name: Build for Web
-        run: flutter build macos --release
+      - name: Build for mac
+        run: flutter build macos
 
+      - name: copy release files
+        run: |
+          mkdir releases
+          cp -R "build/macos/Build/Products/Release/slide_puzzle.app" "releases/slide_puzzle.app"
       - name: Zip release files
         uses: papeloto/action-zip@v1
         with:
-          files: build/macos/Build/Products/Release/slide_puzzle.app
+          files: releases/
           dest: slide_puzzle_app.zip
-          recursive: false
       - uses: actions/upload-artifact@v1
         with:
           name: macos-test-build
