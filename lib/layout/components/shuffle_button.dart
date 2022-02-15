@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:very_good_slide_puzzle/audio/audio_control_listener.dart';
-import 'package:very_good_slide_puzzle/l10n/l10n.dart';
-import 'package:very_good_slide_puzzle/puzzle/bloc/puzzle_bloc.dart';
-import 'package:very_good_slide_puzzle/theme/theme.dart';
-import 'package:very_good_slide_puzzle/typography/text_styles.dart';
+import 'package:island_slide_puzzle/audio/audio_control_listener.dart';
+import 'package:island_slide_puzzle/l10n/l10n.dart';
+import 'package:island_slide_puzzle/puzzle/bloc/puzzle_bloc.dart';
+import 'package:island_slide_puzzle/theme/theme.dart';
+import 'package:island_slide_puzzle/typography/text_styles.dart';
 
 import '../../audio/audio_control_bloc.dart';
 

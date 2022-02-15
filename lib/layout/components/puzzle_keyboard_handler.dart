@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:very_good_slide_puzzle/models/models.dart';
-import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
-import 'package:very_good_slide_puzzle/theme/theme.dart';
+import 'package:island_slide_puzzle/models/models.dart';
+import 'package:island_slide_puzzle/puzzle/puzzle.dart';
+import 'package:island_slide_puzzle/theme/theme.dart';
 
 /// {@template puzzle_keyboard_handler}
 /// A widget that listens to the keyboard events and moves puzzle tiles

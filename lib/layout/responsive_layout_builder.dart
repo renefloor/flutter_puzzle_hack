@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
-import 'package:very_good_slide_puzzle/layout/breakpoints.dart';
-import 'package:very_good_slide_puzzle/layout/layout.dart';
+import 'package:island_slide_puzzle/layout/breakpoints.dart';
+import 'package:island_slide_puzzle/layout/layout.dart';
 
 /// Represents the layout size passed to [ResponsiveLayoutBuilder.child].
 enum ResponsiveLayoutSize {

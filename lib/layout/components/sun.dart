@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:very_good_slide_puzzle/colors/colors.dart';
-import 'package:very_good_slide_puzzle/layout/layout.dart';
+import 'package:island_slide_puzzle/colors/colors.dart';
+import 'package:island_slide_puzzle/layout/layout.dart';
 import 'dart:math' as math;
 
 class SunAndMoon extends StatelessWidget {

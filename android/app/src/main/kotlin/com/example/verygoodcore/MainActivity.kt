@@ -1,4 +1,4 @@
-package com.example.verygoodcore
+package nl.renefloor.puzzle
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:very_good_slide_puzzle/typography/text_styles.dart';
+import 'package:island_slide_puzzle/typography/text_styles.dart';
 
 /// {@template puzzle_button}
 /// Displays the puzzle action button.

@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:very_good_slide_puzzle/models/models.dart';
+import 'package:island_slide_puzzle/models/models.dart';
 
 part 'puzzle_event.dart';
 

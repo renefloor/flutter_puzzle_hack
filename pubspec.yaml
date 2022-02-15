@@ -1,5 +1,5 @@
-name: very_good_slide_puzzle
-description: A Very Good Project created by Very Good CLI.
+name: island_slide_puzzle
+description: A floating slide puzzle from the Netherlands.
 version: 1.0.0+24
 publish_to: none
 
@@ -52,3 +52,9 @@ flutter:
         - asset: assets/fonts/GoogleSans-Italic.ttf
           weight: 400
           style: italic
+
+msix_config:
+  display_name: Island Slide Puzzle
+  publisher_display_name: ReneFloor
+  identity_name: ReneFloor.Puzzle
+  msix_version: 1.0.0.0

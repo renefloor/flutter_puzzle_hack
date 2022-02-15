@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:very_good_slide_puzzle/audio/audio_control_listener.dart';
-import 'package:very_good_slide_puzzle/l10n/l10n.dart';
-import 'package:very_good_slide_puzzle/layout/components/index.dart';
-import 'package:very_good_slide_puzzle/layout/components/island_puzzle_tile.dart';
-import 'package:very_good_slide_puzzle/layout/components/shuffle_button.dart';
-import 'package:very_good_slide_puzzle/layout/components/waves.dart';
-import 'package:very_good_slide_puzzle/layout/layout.dart';
-import 'package:very_good_slide_puzzle/models/models.dart';
-import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
-import 'package:very_good_slide_puzzle/theme/theme.dart';
+import 'package:island_slide_puzzle/audio/audio_control_listener.dart';
+import 'package:island_slide_puzzle/l10n/l10n.dart';
+import 'package:island_slide_puzzle/layout/components/index.dart';
+import 'package:island_slide_puzzle/layout/components/island_puzzle_tile.dart';
+import 'package:island_slide_puzzle/layout/components/shuffle_button.dart';
+import 'package:island_slide_puzzle/layout/components/waves.dart';
+import 'package:island_slide_puzzle/layout/layout.dart';
+import 'package:island_slide_puzzle/models/models.dart';
+import 'package:island_slide_puzzle/puzzle/puzzle.dart';
+import 'package:island_slide_puzzle/theme/theme.dart';
 
 import 'components/floating_object.dart';
 import 'components/paper_plane.dart';
