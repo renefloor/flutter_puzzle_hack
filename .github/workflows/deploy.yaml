@@ -6,9 +6,39 @@ on:
       - master
 
 jobs:
+  build-macos:
+    runs-on: macos-latest
+    name: Build macOS app
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: subosito/flutter-action@v1.5.3
+        with:
+          flutter-version: 2.10.0
+          channel: stable
+
+      - name: Enable macOS
+        run: flutter config --enable-macos-desktop
+        working-directory: ${{env.source-directory}}
+
+      - name: Install Dependencies
+        run: flutter packages get
+
+      - name: Build for Web
+        run: flutter build macos --release
+
+      - name: Zip release files
+        uses: papeloto/action-zip@v1
+        with:
+          files: build/macos/Build/Products/Release/slide_puzzle.app
+          dest: slide_puzzle_app.zip
+      - uses: actions/upload-artifact@v1
+        with:
+          name: macos-test-build
+          path: ${{ github.workspace }}/slide_puzzle_app.zip
+
   deploy:
     runs-on: ubuntu-latest
-
     name: deploy
     steps:
       - uses: actions/checkout@v2
