@@ -31,15 +31,15 @@ jobs:
         run: |
           mkdir releases
           cp -R "build/macos/Build/Products/Release/slide_puzzle.app" "releases/slide_puzzle.app"
-      - name: Zip release files
-        uses: papeloto/action-zip@v1
-        with:
-          files: releases/
-          dest: slide_puzzle_app.zip
+#      - name: Zip release files
+#        uses: papeloto/action-zip@v1
+#        with:
+#          files: releases/
+#          dest: slide_puzzle_app.zip
       - uses: actions/upload-artifact@v1
         with:
           name: macos-test-build
-          path: ${{ github.workspace }}/slide_puzzle_app.zip
+          path: releases/
 
   deploy:
     runs-on: ubuntu-latest
