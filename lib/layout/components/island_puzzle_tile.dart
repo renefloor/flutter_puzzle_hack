@@ -14,7 +14,7 @@ import 'package:island_slide_puzzle/theme/theme.dart';
 import 'dart:math' as math;
 import 'island_height_animator.dart';
 
-final tileAudioPlayer = AudioPlayer()
+final tileAudioPlayer = getAudioPlayer()
   ..setAsset('assets/sounds/splash_small2.mp3');
 
 /// {@template simple_puzzle_tile}

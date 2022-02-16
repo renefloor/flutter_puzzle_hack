@@ -15,7 +15,7 @@ class ShuffleAndMuteButtons extends StatelessWidget {
     _audioPlayer.setAsset('assets/sounds/splash_big2.mp3');
   }
 
-  final _audioPlayer = AudioPlayer();
+  final _audioPlayer = getAudioPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +25,10 @@ class ShuffleAndMuteButtons extends StatelessWidget {
           audioPlayer: _audioPlayer,
           child: IslandPuzzleShuffleButton(audioPlayer: _audioPlayer),
         ),
-        const SizedBox.square(dimension: 8),
-        const MuteButton(),
+        if(supportsAudio())...[
+            const SizedBox.square(dimension: 8),
+            const MuteButton(),
+        ]
       ],
     );
   }

@@ -234,26 +234,24 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
 
   @override
   Widget tileBuilder(Tile tile, PuzzleState state) {
-    return AudioControlListener(
-      child: ResponsiveLayoutBuilder(
-        small: (_, __) => IslandPuzzleTile(
-          key: Key('simple_puzzle_tile_${tile.value}_small'),
-          tile: tile,
-          tileFontSize: _TileFontSize.small,
-          state: state,
-        ),
-        medium: (_, __) => IslandPuzzleTile(
-          key: Key('simple_puzzle_tile_${tile.value}_medium'),
-          tile: tile,
-          tileFontSize: _TileFontSize.medium,
-          state: state,
-        ),
-        large: (_, __) => IslandPuzzleTile(
-          key: Key('simple_puzzle_tile_${tile.value}_large'),
-          tile: tile,
-          tileFontSize: _TileFontSize.large,
-          state: state,
-        ),
+    return ResponsiveLayoutBuilder(
+      small: (_, __) => IslandPuzzleTile(
+        key: Key('simple_puzzle_tile_${tile.value}_small'),
+        tile: tile,
+        tileFontSize: _TileFontSize.small,
+        state: state,
+      ),
+      medium: (_, __) => IslandPuzzleTile(
+        key: Key('simple_puzzle_tile_${tile.value}_medium'),
+        tile: tile,
+        tileFontSize: _TileFontSize.medium,
+        state: state,
+      ),
+      large: (_, __) => IslandPuzzleTile(
+        key: Key('simple_puzzle_tile_${tile.value}_large'),
+        tile: tile,
+        tileFontSize: _TileFontSize.large,
+        state: state,
       ),
     );
   }

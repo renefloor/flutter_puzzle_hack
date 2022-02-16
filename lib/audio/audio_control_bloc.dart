@@ -1,9 +1,22 @@
+import 'dart:io' show Platform;
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
+import 'package:island_slide_puzzle/audio/audio_player_factory.dart';
 import 'package:just_audio/just_audio.dart';
 
+bool supportsAudio(){
+  return kIsWeb || !Platform.isLinux;
+}
+
 /// Gets a new instance of [AudioPlayer].
-AudioPlayer getAudioPlayer() => AudioPlayer();
+AudioPlayer getAudioPlayer() {
+  if(supportsAudio()){
+    return AudioPlayer();
+  }
+  return NoopAudioPlayer();
+}
 
 class AudioControlBloc extends Bloc<AudioControlEvent, AudioControlState> {
   AudioControlBloc() : super(const AudioControlState()) {
