@@ -7,7 +7,7 @@ import 'package:island_slide_puzzle/audio/audio_player_factory.dart';
 import 'package:just_audio/just_audio.dart';
 
 bool supportsAudio(){
-  return kIsWeb || !Platform.isLinux;
+  return kIsWeb || (!Platform.isLinux && !Platform.isWindows);
 }
 
 /// Gets a new instance of [AudioPlayer].

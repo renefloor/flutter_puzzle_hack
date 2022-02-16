@@ -49,7 +49,7 @@ jobs:
   build-windows:
     runs-on: windows-latest
     name: Build Windows app
-    if: ${{ false }}  # disable for now
+    #if: ${{ false }}  # disable for now
     steps:
       - uses: actions/checkout@v2
 
@@ -67,6 +67,11 @@ jobs:
 
       - name: Build for windows
         run: flutter pub run msix:create
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: windows-test-build
+          path: build\windows\runner\Release\island_slide_puzzle.msix
 
   deploy:
     runs-on: ubuntu-latest
