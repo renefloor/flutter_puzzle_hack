@@ -128,7 +128,6 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
         children: const [
           BackgroundTop(),
           SunAndMoon(),
-          SunAndMoonReflection(),
           Clouds(start: 0.7, relativeDistance: 0.25),
           Clouds(start: 0.6, relativeDistance: 0.5),
           Clouds(start: 0.3, relativeDistance: 0),
