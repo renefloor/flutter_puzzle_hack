@@ -9,35 +9,37 @@ class SunAndMoon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final brightness = MediaQuery.of(context).platformBrightness;
-    return Align(
-      alignment: Alignment.topRight,
-      child: ResponsiveLayoutBuilder(
-        defaultBuilder: (context, child) => Padding(
-          padding: const EdgeInsets.all(32),
-          child: SizedBox(
-            height: 40,
-            width: 40,
-            child: child,
+    return SafeArea(
+      child: Align(
+        alignment: Alignment.topRight,
+        child: ResponsiveLayoutBuilder(
+          defaultBuilder: (context, child) => Padding(
+            padding: const EdgeInsets.all(32),
+            child: SizedBox(
+              height: 40,
+              width: 40,
+              child: child,
+            ),
           ),
-        ),
-        smallWide: (context, child) => Padding(
-          padding: const EdgeInsets.only(top: 16, right: 32),
-          child: SizedBox(
-            height: 20,
-            width: 20,
-            child: child,
+          smallWide: (context, child) => Padding(
+            padding: const EdgeInsets.only(top: 16, right: 32),
+            child: SizedBox(
+              height: 20,
+              width: 20,
+              child: child,
+            ),
           ),
-        ),
-        large: (context, child) => Padding(
-          padding: const EdgeInsets.only(top: 32, right: 64),
-          child: SizedBox(
-            height: 40,
-            width: 40,
-            child: child,
+          large: (context, child) => Padding(
+            padding: const EdgeInsets.only(top: 32, right: 64),
+            child: SizedBox(
+              height: 40,
+              width: 40,
+              child: child,
+            ),
           ),
+          child: (_) =>
+              brightness == Brightness.light ? const Sun() : const Moon(),
         ),
-        child: (_) =>
-            brightness == Brightness.light ? const Sun() : const Moon(),
       ),
     );
   }

@@ -49,7 +49,7 @@ class _AppState extends State<App> {
     return MaterialApp(
       title: 'Slide Puzzle',
       theme: ThemeData(
-        appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
+        appBarTheme: const AppBarTheme(color: Color(0xFF22B5E4)),
         colorScheme: ColorScheme.fromSwatch(
           accentColor: const Color(0xFF13B9FF),
         ),

@@ -38,9 +38,13 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
           small: (_, child) => Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              NumberOfMoves(state.numberOfMoves),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                NumberOfMoves(state.numberOfMoves),
+                NumberOfTilesLeft(state.numberOfTilesLeft),
+              ],),
               ShuffleAndMuteButtons(),
-              NumberOfTilesLeft(state.numberOfTilesLeft),
             ],
           ),
           medium: (_, child) => Row(
@@ -282,17 +286,19 @@ class SimpleStartSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Gap(16),
-          const PuzzleName(),
-          SimplePuzzleTitle(
-            status: state.puzzleStatus,
-          ),
-        ],
+    return SafeArea(
+      minimum: const EdgeInsets.only(top: 16),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const PuzzleName(),
+            SimplePuzzleTitle(
+              status: state.puzzleStatus,
+            ),
+          ],
+        ),
       ),
     );
   }

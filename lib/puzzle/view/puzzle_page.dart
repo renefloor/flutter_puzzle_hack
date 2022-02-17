@@ -72,18 +72,16 @@ class PuzzleView extends StatelessWidget {
               create: (context) => TimerBloc(
                 ticker: const Ticker(),
               ),
-              child: SafeArea(
-                child: BlocProvider(
-                  create: (context) => PuzzleBloc(
-                    4,
-                  )..add(
-                      PuzzleInitialized(
-                        shufflePuzzle: shufflePuzzle,
-                      ),
+              child: BlocProvider(
+                create: (context) => PuzzleBloc(
+                  4,
+                )..add(
+                    PuzzleInitialized(
+                      shufflePuzzle: shufflePuzzle,
                     ),
-                  child: const _Puzzle(
-                    key: Key('puzzle_view_puzzle'),
                   ),
+                child: const _Puzzle(
+                  key: Key('puzzle_view_puzzle'),
                 ),
               ),
             )),
@@ -259,65 +257,6 @@ class _Page extends StatelessWidget {
             alignment: Alignment.bottomRight,
             child: theme.layoutDelegate.endSectionBuilder(state),
           ),
-      ],
-    );
-  }
-}
-
-class _VerticalPage extends StatelessWidget {
-  const _VerticalPage(this.puzzleBoard, {Key? key}) : super(key: key);
-  final Widget puzzleBoard;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
-    final state = context.select((PuzzleBloc bloc) => bloc.state);
-
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: puzzleBoard,
-        ),
-        Align(
-          alignment: Alignment.topLeft,
-          child: theme.layoutDelegate.startSectionBuilder(state),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: theme.layoutDelegate.endSectionBuilder(state),
-        )
-      ],
-    );
-  }
-}
-
-class _HorizontalPage extends StatelessWidget {
-  const _HorizontalPage(this.puzzleBoard, {Key? key}) : super(key: key);
-  final Widget puzzleBoard;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
-    final state = context.select((PuzzleBloc bloc) => bloc.state);
-
-    return Stack(
-      alignment: Alignment.topLeft,
-      children: [
-        Positioned.fill(
-          child: puzzleBoard,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            theme.layoutDelegate.startSectionBuilder(state),
-            Expanded(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: theme.layoutDelegate.endSectionBuilder(state),
-              ),
-            ),
-          ],
-        ),
       ],
     );
   }
