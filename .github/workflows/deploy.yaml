@@ -90,7 +90,9 @@ jobs:
         run: flutter packages get
 
       - name: Build for Web
-        run: flutter build web
+        run: |
+          flutter build web \
+          --build-number $GITHUB_RUN_NUMBER
 
       - name: Deploy
         uses: FirebaseExtended/action-hosting-deploy@v0

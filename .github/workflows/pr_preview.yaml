@@ -1,0 +1,33 @@
+name: preview
+
+on:
+  pull_request:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: deploy
+    # if: ${{ false }}  # disable for now
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: subosito/flutter-action@v1.5.3
+        with:
+          flutter-version: 2.10.0
+          channel: stable
+
+      - name: Install Dependencies
+        run: flutter packages get
+
+      - name: Build for Web
+        run: |
+          flutter build web \
+          --build-number $GITHUB_RUN_NUMBER
+
+      - name: Deploy
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SLIDE_PUZZLE_1A294 }}'
+          projectId: slide-puzzle-1a294
