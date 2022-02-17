@@ -289,11 +289,12 @@ class SimpleStartSection extends StatelessWidget {
     return SafeArea(
       minimum: const EdgeInsets.only(top: 16),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const PuzzleName(),
+            SizedBox(height: 16),
             SimplePuzzleTitle(
               status: state.puzzleStatus,
             ),

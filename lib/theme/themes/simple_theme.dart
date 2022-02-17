@@ -15,7 +15,7 @@ class IslandTheme extends PuzzleTheme {
   const IslandTheme() : super();
 
   @override
-  String get name => 'Islands';
+  String get name => 'Island';
 
   @override
   bool get hasTimer => false;

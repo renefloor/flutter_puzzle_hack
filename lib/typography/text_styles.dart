@@ -128,8 +128,8 @@ class PuzzleTextStyle {
       textStyle: const TextStyle(
         color: PuzzleColors.primary1,
         fontWeight: FontWeight.w800,
-        fontSize: 54,
-        height: 1,
+        fontSize: 44,
+        height: 0.8,
       ),
     );
   }
@@ -138,7 +138,8 @@ class PuzzleTextStyle {
     return GoogleFonts.pacifico(
       textStyle: const TextStyle(
         color: PuzzleColors.primary0,
-        fontSize: 22,
+        fontSize: 18,
+        height: 1,
       ),
     );
   }

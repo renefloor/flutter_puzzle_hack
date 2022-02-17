@@ -269,7 +269,7 @@ class _Water extends StatelessWidget {
             if (relativeUnderWater <= 0.0)
               Positioned(
                 left: 0,
-                top: heightOfWater * 0.78,
+                top: heightOfWater * 0.79,
                 right: 0,
                 child: Image.asset('assets/images/water_splash.png',
                 fit: BoxFit.fitWidth,),
