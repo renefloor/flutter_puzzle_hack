@@ -130,7 +130,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
   }
 
   Future<void> playSound() async {
-    if(kIsWeb){
+    if (kIsWeb) {
       await tileAudioPlayer.setAsset('assets/sounds/splash_small2.mp3');
       await tileAudioPlayer.play();
       return;
@@ -208,7 +208,7 @@ class _Water extends StatelessWidget {
   final double width;
   final double relativeDepth;
 
-  static const _waterLevel = 12 / 16;
+  static const _waterLevel = 11 / 15;
 
   @override
   Widget build(BuildContext context) {
@@ -266,6 +266,14 @@ class _Water extends StatelessWidget {
                 removeFirstPart: relativeUnderWater,
               ),
             ),
+            if (relativeUnderWater <= 0.0)
+              Positioned(
+                left: 0,
+                top: heightOfWater * 0.78,
+                right: 0,
+                child: Image.asset('assets/images/water_splash.png',
+                fit: BoxFit.fitWidth,),
+              ),
           ],
         ),
       ),

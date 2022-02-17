@@ -400,8 +400,8 @@ class SimplePuzzleBoard extends StatelessWidget {
   double _calculateTop(BoxConstraints constraints, Position position) {
     final blockWidth = _calculateBlockWidth(constraints);
     return (constraints.maxWidth / 3 - blockWidth * (1 / 2)) +
-        (position.y - 1) * (blockWidth * (29 / 100)) -
-        (position.x - 1) * (blockWidth * (29 / 100));
+        (position.y - 1) * (blockWidth * (28 / 100)) -
+        (position.x - 1) * (blockWidth * (28 / 100));
   }
 }
 

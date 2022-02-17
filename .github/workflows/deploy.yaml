@@ -49,7 +49,7 @@ jobs:
   build-windows:
     runs-on: windows-latest
     name: Build Windows app
-    #if: ${{ false }}  # disable for now
+    if: ${{ false }}  # disable for now
     steps:
       - uses: actions/checkout@v2
 
@@ -76,7 +76,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: deploy
-    if: ${{ false }}  # disable for now
+    # if: ${{ false }}  # disable for now
 
     steps:
       - uses: actions/checkout@v2
