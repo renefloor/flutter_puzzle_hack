@@ -126,7 +126,10 @@ class PuzzleTextStyle {
   static TextStyle get title {
     return GoogleFonts.roboto(
       textStyle: const TextStyle(
-        fontWeight: FontWeight.w900,
+        color: PuzzleColors.primary1,
+        fontWeight: FontWeight.w800,
+        fontSize: 54,
+        height: 1,
       ),
     );
   }
@@ -134,7 +137,7 @@ class PuzzleTextStyle {
   static TextStyle get name {
     return GoogleFonts.pacifico(
       textStyle: const TextStyle(
-        color: Color(0xFF589FC1),
+        color: PuzzleColors.primary0,
         fontSize: 22,
       ),
     );

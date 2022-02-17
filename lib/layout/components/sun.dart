@@ -43,6 +43,50 @@ class SunAndMoon extends StatelessWidget {
   }
 }
 
+
+class SunAndMoonReflection extends StatelessWidget {
+  const SunAndMoonReflection({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final brightness = MediaQuery.of(context).platformBrightness;
+    return Align(
+      alignment: Alignment.topRight,
+      child: ResponsiveLayoutBuilder(
+        defaultBuilder: (context, child) => Padding(
+          padding: const EdgeInsets.all(32) + const EdgeInsets.only(top: 200),
+          child: SizedBox(
+            height: 40,
+            width: 40,
+            child: child,
+          ),
+        ),
+        smallWide: (context, child) => Padding(
+          padding: const EdgeInsets.only(top: 16, right: 32) + const EdgeInsets.only(top: 100),
+          child: SizedBox(
+            height: 20,
+            width: 20,
+            child: child,
+          ),
+        ),
+        large: (context, child) => Padding(
+          padding: const EdgeInsets.only(top: 32, right: 64) + const EdgeInsets.only(top: 200),
+          child: SizedBox(
+            height: 40,
+            width: 40,
+            child: child,
+          ),
+        ),
+        child: (_) =>
+        brightness == Brightness.light ?
+        Image.asset('assets/images/sun_ellipse.png') :
+        Image.asset('assets/images/sun_ellipse.png'),
+      ),
+    );
+  }
+}
+
+
 class Sun extends StatelessWidget {
   const Sun({Key? key}) : super(key: key);
 

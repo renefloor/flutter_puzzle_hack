@@ -16,11 +16,11 @@ class PuzzleName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = context.select((ThemeBloc bloc) => bloc.state.theme).name;
+    final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
 
     return Text(
-      name,
-      style: PuzzleTextStyle.name,
+      theme.name,
+      style: theme.nameStyle,
     );
   }
 }

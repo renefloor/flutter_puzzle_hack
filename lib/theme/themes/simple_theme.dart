@@ -5,6 +5,8 @@ import 'package:island_slide_puzzle/colors/colors.dart';
 import 'package:island_slide_puzzle/layout/layout.dart';
 import 'package:island_slide_puzzle/theme/themes/themes.dart';
 
+import '../../typography/text_styles.dart';
+
 /// {@template simple_theme}
 /// The simple puzzle theme.
 /// {@endtemplate}
@@ -49,6 +51,9 @@ class IslandTheme extends PuzzleTheme {
         pressedColor,
         layoutDelegate,
       ];
+
+  TextStyle get nameStyle => PuzzleTextStyle.name;
+  TextStyle get titleStyle => PuzzleTextStyle.title;
 }
 
 class IslandDarkTheme extends IslandTheme {
@@ -60,4 +65,7 @@ class IslandDarkTheme extends IslandTheme {
 
   @override
   Color get backgroundColorSecondary => PuzzleColors.water_dark_secondary;
+
+  @override
+  TextStyle get titleStyle => PuzzleTextStyle.title.copyWith(color: PuzzleColors.primary0,);
 }
