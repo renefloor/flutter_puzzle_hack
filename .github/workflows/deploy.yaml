@@ -28,7 +28,9 @@ jobs:
         run: flutter packages get
 
       - name: Build for mac
-        run: flutter build macos
+        run: |
+          flutter build macos \
+          --build-number $GITHUB_RUN_NUMBER
 
       - name: Create a dmg
         run: |
@@ -90,9 +92,7 @@ jobs:
         run: flutter packages get
 
       - name: Build for Web
-        run: |
-          flutter build web \
-          --build-number $GITHUB_RUN_NUMBER
+        run: flutter build web
 
       - name: Deploy
         uses: FirebaseExtended/action-hosting-deploy@v0
