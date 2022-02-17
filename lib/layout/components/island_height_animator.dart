@@ -20,12 +20,10 @@ class IslandHeightAnimator extends StatelessWidget {
     var position = 0.0;
     if (isTapped) {
       position += 0.05;
-    } else if (isHovered) {
-      position += 0.02;
     }
     if (isShuffling) position += 0.8;
 
-    final tapOrHover = (isTapped || isHovered) && !isShuffling;
+    final tapOrHover = isTapped && !isShuffling;
 
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 0, end: position),
