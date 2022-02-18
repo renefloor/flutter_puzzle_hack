@@ -35,4 +35,4 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: android-test-build
-          path: build/app/outputs/bundle/release/app.aab
+          path: build/app/outputs/bundle/release/app-release.aab
