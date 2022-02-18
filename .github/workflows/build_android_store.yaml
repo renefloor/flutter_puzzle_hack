@@ -1,0 +1,36 @@
+name: Build Android store
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-android:
+    runs-on: macos-latest
+    name: Build Android app
+    env:
+      ANDROID_KEYSTORE_PATH: ../island-puzzle.jks
+      ANDROID_KEYSTORE_ALIAS: upload
+      ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD: {{secret.ANDROID_KEYSTORE_PW}}
+      ANDROID_KEYSTORE_PASSWORD: {{secret.ANDROID_KEYSTORE_PW}}
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: subosito/flutter-action@v1.5.3
+        with:
+          flutter-version: 2.10.0
+          channel: stable
+
+      - name: Install Dependencies
+        run: flutter packages get
+
+      - name: Build for android
+        run: |
+          flutter build appbundle \
+          --build-number $GITHUB_RUN_NUMBER
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: android-test-build
+          path: build/app/outputs/bundle/release/app.aab
