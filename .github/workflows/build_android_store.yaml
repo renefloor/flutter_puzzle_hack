@@ -24,6 +24,8 @@ jobs:
 
       - name: Install Dependencies
         run: flutter packages get
+      - name: Download keystore
+        run: curl https://${{ secrets.REPO_ACCESS_TOKEN }}@raw.githubusercontent.com/renefloor/flutter_puzzle_hack_secrets/main/island-puzzle.jks -o android/island-puzzle.jks
 
       - name: Build for android
         run: |
