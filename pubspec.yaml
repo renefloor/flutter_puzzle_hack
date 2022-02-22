@@ -57,7 +57,7 @@ msix_config:
   display_name: Island Slide Puzzle
   publisher_display_name: ReneFloor Software Development
   identity_name: 5515ReneFloorSoftwareDeve.IslandSlidePuzzle
-  msix_version: 0.0.1.0
+  msix_version: 0.0.1.1
   publisher: CN=337FF815-4DE7-4305-890E-947FA235BAF9
   store: true
   capabilities: ""

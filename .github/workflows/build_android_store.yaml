@@ -9,6 +9,7 @@ jobs:
   build-android:
     runs-on: macos-latest
     name: Build Android app
+    if: ${{ false }}  # disable for now
     env:
       ANDROID_KEYSTORE_PATH: ../island-puzzle.jks
       ANDROID_KEYSTORE_ALIAS: upload
