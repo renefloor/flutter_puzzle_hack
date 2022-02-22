@@ -44,14 +44,14 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
                 NumberOfMoves(state.numberOfMoves),
                 NumberOfTilesLeft(state.numberOfTilesLeft),
               ],),
-              ShuffleAndMuteButtons(),
+              ShuffleAndSettingsButtons(),
             ],
           ),
           medium: (_, child) => Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               NumberOfMoves(state.numberOfMoves),
-              ShuffleAndMuteButtons(),
+              ShuffleAndSettingsButtons(),
               NumberOfTilesLeft(state.numberOfTilesLeft),
             ],
           ),
@@ -61,7 +61,7 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
               crossAxisAlignment: CrossAxisAlignment.end,
               // mainAxisSize: MainAxisSize.max,
               children: [
-                ShuffleAndMuteButtons(),
+                ShuffleAndSettingsButtons(),
                 const Gap(32),
                 Padding(
                   padding: const EdgeInsets.only(left: 32),
@@ -81,7 +81,7 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                ShuffleAndMuteButtons(),
+                ShuffleAndSettingsButtons(),
                 const Gap(32),
                 Padding(
                   padding: const EdgeInsets.only(left: 32),
@@ -101,7 +101,7 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                ShuffleAndMuteButtons(),
+                ShuffleAndSettingsButtons(),
                 const Gap(32),
                 Padding(
                   padding: const EdgeInsets.only(left: 32),
