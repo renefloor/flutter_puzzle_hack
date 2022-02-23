@@ -7,11 +7,11 @@ confinement: strict
 base: core18
 grade: stable
 
-slots:
-  dbus-island-slide-puzzle: # adjust accordingly to your app name
-    interface: dbus
-    bus: session
-    name: nl.renefloor.island_slide_puzzle # adjust accordingly to your app name and
+parts:
+  island-slide-puzzle:
+    source: .
+    plugin: flutter
+    flutter-target: lib/main.dart # The main entry-point file of the application
 
 apps:
   island-slide-puzzle:
@@ -19,10 +19,3 @@ apps:
     extensions: [flutter-stable] # Where "master" defines which Flutter channel to use for the build
     plugs:
       - network
-    slots:
-      - dbus-island-slide-puzzle
-parts:
-  island-slide-puzzle:
-    source: .
-    plugin: flutter
-    flutter-target: lib/main.dart # The main entry-point file of the application
