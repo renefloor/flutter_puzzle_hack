@@ -1,8 +1,8 @@
-  [Desktop Entry]
-  Name=Island Slide Puzzle
-  Comment=A floating slide puzzle from the Netherlands
-  Exec=island-slide-puzzle
-  Icon=${SNAP}/meta/gui/island-slide-puzzle.png # replace name to your app name
-  Terminal=false
-  Type=Application
-  Categories=Games; #adjust accordingly your snap category
+[Desktop Entry]
+Name=Island Slide Puzzle
+Comment=A floating slide puzzle from the Netherlands
+Exec=island-slide-puzzle
+Icon=${SNAP}/meta/gui/island-slide-puzzle.png
+Terminal=false
+Type=Application
+Categories=Games;
