@@ -26,10 +26,14 @@ class NoopAudioPlayer implements AudioPlayer {
   Stream<Duration> get bufferedPositionStream => throw UnimplementedError();
 
   @override
-  bool get canUseNetworkResourcesForLiveStreamingWhilePaused => throw UnimplementedError();
+  bool get canUseNetworkResourcesForLiveStreamingWhilePaused =>
+      throw UnimplementedError();
 
   @override
-  Stream<Duration> createPositionStream({int steps = 800, Duration minPeriod = const Duration(milliseconds: 200), Duration maxPeriod = const Duration(milliseconds: 200)}) {
+  Stream<Duration> createPositionStream(
+      {int steps = 800,
+      Duration minPeriod = const Duration(milliseconds: 200),
+      Duration maxPeriod = const Duration(milliseconds: 200)}) {
     throw UnimplementedError();
   }
 
@@ -132,7 +136,8 @@ class NoopAudioPlayer implements AudioPlayer {
   ProcessingState get processingState => throw UnimplementedError();
 
   @override
-  Stream<ProcessingState> get processingStateStream => throw UnimplementedError();
+  Stream<ProcessingState> get processingStateStream =>
+      throw UnimplementedError();
 
   @override
   Future<void> seek(Duration? position, {int? index}) {
@@ -159,30 +164,36 @@ class NoopAudioPlayer implements AudioPlayer {
   Stream<SequenceState?> get sequenceStateStream => throw UnimplementedError();
 
   @override
-  Stream<List<IndexedAudioSource>?> get sequenceStream => throw UnimplementedError();
+  Stream<List<IndexedAudioSource>?> get sequenceStream =>
+      throw UnimplementedError();
 
   @override
-  Future<void> setAndroidAudioAttributes(AndroidAudioAttributes audioAttributes) {
+  Future<void> setAndroidAudioAttributes(
+      AndroidAudioAttributes audioAttributes) {
     throw UnimplementedError();
   }
 
   @override
-  Future<Duration?> setAsset(String assetPath, {bool preload = true, Duration? initialPosition}) {
+  Future<Duration?> setAsset(String assetPath,
+      {bool preload = true, Duration? initialPosition}) {
     return Future.value(null);
   }
 
   @override
-  Future<Duration?> setAudioSource(AudioSource source, {bool preload = true, int? initialIndex, Duration? initialPosition}) {
+  Future<Duration?> setAudioSource(AudioSource source,
+      {bool preload = true, int? initialIndex, Duration? initialPosition}) {
     throw UnimplementedError();
   }
 
   @override
-  Future<void> setAutomaticallyWaitsToMinimizeStalling(bool automaticallyWaitsToMinimizeStalling) {
+  Future<void> setAutomaticallyWaitsToMinimizeStalling(
+      bool automaticallyWaitsToMinimizeStalling) {
     throw UnimplementedError();
   }
 
   @override
-  Future<void> setCanUseNetworkResourcesForLiveStreamingWhilePaused(bool canUseNetworkResourcesForLiveStreamingWhilePaused) {
+  Future<void> setCanUseNetworkResourcesForLiveStreamingWhilePaused(
+      bool canUseNetworkResourcesForLiveStreamingWhilePaused) {
     throw UnimplementedError();
   }
 
@@ -192,7 +203,8 @@ class NoopAudioPlayer implements AudioPlayer {
   }
 
   @override
-  Future<Duration?> setFilePath(String filePath, {Duration? initialPosition, bool preload = true}) {
+  Future<Duration?> setFilePath(String filePath,
+      {Duration? initialPosition, bool preload = true}) {
     // TODO: implement setFilePath
     throw UnimplementedError();
   }
@@ -234,7 +246,10 @@ class NoopAudioPlayer implements AudioPlayer {
   }
 
   @override
-  Future<Duration?> setUrl(String url, {Map<String, String>? headers, Duration? initialPosition, bool preload = true}) {
+  Future<Duration?> setUrl(String url,
+      {Map<String, String>? headers,
+      Duration? initialPosition,
+      bool preload = true}) {
     // TODO: implement setUrl
     throw UnimplementedError();
   }
@@ -295,5 +310,4 @@ class NoopAudioPlayer implements AudioPlayer {
   @override
   // TODO: implement volumeStream
   Stream<double> get volumeStream => throw UnimplementedError();
-
 }

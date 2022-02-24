@@ -92,20 +92,27 @@ class SettingsButton extends StatelessWidget {
     );
   }
 
-  List<Widget> _dialogContent(BuildContext context, {required AudioControlBloc bloc,}) {
+  List<Widget> _dialogContent(
+    BuildContext context, {
+    required AudioControlBloc bloc,
+  }) {
     final downloadUrl = getDownloadUrl();
     return [
-      const SizedBox(height: 40.0),
-      BlocBuilder<AudioControlBloc, AudioControlState>(
-        bloc: bloc,
-        builder: (context, state) => DialogButton(
-          image: state.muted ? 'assets/images/volume_off.png' : 'assets/images/volume_on.png',
-          text: 'Sound',
-          state: state.muted ? 'OFF' : 'ON',
-          onTap: () => bloc.add(const AudioToggled()),
+      if (supportsAudio()) ...[
+        const SizedBox(height: 40.0),
+        BlocBuilder<AudioControlBloc, AudioControlState>(
+          bloc: bloc,
+          builder: (context, state) => DialogButton(
+            image: state.muted
+                ? 'assets/images/volume_off.png'
+                : 'assets/images/volume_on.png',
+            text: 'Sound',
+            state: state.muted ? 'OFF' : 'ON',
+            onTap: () => bloc.add(const AudioToggled()),
+          ),
         ),
-      ),
-      if(downloadUrl != null)...[
+      ],
+      if (downloadUrl != null) ...[
         const SizedBox(height: 16.0),
         DialogButton(
           image: 'assets/images/download_icon.png',
@@ -123,9 +130,8 @@ class SettingsButton extends StatelessWidget {
         padding: EdgeInsets.only(left: 8.0),
         child: Text(
           'Designed by Mathieu Nauleau and developed by Rene Floor.\n\n'
-          'Build on top of the Very Good Venture Slide Puzzle example.\n\n'
-          'Sounds from zapsplat.com'
-          ,
+          'Build on top of the Very Good Ventures Slide Puzzle example.\n\n'
+          'Sounds from zapsplat.com',
         ),
       ),
       const SizedBox(height: 16.0),
@@ -379,14 +385,17 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
               borderRadius: BorderRadius.circular(Constants.padding),
               boxShadow: [
                 const BoxShadow(
-                    color: Colors.black, offset: const Offset(0, 10), blurRadius: 10),
+                    color: Colors.black,
+                    offset: const Offset(0, 10),
+                    blurRadius: 10),
               ]),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
                 widget.title,
-                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                style:
+                    const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               ),
               const SizedBox(
                 height: 15,

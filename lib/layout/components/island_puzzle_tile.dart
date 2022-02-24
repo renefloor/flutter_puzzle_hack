@@ -271,8 +271,10 @@ class _Water extends StatelessWidget {
                 left: 0,
                 top: heightOfWater * 0.79,
                 right: 0,
-                child: Image.asset('assets/images/water_splash.png',
-                fit: BoxFit.fitWidth,),
+                child: Image.asset(
+                  'assets/images/water_splash.png',
+                  fit: BoxFit.fitWidth,
+                ),
               ),
           ],
         ),

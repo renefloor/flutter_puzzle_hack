@@ -41,9 +41,10 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                NumberOfMoves(state.numberOfMoves),
-                NumberOfTilesLeft(state.numberOfTilesLeft),
-              ],),
+                  NumberOfMoves(state.numberOfMoves),
+                  NumberOfTilesLeft(state.numberOfTilesLeft),
+                ],
+              ),
               ShuffleAndSettingsButtons(),
             ],
           ),
@@ -229,7 +230,7 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
               top: screenSize.height / 2 + boardSize.height * 0.5,
               left: screenSize.width / 2 - boardSize.width * 0.2,
             ),
-            factory.sw(Image.asset('assets/images/boat_new.png'), speed: 2.5),
+            factory.sw(const Boat(), speed: 2.5),
           ],
         );
       },

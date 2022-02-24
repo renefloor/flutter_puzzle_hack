@@ -20,7 +20,8 @@ class PuzzleTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = context.select((ThemeBloc bloc) => bloc.state.theme).titleStyle;
+    final textStyle =
+        context.select((ThemeBloc bloc) => bloc.state.theme).titleStyle;
     return SizedBox(
       width: 290,
       child: Text(

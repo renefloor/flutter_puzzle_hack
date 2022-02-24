@@ -67,5 +67,7 @@ class IslandDarkTheme extends IslandTheme {
   Color get backgroundColorSecondary => PuzzleColors.water_dark_secondary;
 
   @override
-  TextStyle get titleStyle => PuzzleTextStyle.title.copyWith(color: PuzzleColors.primary0,);
+  TextStyle get titleStyle => PuzzleTextStyle.title.copyWith(
+        color: PuzzleColors.primary0,
+      );
 }
