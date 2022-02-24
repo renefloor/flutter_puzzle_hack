@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Island Slide Puzzle
+Comment=A floating slide puzzle from the Netherlands
+Exec=island-slide-puzzle
+Icon=${SNAP}/meta/gui/island-slide-puzzle.png
+Terminal=false
+Type=Application
+Categories=Games;

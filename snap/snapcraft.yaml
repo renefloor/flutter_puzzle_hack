@@ -1,0 +1,21 @@
+name: island-slide-puzzle
+version: 0.1.0
+summary: Island Slide Puzzle
+description: A floating slide puzzle from the Netherlands
+
+confinement: strict
+base: core18
+grade: stable
+
+parts:
+  island-slide-puzzle:
+    source: .
+    plugin: flutter
+    flutter-target: lib/main.dart # The main entry-point file of the application
+
+apps:
+  island-slide-puzzle:
+    command: island_slide_puzzle
+    extensions: [flutter-stable] # Where "master" defines which Flutter channel to use for the build
+    plugs:
+      - network

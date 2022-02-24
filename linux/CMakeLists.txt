@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "flutter_puzzle_hack")
-set(APPLICATION_ID "nl.renefloor.flutter_puzzle_hack")
+set(BINARY_NAME "island_slide_puzzle")
+set(APPLICATION_ID "nl.renefloor.island_slide_puzzle")
 
 cmake_policy(SET CMP0063 NEW)
 
