@@ -69,7 +69,7 @@ class SettingsButton extends StatelessWidget {
               Container(
                 width: 300,
                 height: 300,
-                margin: const EdgeInsets.only(top: 30),
+                margin: const EdgeInsets.only(top: 30, bottom: 15),
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 decoration: BoxDecoration(
                   color: const Color(0xFF8DC6D0),
@@ -85,6 +85,16 @@ class SettingsButton extends StatelessWidget {
                 'assets/images/settings_banner.png',
                 width: 200,
               ),
+              Positioned(
+                bottom: 0,
+                child: IslandPuzzleButton(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    child: Text('CLOSE'),
+                  ),
+                ),
+              )
             ],
           ),
         );
@@ -132,16 +142,6 @@ class SettingsButton extends StatelessWidget {
           'Designed by Mathieu Nauleau and developed by Rene Floor.\n\n'
           'Build on top of the Very Good Ventures Slide Puzzle example.\n\n'
           'Sounds from zapsplat.com',
-        ),
-      ),
-      const SizedBox(height: 16.0),
-      Center(
-        child: IslandPuzzleButton(
-          onTap: () => Navigator.of(context).pop(),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-            child: Text('CLOSE'),
-          ),
         ),
       ),
       const SizedBox(height: 16.0),
