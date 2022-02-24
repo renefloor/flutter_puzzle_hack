@@ -11,6 +11,7 @@ String? getDownloadUrl() {
     case TargetPlatform.macOS:
       return 'https://apps.apple.com/us/app/island-slide-puzzle/id1611128660';
     case TargetPlatform.linux:
+      return 'https://snapcraft.io/island-slide-puzzle';
     case TargetPlatform.fuchsia:
       return null;
   }
