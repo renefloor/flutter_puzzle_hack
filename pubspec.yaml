@@ -53,6 +53,22 @@ flutter:
         - asset: assets/fonts/GoogleSans-Italic.ttf
           weight: 400
           style: italic
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Roboto-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/Roboto-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Roboto-Italic.ttf
+          weight: 400
+          style: italic
+    - family: Pacifico
+      fonts:
+        - asset: assets/fonts/Pacifico-Regular.ttf
+          weight: 400
 
 msix_config:
   display_name: Island Slide Puzzle
@@ -62,4 +78,4 @@ msix_config:
   publisher: CN=337FF815-4DE7-4305-890E-947FA235BAF9
   store: true
   logo_path: ./windows/app_icon.png
-  capabilities: internetClient
+  capabilities:

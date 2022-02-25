@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:island_slide_puzzle/colors/colors.dart';
 import 'package:island_slide_puzzle/typography/typography.dart';
 
@@ -118,29 +117,28 @@ class PuzzleTextStyle {
     fontWeight: PuzzleFontWeight.regular,
   );
 
-  static final _bodyTextStyle = GoogleFonts.roboto(
+  static const _bodyTextStyle = TextStyle(
     color: PuzzleColors.black,
     fontWeight: PuzzleFontWeight.regular,
+    fontFamily: 'Roboto',
   );
 
   static TextStyle get title {
-    return GoogleFonts.roboto(
-      textStyle: const TextStyle(
-        color: PuzzleColors.primary1,
-        fontWeight: FontWeight.w800,
-        fontSize: 44,
-        height: 0.8,
-      ),
+    return const TextStyle(
+      color: PuzzleColors.primary1,
+      fontWeight: FontWeight.w800,
+      fontSize: 44,
+      height: 0.8,
+      fontFamily: 'Roboto',
     );
   }
 
   static TextStyle get name {
-    return GoogleFonts.pacifico(
-      textStyle: const TextStyle(
-        color: PuzzleColors.primary0,
-        fontSize: 18,
-        height: 1,
-      ),
+    return const TextStyle(
+      color: PuzzleColors.primary0,
+      fontSize: 18,
+      height: 1,
+      fontFamily: 'Pacifico',
     );
   }
 }
