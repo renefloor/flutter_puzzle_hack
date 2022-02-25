@@ -137,9 +137,9 @@ class Puzzle extends Equatable {
   bool _isInversion(Tile a, Tile b) {
     if (!b.isWhitespace && a.value != b.value) {
       if (b.value < a.value) {
-        return b.currentPosition.compareTo(a.currentPosition) > 0;
+        return b.currentPosition.compareToForInversion(a.currentPosition) > 0;
       } else {
-        return a.currentPosition.compareTo(b.currentPosition) > 0;
+        return a.currentPosition.compareToForInversion(b.currentPosition) > 0;
       }
     }
     return false;
@@ -216,4 +216,22 @@ class Puzzle extends Equatable {
 
   @override
   List<Object> get props => [tiles];
+}
+
+extension PositionExtension on Position {
+  int compareToForInversion(Position other) {
+    if (y < other.y) {
+      return -1;
+    } else if (y > other.y) {
+      return 1;
+    } else {
+      if (x < other.x) {
+        return -1;
+      } else if (x > other.x) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+  }
 }
