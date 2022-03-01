@@ -2,6 +2,11 @@ name: deploy
 
 on:
   push:
+    paths:
+      - "lib/**"
+      - "pubspec.yaml"
+      - "pubspec.lock"
+      - "web/**"
     branches:
       - master
 

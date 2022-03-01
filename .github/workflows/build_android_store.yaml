@@ -2,6 +2,11 @@ name: Build Android store
 
 on:
   push:
+    paths:
+      - "lib/**"
+      - "pubspec.yaml"
+      - "pubspec.lock"
+      - "android/**"
     branches:
       - master
 

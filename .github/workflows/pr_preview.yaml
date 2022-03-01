@@ -2,6 +2,11 @@ name: preview
 
 on:
   pull_request:
+    paths:
+      - "lib/**"
+      - "pubspec.yaml"
+      - "pubspec.lock"
+      - "web/**"
 
 jobs:
   deploy:

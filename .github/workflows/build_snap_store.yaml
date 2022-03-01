@@ -2,9 +2,13 @@ name: Build Snap store
 
 on:
   push:
+    paths:
+      - "lib/**"
+      - "pubspec.yaml"
+      - "pubspec.lock"
+      - "linux/**"
     branches:
       - master
-      - develop
 
 jobs:
   build:
