@@ -53,32 +53,6 @@ jobs:
           name: macos-test-build
           path: build/macos/Build/Products/Release/slide_puzzle.dmg
 
-  build-windows:
-    runs-on: windows-latest
-    name: Build Windows app
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: subosito/flutter-action@v1.5.3
-        with:
-          flutter-version: 2.10.0
-          channel: stable
-
-      - name: Enable windows
-        run: flutter config --enable-windows-desktop
-        working-directory: ${{env.source-directory}}
-
-      - name: Install Dependencies
-        run: flutter packages get
-
-      - name: Build for windows
-        run: flutter pub run msix:create
-
-      - uses: actions/upload-artifact@v1
-        with:
-          name: windows-test-build
-          path: build\windows\runner\Release\island_slide_puzzle.msix
-
   deploy:
     runs-on: ubuntu-latest
     name: deploy
