@@ -37,11 +37,6 @@ jobs:
           flutter build appbundle \
           --build-number $GITHUB_RUN_NUMBER
 
-      - uses: actions/upload-artifact@v1
-        with:
-          name: android-test-build
-          path: build/app/outputs/bundle/release/app-release.aab
-
       - name: Upload app bundle to Google Play
         uses: r0adkll/upload-google-play@v1.0.15
         with:
