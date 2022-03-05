@@ -41,4 +41,4 @@ jobs:
           client-id: ${{ secrets.AZURE_AD_APPLICATION_CLIENT_ID }}
           client-secret: ${{ secrets.AZURE_AD_APPLICATION_SECRET }}
           app-id: ${{ secrets.WINDOWS_STORE_APP_ID }}
-          package-path: build\windows\runner\Release\island_slide_puzzle.msix
+          package-path: ${{ github.workspace }}\build\windows\runner\Release\island_slide_puzzle.msix
