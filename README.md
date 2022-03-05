@@ -1,155 +1,42 @@
-# Slide Puzzle
+# Island Slide Puzzle
 
-![Photo Booth Header][logo]
+### [Play online!](https://puzzle.renefloor.nl/#/)
+or
 
-![coverage][coverage_badge]
+
+<table style="border-collapse: collapse; border: none;">
+    <tbody style="border: none;">
+        <tr style="border: none;">
+            <td align="center" style="border: none;">
+<a href="https://apps.apple.com/us/app/island-slide-puzzle/id1611128660?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 13px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1645747200&h=d77fa095bb27cfb92a8d0e2038784719" alt="Download on the App Store" style="height: 50px; margin-top:6px;"></a>
+            </td>
+            <td align="center" style="border: none;">
+                <a href='https://play.google.com/store/apps/details?id=nl.renefloor.puzzle&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height=75 alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+            </td>
+            <td align="center" style="border: none;">    
+    <a href='https://www.microsoft.com/nl-nl/p/island-slide-puzzle/9plkvqwch0zv?cid=storebadge&ocid=badge&rtc=1#activetab=pivot:overviewtab'><img height=50 alt='Get it from Snap Store' src='https://getbadgecdn.azureedge.net/images/English_L.png'/></a>
+            </td>
+            <td align="center" style="border: none;">
+    <a href='https://snapcraft.io/island-slide-puzzle'><img height=50 alt='Get it from Snap Store' src='https://snapcraft.io/static/images/badges/en/snap-store-black.svg'/></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+![Slide Puzzle header][logo]
+
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
 [![License: MIT][license_badge]][license_link]
 
 A slide puzzle built for [Flutter Challenge](https://flutterhack.devpost.com/).
 
-*Built by [Very Good Ventures][very_good_ventures_link] in partnership with Google.*
+*Built by Rene Floor and designed by Mathieu Nauleau.*
 
-*Created using [Very Good CLI][very_good_cli_link].*
+*Based on [Very Good Ventures' slide_puzzle](https://github.com/VGVentures/slide_puzzle).*
 
----
-
-## Getting Started 🚀
-
-To run the project either use the launch configuration in VSCode/Android Studio or use the following command:
-
-```sh
-$ flutter run -d chrome
-```
-
----
-
-## Running Tests 🧪
-
-To run all unit and widget tests use the following command:
-
-```sh
-$ flutter test --coverage --test-randomize-ordering-seed random
-```
-
-To view the generated coverage report you can use [lcov](https://github.com/linux-test-project/lcov).
-
-```sh
-# Generate Coverage Report
-$ genhtml coverage/lcov.info -o coverage/
-
-# Open Coverage Report
-$ open coverage/index.html
-```
-
----
-
-## Working with Translations 🌐
-
-This project relies on [flutter_localizations][flutter_localizations_link] and follows the [official internationalization guide for Flutter][internationalization_link].
-
-### Adding Strings
-
-1. To add a new localizable string, open the `app_en.arb` file at `lib/l10n/arb/app_en.arb`.
-
-```arb
-{
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
-    }
-}
-```
-
-2. Then add a new key/value and description
-
-```arb
-{
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
-    },
-    "helloWorld": "Hello World",
-    "@helloWorld": {
-        "description": "Hello World Text"
-    }
-}
-```
-
-3. Use the new string
-
-```dart
-import 'package:very_good_slide_puzzle/l10n/l10n.dart';
-
-@override
-Widget build(BuildContext context) {
-  final l10n = context.l10n;
-  return Text(l10n.helloWorld);
-}
-```
-
-### Adding Supported Locales
-
-Update the `CFBundleLocalizations` array in the `Info.plist` at `ios/Runner/Info.plist` to include the new locale.
-
-```xml
-    ...
-
-    <key>CFBundleLocalizations</key>
-	<array>
-		<string>en</string>
-		<string>es</string>
-	</array>
-
-    ...
-```
-
-### Adding Translations
-
-1. For each supported locale, add a new ARB file in `lib/l10n/arb`.
-
-```
-├── l10n
-│   ├── arb
-│   │   ├── app_en.arb
-│   │   └── app_es.arb
-```
-
-2. Add the translated strings to each `.arb` file:
-
-`app_en.arb`
-
-```arb
-{
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
-    }
-}
-```
-
-`app_es.arb`
-
-```arb
-{
-    "@@locale": "es",
-    "counterAppBarTitle": "Contador",
-    "@counterAppBarTitle": {
-        "description": "Texto mostrado en la AppBar de la página del contador"
-    }
-}
-```
-
-[coverage_badge]: coverage_badge.svg
-[flutter_localizations_link]: https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html
-[internationalization_link]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
 [very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
 [very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
-[very_good_cli_link]: https://github.com/VeryGoodOpenSource/very_good_cli
-[very_good_ventures_link]: https://verygood.ventures/
 [logo]: art/header.png
