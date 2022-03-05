@@ -57,4 +57,4 @@ jobs:
           client-id: ${{ secrets.AZURE_AD_APPLICATION_CLIENT_ID }}
           client-secret: ${{ secrets.AZURE_AD_APPLICATION_SECRET }}
           app-id: ${{ secrets.STORE_APP_ID }}
-          package-path: "${{ github.workspace }}/release/island_slide_puzzle.msix"
+          package-path: "${{ github.workspace }}/release"
