@@ -34,11 +34,27 @@ jobs:
       - name: Build for windows
         run: flutter pub run msix:create
 
+      - uses: actions/upload-artifact@v1
+        with:
+          name: windows-release-build
+          path: build\windows\runner\Release\island_slide_puzzle.msix
+          retention-days: 1
+
+  publish-windows:
+    needs: build-windows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v2
+        name: Download Release
+        with:
+          name: windows-release-build
+          path: "${{ github.workspace }}/release"
+
       - uses: isaacrlevin/windows-store-action@1.0
         name: Publish to Store
         with:
           tenant-id: ${{ secrets.AZURE_AD_TENANT_ID }}
           client-id: ${{ secrets.AZURE_AD_APPLICATION_CLIENT_ID }}
           client-secret: ${{ secrets.AZURE_AD_APPLICATION_SECRET }}
-          app-id: ${{ secrets.WINDOWS_STORE_APP_ID }}
-          package-path: ./build/windows/runner/Release/island_slide_puzzle.msix
+          app-id: ${{ secrets.STORE_APP_ID }}
+          package-path: "${{ github.workspace }}/release/island_slide_puzzle.msix"
