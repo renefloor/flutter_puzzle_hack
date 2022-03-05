@@ -1,6 +1,7 @@
 name: Build Microsoft store
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - "lib/**"

@@ -1,6 +1,7 @@
 name: Build Android store
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - "lib/**"
