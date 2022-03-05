@@ -34,7 +34,7 @@ jobs:
       - name: Build for windows
         run: flutter pub run msix:create
 
-      - uses: isaacrlevin/windows-store-action@v1
+      - uses: isaacrlevin/windows-store-action@1.0
         name: Publish to Store
         with:
           tenant-id: ${{ secrets.AZURE_AD_TENANT_ID }}
