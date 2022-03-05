@@ -21,8 +21,9 @@ jobs:
 
       - uses: subosito/flutter-action@v1.5.3
         with:
-          flutter-version: 2.10.0
+          flutter-version: 2.10.3
           channel: stable
+          cache: true
 
       - name: Enable windows
         run: flutter config --enable-windows-desktop
