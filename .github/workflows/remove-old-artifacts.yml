@@ -12,7 +12,4 @@ jobs:
       - name: Remove old artifacts
         uses: c-hive/gha-remove-artifacts@v1
         with:
-          age: '2 days' # '<number> <unit>', e.g. 5 days, 2 years, 90 seconds, parsed by Moment.js
-          # Optional inputs
-          # skip-tags: true
-          # skip-recent: 5
+          age: '2 days'
