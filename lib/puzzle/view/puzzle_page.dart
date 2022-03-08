@@ -53,13 +53,14 @@ class PuzzleView extends StatelessWidget {
     /// Shuffle only if the current theme is Simple.
     final shufflePuzzle = false;
 
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            stops: const [0.1, 0.5],
+            stops: const [0.1, 0.4],
             colors: [
               theme.backgroundColorSecondary,
               theme.backgroundColor,

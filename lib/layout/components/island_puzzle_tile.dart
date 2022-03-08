@@ -62,6 +62,10 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
           isTapped: _isTapped,
           isHovered: _isHovered,
           builder: (value) {
+            if(1/2 + value - _waterLevel > _startOfDarkWater){
+              return Container();
+            }
+
             return Stack(
               clipBehavior: Clip.none,
               children: [
@@ -208,8 +212,6 @@ class _Water extends StatelessWidget {
   final double width;
   final double relativeDepth;
 
-  static const _waterLevel = 11 / 15;
-
   @override
   Widget build(BuildContext context) {
     final relativeHeightOfIsland = 8 / 16 + relativeDepth;
@@ -283,6 +285,7 @@ class _Water extends StatelessWidget {
   }
 }
 
+const _waterLevel = 11 / 15;
 const _startOfDarkWater = 0.3;
 const _startOpacity = 0.4;
 

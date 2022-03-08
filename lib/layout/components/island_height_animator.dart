@@ -32,7 +32,7 @@ class IslandHeightAnimator extends StatelessWidget {
         milliseconds: tapOrHover
             ? 50
             : isShuffling
-                ? 5000
+                ? 3000
                 : 500,
       ),
       builder: (_, value, __) => builder(value),
