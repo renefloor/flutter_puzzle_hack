@@ -70,7 +70,6 @@ class SettingsButton extends StatelessWidget {
                 width: 300,
                 height: 300,
                 margin: const EdgeInsets.only(top: 30, bottom: 15),
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 decoration: BoxDecoration(
                   color: const Color(0xFF8DC6D0),
                   borderRadius: BorderRadius.circular(16.0),
@@ -78,6 +77,7 @@ class SettingsButton extends StatelessWidget {
                       Border.all(width: 2.0, color: const Color(0xFF336083)),
                 ),
                 child: ListView(
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 24.0,),
                   children: _dialogContent(context, bloc: bloc),
                 ),
               ),
@@ -91,7 +91,7 @@ class SettingsButton extends StatelessWidget {
                   onTap: () => Navigator.of(context).pop(),
                   child: const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    child: Text('CLOSE'),
+                    child: Text('CLOSE', style: TextStyle(height: 1)),
                   ),
                 ),
               )
@@ -346,83 +346,4 @@ class _IslandPuzzleButtonState extends State<IslandPuzzleButton>
 
 class Constants {
   static const padding = 16.0;
-}
-
-class CustomDialogBox extends StatefulWidget {
-  final String title, descriptions, text;
-
-  const CustomDialogBox({
-    Key? key,
-    required this.title,
-    required this.descriptions,
-    required this.text,
-  }) : super(key: key);
-
-  @override
-  _CustomDialogBoxState createState() => _CustomDialogBoxState();
-}
-
-class _CustomDialogBoxState extends State<CustomDialogBox> {
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Constants.padding),
-      ),
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      child: contentBox(context),
-    );
-  }
-
-  Widget contentBox(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(Constants.padding),
-              boxShadow: [
-                const BoxShadow(
-                    color: Colors.black,
-                    offset: const Offset(0, 10),
-                    blurRadius: 10),
-              ]),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                widget.title,
-                style:
-                    const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Text(
-                widget.descriptions,
-                style: const TextStyle(fontSize: 14),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 22,
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      widget.text,
-                      style: const TextStyle(fontSize: 18),
-                    )),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 }
