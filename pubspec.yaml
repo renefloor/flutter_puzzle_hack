@@ -23,6 +23,7 @@ dependencies:
   just_audio: ^0.9.20
   platform: ^3.1.0
   rive: ^0.8.1
+  shared_preferences: ^2.0.13
   url_launcher: ^6.0.20
 
 dev_dependencies:
@@ -30,8 +31,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail: ^0.2.0
-  very_good_analysis: ^2.4.0
   msix: ^3.1.0
+  very_good_analysis: ^2.4.0
 
 flutter:
   generate: true

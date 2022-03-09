@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:island_slide_puzzle/audio/audio_control_listener.dart';
 import 'package:island_slide_puzzle/l10n/l10n.dart';
 import 'package:island_slide_puzzle/layout/components/index.dart';
 import 'package:island_slide_puzzle/layout/components/island_puzzle_tile.dart';

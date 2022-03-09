@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
-const animationName = 'Puzzleboat';
+const _animationName = 'Puzzleboat';
 
 class Boat extends StatelessWidget {
   const Boat({Key? key}) : super(key: key);
@@ -10,7 +10,7 @@ class Boat extends StatelessWidget {
   Widget build(BuildContext context) {
     return const RiveAnimation.asset(
       'assets/images/boat-waves.riv',
-      animations: [animationName],
+      animations: [_animationName],
     );
   }
 }

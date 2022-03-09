@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:island_slide_puzzle/audio/audio_control_bloc.dart';
-import 'package:island_slide_puzzle/colors/colors.dart';
 import 'package:island_slide_puzzle/layout/components/puzzle_keyboard_handler.dart';
 import 'package:island_slide_puzzle/layout/layout.dart';
 import 'package:island_slide_puzzle/models/models.dart';
@@ -53,7 +51,6 @@ class PuzzleView extends StatelessWidget {
     /// Shuffle only if the current theme is Simple.
     final shufflePuzzle = false;
 
-
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -68,7 +65,9 @@ class PuzzleView extends StatelessWidget {
           ),
         ),
         child: BlocProvider(
-            create: (context) => AudioControlBloc(),
+            create: (context) => AudioControlBloc(
+                  repository: AudioStateRepository(),
+                ),
             child: BlocProvider(
               create: (context) => TimerBloc(
                 ticker: const Ticker(),

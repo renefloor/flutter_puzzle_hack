@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:just_audio/just_audio.dart';
 
 import 'audio_control_bloc.dart';
+import 'audio_player_factory.dart';
 
 /// {@template audio_control_listener}
 /// Listens to the current audio status and mutes/unmutes [audioPlayer] accordingly.
@@ -17,7 +17,7 @@ class AudioControlListener extends StatefulWidget {
   }) : super(key: key);
 
   /// The audio player to be muted/unmuted when the audio status changes.
-  final AudioPlayer? audioPlayer;
+  final PuzzleAudioPlayer? audioPlayer;
 
   /// The widget below this widget in the tree.
   ///

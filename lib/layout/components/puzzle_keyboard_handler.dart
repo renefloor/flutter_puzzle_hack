@@ -7,6 +7,8 @@ import 'package:island_slide_puzzle/models/models.dart';
 import 'package:island_slide_puzzle/puzzle/puzzle.dart';
 import 'package:island_slide_puzzle/theme/theme.dart';
 
+import 'island_puzzle_tile.dart';
+
 /// {@template puzzle_keyboard_handler}
 /// A widget that listens to the keyboard events and moves puzzle tiles
 /// whenever a user presses keyboard arrows (←, →, ↑, ↓).
@@ -43,8 +45,6 @@ class _PuzzleKeyboardHandlerState extends State<PuzzleKeyboardHandler> {
   }
 
   void _handleKeyEvent(RawKeyEvent event) {
-    final theme = context.read<ThemeBloc>().state.theme;
-
     if (event is RawKeyDownEvent) {
       final puzzle = context.read<PuzzleBloc>().state.puzzle;
       final physicalKey = event.data.physicalKey;
@@ -61,6 +61,7 @@ class _PuzzleKeyboardHandlerState extends State<PuzzleKeyboardHandler> {
       }
 
       if (tile != null) {
+        playIslandTileSound();
         context.read<PuzzleBloc>().add(TileTapped(tile));
       }
     }

@@ -2,10 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:island_slide_puzzle/audio/audio_control_bloc.dart';
-import 'package:island_slide_puzzle/audio/audio_control_listener.dart';
 import 'package:island_slide_puzzle/l10n/l10n.dart';
 import 'package:island_slide_puzzle/layout/components/mouse_region_hittest.dart';
 import 'package:island_slide_puzzle/models/models.dart';
@@ -14,8 +11,7 @@ import 'package:island_slide_puzzle/theme/theme.dart';
 import 'dart:math' as math;
 import 'island_height_animator.dart';
 
-final tileAudioPlayer = getAudioPlayer()
-  ..setAsset('assets/sounds/splash_small2.mp3');
+final tileAudioPlayer = getAudioPlayer();
 
 /// {@template simple_puzzle_tile}
 /// Displays the puzzle tile associated with [tile] and
@@ -104,7 +100,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
                     onTapUp: (_) => setState(() => _isTapped = false),
                     onTapCancel: () => setState(() => _isTapped = false),
                     onTap: () {
-                      playSound();
+                      playIslandTileSound();
                       context.read<PuzzleBloc>().add(TileTapped(widget.tile));
                     },
                     child: MouseRegionHittest(
@@ -132,19 +128,19 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
           });
     });
   }
+}
 
-  Future<void> playSound() async {
-    if (kIsWeb) {
-      await tileAudioPlayer.setAsset('assets/sounds/splash_small2.mp3');
-      await tileAudioPlayer.play();
-      return;
-    }
+Future<void> playIslandTileSound() async {
+  if (kIsWeb) {
+    await tileAudioPlayer.setAsset('assets/sounds/splash_small2.mp3');
+    await tileAudioPlayer.play();
+    return;
+  }
 
-    if (tileAudioPlayer.playing) {
-      await tileAudioPlayer.seek(Duration.zero);
-    } else {
-      await tileAudioPlayer.play();
-    }
+  if (tileAudioPlayer.playing) {
+    await tileAudioPlayer.seek(Duration.zero);
+  } else {
+    await tileAudioPlayer.play();
   }
 }
 

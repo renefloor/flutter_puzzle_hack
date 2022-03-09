@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:island_slide_puzzle/audio/audio_control_listener.dart';
 import 'package:island_slide_puzzle/l10n/l10n.dart';
 import 'package:island_slide_puzzle/puzzle/bloc/puzzle_bloc.dart';
@@ -9,6 +8,7 @@ import 'package:island_slide_puzzle/typography/text_styles.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../audio/audio_control_bloc.dart';
+import '../../audio/audio_player_factory.dart';
 import '../../download/download_url.dart';
 
 class ShuffleAndSettingsButtons extends StatelessWidget {
@@ -214,7 +214,7 @@ class MuteButton extends StatelessWidget {
 class IslandPuzzleShuffleButton extends StatelessWidget {
   const IslandPuzzleShuffleButton({required this.audioPlayer, Key? key})
       : super(key: key);
-  final AudioPlayer audioPlayer;
+  final PuzzleAudioPlayer audioPlayer;
 
   @override
   Widget build(BuildContext context) {
