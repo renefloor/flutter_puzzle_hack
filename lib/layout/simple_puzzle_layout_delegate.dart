@@ -215,7 +215,7 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
                 width: 200,
                 child: Image.asset('assets/images/rock.png'),
               ),
-            factory.se(Image.asset('assets/images/submarine.png')),
+            factory.se(const Submarine()),
             Waves(
               right: screenSize.width / 2 - boardSize.width * 0.9,
               top: screenSize.height * 0.75,
