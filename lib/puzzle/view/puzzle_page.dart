@@ -90,6 +90,9 @@ class PuzzleView extends StatelessWidget {
   }
 }
 
+final finishedAudioPlayer = getAudioPlayer()
+  ..setAsset('assets/sounds/air_horn.mp3');
+
 class _Puzzle extends StatelessWidget {
   const _Puzzle({Key? key}) : super(key: key);
 
@@ -97,23 +100,53 @@ class _Puzzle extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
     final state = context.select((PuzzleBloc bloc) => bloc.state);
+    final isFinished = state.puzzleStatus == PuzzleStatus.complete;
 
     return AudioControlListener(
-      audioPlayer: tileAudioPlayer,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return Stack(
-            children: [
-              theme.layoutDelegate.backgroundBuilder(state),
-              const Positioned.fill(
-                child: _PuzzleSections(
-                  key: Key('puzzle_sections'),
+      audioPlayer: finishedAudioPlayer,
+      child: AudioControlListener(
+        audioPlayer: tileAudioPlayer,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Stack(
+              children: [
+                theme.layoutDelegate.backgroundBuilder(state),
+                const Positioned.fill(
+                  child: _PuzzleSections(
+                    key: Key('puzzle_sections'),
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+                if(isFinished)
+                  const Align(
+                    alignment: Alignment.topCenter,
+                    child: _WellDoneHeader(),
+                  ),
+              ],
+            );
+          },
+        ),
       ),
+    );
+  }
+}
+
+class _WellDoneHeader extends StatelessWidget {
+  const _WellDoneHeader({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ResponsiveLayoutBuilder(
+      defaultBuilder: (context, child) => SizedBox(
+        width: 400,
+        height: 300,
+        child: child,
+      ),
+      smallWide: (context, child) => SizedBox(
+        width: 400,
+        height: 150,
+        child: child,
+      ),
+      child: (_) => Center(child: Image.asset('assets/images/well_done.png')),
     );
   }
 }
@@ -230,34 +263,41 @@ class _Page extends StatelessWidget {
     final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
     final state = context.select((PuzzleBloc bloc) => bloc.state);
 
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.topLeft,
-          child: theme.layoutDelegate.startSectionBuilder(state),
-        ),
-        Positioned.fill(
-          child: PuzzleBoard(),
-        ),
-        if (orientation == PageOrientation.portrait)
+    return BlocListener<PuzzleBloc, PuzzleState>(
+      listener: (context, state) {
+        if(state.puzzleStatus == PuzzleStatus.complete){
+          finishedAudioPlayer.play();
+        }
+      },
+      child: Stack(
+        children: [
           Align(
-            alignment: Alignment.bottomCenter,
-            child: theme.layoutDelegate.endSectionBuilder(state),
+            alignment: Alignment.topLeft,
+            child: theme.layoutDelegate.startSectionBuilder(state),
           ),
-        if (orientation == PageOrientation.landscape)
-          Padding(
-            padding: const EdgeInsets.only(top: 200),
-            child: Align(
-              alignment: Alignment.centerLeft,
+          Positioned.fill(
+            child: PuzzleBoard(),
+          ),
+          if (orientation == PageOrientation.portrait)
+            Align(
+              alignment: Alignment.bottomCenter,
               child: theme.layoutDelegate.endSectionBuilder(state),
             ),
-          ),
-        if (orientation == PageOrientation.landscapeLow)
-          Align(
-            alignment: Alignment.bottomRight,
-            child: theme.layoutDelegate.endSectionBuilder(state),
-          ),
-      ],
+          if (orientation == PageOrientation.landscape)
+            Padding(
+              padding: const EdgeInsets.only(top: 200),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: theme.layoutDelegate.endSectionBuilder(state),
+              ),
+            ),
+          if (orientation == PageOrientation.landscapeLow)
+            Align(
+              alignment: Alignment.bottomRight,
+              child: theme.layoutDelegate.endSectionBuilder(state),
+            ),
+        ],
+      ),
     );
   }
 }

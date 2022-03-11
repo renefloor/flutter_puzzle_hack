@@ -130,8 +130,6 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
           Clouds(start: 0.7, relativeDistance: 0.25),
           Clouds(start: 0.6, relativeDistance: 0.5),
           Clouds(start: 0.3, relativeDistance: 0),
-          // Clouds(start: 0.8, relativeHeight: 0.15, durationInSeconds: 30),
-          // Clouds(start: 0, relativeHeight: 0, durationInSeconds: 50),
         ],
       ),
     );
@@ -400,14 +398,15 @@ class SimplePuzzleBoard extends StatelessWidget {
 
   double _calculateLeft(BoxConstraints constraints, Position position) {
     final blockWidth = _calculateBlockWidth(constraints);
-    return (position.x + position.y - 2).toDouble() * blockWidth / 2 * 1.02;
+    return (position.x - 1).toDouble() * blockWidth / 2 * 1.02 +
+        (position.y - 1).toDouble() * blockWidth / 2 * 1.02;
   }
 
   double _calculateTop(BoxConstraints constraints, Position position) {
     final blockWidth = _calculateBlockWidth(constraints);
     return (constraints.maxWidth / 3 - blockWidth * (1 / 2)) +
-        (position.y - 1) * (blockWidth * (28 / 100)) -
-        (position.x - 1) * (blockWidth * (28 / 100));
+        (position.y - 1) * (blockWidth * 0.285) -
+        (position.x - 1) * (blockWidth * 0.285);
   }
 }
 
