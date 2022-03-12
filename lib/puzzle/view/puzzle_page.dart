@@ -7,6 +7,7 @@ import 'package:island_slide_puzzle/models/models.dart';
 import 'package:island_slide_puzzle/puzzle/puzzle.dart';
 import 'package:island_slide_puzzle/theme/theme.dart';
 import 'package:island_slide_puzzle/timer/timer.dart';
+import 'package:rive/rive.dart' hide LinearGradient;
 
 import '../../audio/audio_control_listener.dart';
 import '../../layout/components/island_puzzle_tile.dart';
@@ -137,16 +138,45 @@ class _WellDoneHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return ResponsiveLayoutBuilder(
       defaultBuilder: (context, child) => SizedBox(
-        width: 400,
+        width: 300,
         height: 300,
         child: child,
       ),
       smallWide: (context, child) => SizedBox(
-        width: 400,
+        width: 300,
         height: 150,
         child: child,
       ),
-      child: (_) => Center(child: Image.asset('assets/images/well_done.png')),
+      child: (_) => const Center(child: _BannerAnimation()),
+    );
+  }
+}
+
+class _BannerAnimation extends StatefulWidget {
+  const _BannerAnimation({Key? key}) : super(key: key);
+
+  @override
+  _BannerAnimationState createState() => _BannerAnimationState();
+}
+
+class _BannerAnimationState extends State<_BannerAnimation> {
+  late RiveAnimationController _controller;
+  bool startAnimationFinished = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = SingleShotAnimation(
+      'Animation 1',
+      onStop: () => setState(() => startAnimationFinished = true),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RiveAnimation.asset(
+      'assets/images/banner.riv',
+      controllers: [_controller],
     );
   }
 }
@@ -369,5 +399,40 @@ class _PuzzleTile extends StatelessWidget {
     return tile.isWhitespace
         ? theme.layoutDelegate.whitespaceTileBuilder()
         : theme.layoutDelegate.tileBuilder(tile, state);
+  }
+}
+
+/// Controller tailered for managing one-shot animations
+class SingleShotAnimation extends SimpleAnimation {
+  /// Fires when the animation stops being active
+  final VoidCallback? onStop;
+
+  /// Fires when the animation starts being active
+  final VoidCallback? onStart;
+
+  SingleShotAnimation(
+    String animationName, {
+    double mix = 1,
+    bool autoplay = true,
+    this.onStop,
+    this.onStart,
+  }) : super(animationName, mix: mix, autoplay: autoplay) {
+    isActiveChanged.addListener(onActiveChanged);
+  }
+
+  /// Dispose of any callback listeners
+  @override
+  void dispose() {
+    super.dispose();
+    isActiveChanged.removeListener(onActiveChanged);
+  }
+
+  /// Perform tasks when the animation's active state changes
+  void onActiveChanged() {
+    // Fire any callbacks
+    isActive
+        ? onStart?.call()
+        // onStop can fire while widgets are still drawing
+        : WidgetsBinding.instance?.addPostFrameCallback((_) => onStop?.call());
   }
 }
