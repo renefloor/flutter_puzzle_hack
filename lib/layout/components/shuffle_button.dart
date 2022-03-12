@@ -77,7 +77,11 @@ class SettingsButton extends StatelessWidget {
                       Border.all(width: 2.0, color: const Color(0xFF336083)),
                 ),
                 child: ListView(
-                  padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 24.0,),
+                  padding: const EdgeInsets.only(
+                    left: 16.0,
+                    right: 16.0,
+                    bottom: 24.0,
+                  ),
                   children: _dialogContent(context, bloc: bloc),
                 ),
               ),
@@ -222,32 +226,35 @@ class IslandPuzzleShuffleButton extends StatelessWidget {
 
     return AudioControlListener(
       audioPlayer: audioPlayer,
-      child: IslandPuzzleButton(
-        onTap: () {
-          audioPlayer.play();
-          context.read<PuzzleBloc>().add(const PuzzleReset());
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/images/shuffle_icon.png',
-                width: 24,
-                height: 24,
-              ),
-              const Gap(10),
-              Text(
-                status == PuzzleStatus.start
-                    ? context.l10n.puzzleStart
-                    : context.l10n.puzzleShuffle,
-                style: PuzzleTextStyle.headline4.copyWith(
-                  color: const Color(0xFF284A65),
+      child: BlocListener<PuzzleBloc, PuzzleState>(
+        listener: (context, state) => audioPlayer.play(),
+        listenWhen: (previous, current) =>
+            previous.puzzleStatus != PuzzleStatus.shuffling &&
+            current.puzzleStatus == PuzzleStatus.shuffling,
+        child: IslandPuzzleButton(
+          onTap: () => context.read<PuzzleBloc>().add(const PuzzleReset()),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/shuffle_icon.png',
+                  width: 24,
+                  height: 24,
                 ),
-              ),
-            ],
+                const Gap(10),
+                Text(
+                  status == PuzzleStatus.start
+                      ? context.l10n.puzzleStart
+                      : context.l10n.puzzleShuffle,
+                  style: PuzzleTextStyle.headline4.copyWith(
+                    color: const Color(0xFF284A65),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

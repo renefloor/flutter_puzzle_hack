@@ -116,7 +116,7 @@ class _Puzzle extends StatelessWidget {
                     key: Key('puzzle_sections'),
                   ),
                 ),
-                if(isFinished)
+                if (isFinished)
                   const Align(
                     alignment: Alignment.topCenter,
                     child: _WellDoneHeader(),
@@ -265,7 +265,7 @@ class _Page extends StatelessWidget {
 
     return BlocListener<PuzzleBloc, PuzzleState>(
       listener: (context, state) {
-        if(state.puzzleStatus == PuzzleStatus.complete){
+        if (state.puzzleStatus == PuzzleStatus.complete) {
           finishedAudioPlayer.play();
         }
       },

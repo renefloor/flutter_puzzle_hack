@@ -3,19 +3,18 @@
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-import 'package:island_slide_puzzle/audio/audio_control_bloc.dart';
 import 'package:island_slide_puzzle/models/models.dart';
 
 part 'puzzle_event.dart';
-
 part 'puzzle_state.dart';
 
 class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
   PuzzleBloc(this._size, {this.random}) : super(const PuzzleState()) {
     on<PuzzleInitialized>(_onPuzzleInitialized);
     on<TileTapped>(_onTileTapped);
-    on<PuzzleReset>(_onPuzzleReset);
+    on<PuzzleReset>(_onPuzzleReset, transformer: droppable());
   }
 
   final int _size;
@@ -95,6 +94,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     emit(
       state.copyWith(puzzleStatus: PuzzleStatus.incomplete),
     );
+    await Future<void>.delayed(const Duration(milliseconds: 300));
   }
 
   /// Build a randomized, solvable puzzle of the given size.

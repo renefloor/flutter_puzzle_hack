@@ -33,7 +33,6 @@ class NoopAudioPlayer implements PuzzleAudioPlayer {
   }
 }
 
-
 class JustAudioPlayer implements PuzzleAudioPlayer {
   final AudioPlayer _audioPlayer = AudioPlayer();
 

@@ -58,7 +58,7 @@ class _IslandPuzzleTileState extends State<IslandPuzzleTile> {
           isTapped: _isTapped,
           isHovered: _isHovered,
           builder: (value) {
-            if(1/2 + value - _waterLevel > _startOfDarkWater){
+            if (1 / 2 + value - _waterLevel > _startOfDarkWater) {
               return Container();
             }
 
