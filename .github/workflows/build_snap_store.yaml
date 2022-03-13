@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - "lib/**"
+      - "assets/**"
       - "pubspec.yaml"
       - "pubspec.lock"
       - "linux/**"
