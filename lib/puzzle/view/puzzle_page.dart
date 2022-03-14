@@ -92,7 +92,7 @@ class PuzzleView extends StatelessWidget {
 }
 
 final finishedAudioPlayer = getAudioPlayer()
-  ..setAsset('assets/sounds/air_horn.mp3');
+  ..setAsset('assets/sounds/positive_complete_finish.mp3');
 
 class _Puzzle extends StatelessWidget {
   const _Puzzle({Key? key}) : super(key: key);
