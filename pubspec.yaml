@@ -41,7 +41,6 @@ flutter:
   assets:
     - assets/images/
     - assets/sounds/
-    - assets/downloads/
   fonts:
     - family: GoogleSans
       fonts:
