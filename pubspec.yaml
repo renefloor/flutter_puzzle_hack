@@ -77,5 +77,6 @@ msix_config:
   identity_name: 5515ReneFloorSoftwareDeve.IslandSlidePuzzle
   publisher: CN=337FF815-4DE7-4305-890E-947FA235BAF9
   store: true
+  msix_version: 1.1.0.0
   logo_path: ./windows/app_icon.png
   capabilities:
