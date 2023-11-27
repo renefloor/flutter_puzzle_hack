@@ -16,13 +16,13 @@ dependencies:
   flutter_bloc: ^8.0.0
   flutter_localizations:
     sdk: flutter
-  flutter_svg: ^0.23.0+1
-  gap: ^2.0.0
-  google_fonts: ^2.1.0
-  intl: ^0.17.0
+  flutter_svg: ^2.0.9
+  gap: ^3.0.1
+  google_fonts: ^6.1.0
+  intl: ^0.18.0
   just_audio: ^0.9.20
   platform: ^3.1.0
-  rive: ^0.8.1
+  rive: ^0.12.3
   shared_preferences: ^2.0.13
   url_launcher: ^6.0.20
 
@@ -30,9 +30,9 @@ dev_dependencies:
   bloc_test: ^9.0.1
   flutter_test:
     sdk: flutter
-  mocktail: ^0.2.0
+  mocktail: ^1.0.1
   msix: ^3.1.0
-  very_good_analysis: ^2.4.0
+  very_good_analysis: ^5.1.0
 
 flutter:
   generate: true
