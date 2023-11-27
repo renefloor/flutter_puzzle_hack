@@ -144,7 +144,7 @@ class SettingsButton extends StatelessWidget {
         padding: EdgeInsets.only(left: 8.0),
         child: Text(
           'Designed by Mathieu Nauleau and developed by Rene Floor.\n\n'
-          'Build on top of the Very Good Ventures Slide Puzzle example.\n\n'
+          'Built on top of the Very Good Ventures Slide Puzzle example.\n\n'
           'Sounds from zapsplat.com',
         ),
       ),
