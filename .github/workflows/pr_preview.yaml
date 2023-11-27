@@ -8,27 +8,25 @@ on:
       - "pubspec.yaml"
       - "pubspec.lock"
       - "web/**"
+      - ".github/workflows/pr_preview.yaml"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     name: deploy
-    # if: ${{ false }}  # disable for now
 
     steps:
       - uses: actions/checkout@v2
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: 3.16.0
-          channel: stable
-          cache: true
+          channel: master
 
       - name: Install Dependencies
         run: flutter packages get
 
       - name: Build for Web
-        run: flutter build web
+        run: flutter build web --wasm
 
       - name: Deploy
         uses: FirebaseExtended/action-hosting-deploy@v0
