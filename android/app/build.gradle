@@ -32,7 +32,8 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 31
+    namespace "nl.renefloor.puzzle"
+    compileSdkVersion 34
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -49,8 +50,8 @@ android {
 
     defaultConfig {
         applicationId "nl.renefloor.puzzle"
-        minSdkVersion 16
-        targetSdkVersion 30
+        minSdkVersion 21
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -83,7 +84,6 @@ android {
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
-            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt')
         }
         debug {
